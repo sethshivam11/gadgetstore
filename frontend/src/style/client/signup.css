@@ -1,0 +1,85 @@
+#signupbtn {
+    text-align: center;
+    font-size: 1.5rem;
+    background: #28C67F;
+    color: white;
+    width: 365px;
+    height: 50px;
+}
+
+#signupbtn:hover {
+    opacity: 0.9;
+    background: #1a9fff;
+}
+
+#signupbtn:active {
+    cursor: not-allowed;
+}
+
+#login {
+    font-size: 1.5rem;
+    margin-top: 10px;
+    margin-left: 125px;
+    color: white;
+}
+
+#login a {
+    color: #1a9fff;
+    text-decoration: none;
+}
+
+#login a:hover {
+    color: #28C67F;
+}
+
+#signuptext {
+    left: 160px;
+    position: relative;
+    top: 0px;
+    width: 207px;
+    height: 97px;
+    margin-top: 30px;
+    flex-shrink: 0;
+    color: #FFFFFF;
+    font-family: "Montserrat";
+    font-size: 70px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 400px) {
+    #signupbtn {
+        text-align: center;
+        font-size: 1.4rem;
+        color: white;
+        width: 340px;
+        height: 50px;
+    }
+
+    #signupcircle2 {
+        top: 210px;
+    }
+
+    #signupcircle3 {
+        top: -50px;
+    }
+
+    #signuptext {
+        left: 100px;
+        top: 0px;
+        width: 207px;
+        height: 97px;
+        flex-shrink: 0;
+        font-size: 50px;
+        margin-bottom: 20px;
+    }
+
+    #login {
+        font-size: 1.2rem;
+        margin-top: 10px;
+        margin-left: 55px;
+        color: white;
+    }
+}

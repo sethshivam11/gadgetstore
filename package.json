@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "This is backend for Gadget Store website which sells electronics and technology devices",
+  "main": "server.js",
+  "scripts": {
+    "test": "node --version",
+    "start": "node backend/server.js",
+    "build": "npm install && npm run client-install",
+    "dev": "nodemon backend/server.js",
+    "client-install": "cd frontend && npm install && npm run build"
+  },
+  "author": "shivam",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,133 @@
+#blur{
+    transition: opacity 0.3s ease;
+}
+#carousel {
+    width: 98%;
+    height: 230px;
+    background: #C7C7C7;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: hidden;
+    color: black;
+    margin-bottom: 20px;
+}
+
+#carousel a {
+    margin: 0;
+    padding: 0;
+}
+
+.carousel-slide {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.btn-car {
+    width: 35px;
+    height: 100px;
+    z-index: 2;
+    flex-shrink: 0;
+    background: #FFF;
+    border: 1px solid rgb(168, 168, 168);
+    position: absolute;
+    color: black;
+    cursor: pointer;
+}
+
+.btn-car:hover {
+    background: #fff;
+}
+
+#left-car {
+    border-radius: 0px 10px 10px 0px;
+    border-left: none;
+    left: 0%;
+}
+
+#right-car {
+    border-radius: 10px 0px 0px 10px;
+    border-right: none;
+    right: 0%;
+}
+
+#posters {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.poster {
+    width: 434px;
+    height: 270px;
+    display: inline-block;
+    border-radius: 5px 5px 0px 0px;
+    background: linear-gradient(180deg, #FFF 94.42%, rgba(255, 255, 255, 0.00) 100%);
+    text-decoration: none;
+    color: black;
+}
+
+.poster h3 {
+    text-align: center;
+    font-weight: 400;
+    margin-top: 10px;
+    padding: 1%;
+    font-size: 30px;
+}
+
+.black {
+    background: #000;
+    color: white;
+    background: linear-gradient(180deg, #000 95.19%, rgba(0, 0, 0, 0.00) 100%);
+}
+
+.poster-img {
+    width: 240px;
+    margin: 0 auto;
+    display: block;
+    margin-top: 10px;
+}
+.carousel-slide-mobile{
+    display: none;
+}
+
+@media only screen and (max-width: 1140px) and (min-width: 901px){
+    #carousel{
+        margin-top: 110px;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    #carousel{
+        display: none;
+    }
+    .carousel-slide-mobile{
+        display: none;
+    }
+    .carousel-slide-mobile img{
+        object-fit: contain;
+        width: 100%;
+        filter: blur(bottom, 10%);
+    }
+    .btn-car{
+        width: 20px;
+    }
+    #posters {
+        flex-direction: column;
+        margin: 10px;
+        margin-top: 100px;
+    }
+
+    .poster {
+        width: 100%;
+        height: fit-content;
+        margin-bottom: 10px;
+    }
+
+    .poster-img {
+        width: 220px;
+        margin-bottom: 50px;
+    }
+}

@@ -1,0 +1,66 @@
+.accessories {
+    width: 98%;
+    height: fit-content;
+    margin: 0 auto;
+    margin-top: 20px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: #dadada;
+    display: flex;
+    flex-wrap: wrap;
+}
+.box h3 {
+    font-family: "Syne";
+    color: #000;
+    font-size: 30px;
+    font-style: normal;
+    line-height: normal;
+    padding: 20px;
+}
+
+.box{
+    width: 48%;
+    height: fit-content;
+    background: #fff;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 0 1%;
+    margin-top: 1%;
+}
+
+.box:nth-child(2){
+    margin-left: 1%
+}
+.smallbox{
+    width: 96%;
+    margin: 0 auto;
+
+}
+.a0-left{
+    left: 2%;
+    margin: 0;
+}
+.a0-right{
+    right: 51.2%;
+    margin: 0;
+}
+.a1-left{
+    left: 51.6%;
+    margin: 0;
+}
+.a1-right{
+    right: 1.5%;
+    margin: 0;
+}
+@media only screen and (max-width: 900px) {
+    .box{
+        width: 98%;
+    }
+    .box h3{
+        padding: 10px;
+    }
+    .accessories{
+        width: 100%;
+        margin-top: 0;
+    }
+}

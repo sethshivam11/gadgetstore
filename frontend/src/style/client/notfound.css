@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+
+.not-found-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+    color: white;
+    background: #000;
+}
+
+.not-found-heading{
+    font-size: 15rem;
+    font-family: "Abril Fatface"; 
+}
+
+.not-found-line{
+    color: white;
+    width: 34%;
+    margin-bottom: 20px;
+}
+
+.not-found-para{
+    font-family: "Abril Fatface"; 
+    font-size: 2rem;
+}
+
+@media only screen and (max-width: 900px) {
+    .not-found-heading {
+        font-size: 10rem;
+    }
+    .not-found-line {
+        width: 70%;
+    }
+    .not-found-para {
+        font-size: 1.2rem;
+    }
+}

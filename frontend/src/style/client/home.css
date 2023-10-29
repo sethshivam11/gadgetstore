@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic:wght@400;500;600&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: max-content;
+    background-color: #dadada;
+}
+
+
+

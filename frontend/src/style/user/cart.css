@@ -1,0 +1,54 @@
+.options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    overflow-x: hidden;
+    width: 65%;
+    margin-left: 10px;
+}
+
+.options h3 {
+    font-size: 30px;
+    width: 30%;
+    background-color: white;
+    text-align: center;
+    padding: 1rem 0;
+    font-family: "Didact Gothic";
+    cursor: pointer;
+}
+
+.options h3:after {
+    content: "";
+    display: block;
+    height: 5px;
+    margin-top: 8px;
+    margin-bottom: -16px;
+    border-radius: 3px;
+    width: 70%;
+    margin-left: 15%;
+    transform: scaleX(0);
+    background-color: #0066ff;
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.options h3:hover:after,
+.cart-active:after {
+    transform: scaleX(1) !important;
+}
+.cart-bottom{
+    margin: 0 10px;
+    margin-top: 15px;
+    border-radius: 25px;
+    width: fit-content;
+    height: 100vh;
+    background-color: white;
+    padding: 2rem;
+}
+.cart-sum{
+    width: 29%;
+    font-size: 30px;
+    background-color: white;
+}
