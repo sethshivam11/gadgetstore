@@ -4,7 +4,8 @@ import "../../style/client/login.css";
 import "../../style/client/signup.css";
 import gsap from "gsap";
 
-const Signup = () => {
+const Signup = (props) => {
+  const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
   const navigate = useNavigate();
   const [creds, setCreds] = useState({
@@ -16,9 +17,10 @@ const Signup = () => {
     e.preventDefault();
     setCreds({ ...creds, [e.target.name]: e.target.value });
   };
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    const response = await fetch(`${host}/api/user/auth/signup`, {
+    setProgress(30);
+    fetch(`${host}/api/user/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,10 +30,24 @@ const Signup = () => {
         email: creds.email,
         password: creds.password,
       }),
-    });
-    const tokenResponse = await response.json();
-    localStorage.setItem("gadgetstore-user-token", tokenResponse.token);
-    navigate("/");
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        setProgress(50);
+        if (resData.success) {
+          localStorage.setItem("gadgetstore-user-token", resData.token);
+          setProgress(70);
+          navigate("/");
+        } else if (resData.error === "Internal Server Error!") {
+          toast.error("Something went wrong, Please try again later!");
+          setProgress(70);
+        } else {
+          toast.error(resData.error);
+          setProgress(70);
+          console.log(resData.error);
+        }
+        setProgress(100);
+      });
   };
   const app = useRef();
   useEffect(() => {
@@ -96,7 +112,7 @@ const Signup = () => {
           <button
             type="submit"
             className="bar"
-            disabled={creds.email.length < 4 || creds.password.length < 5}
+            disabled={creds.email.length < 4 || creds.password.length < 6}
             id="signupbtn"
           >
             SignUp

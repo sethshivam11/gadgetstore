@@ -3,41 +3,49 @@ import "../../style/client/footer.css";
 import logo from "../../img/logo.png";
 import { Link } from "react-router-dom";
 
-const Footer = () => {
+const Footer = (props) => {
+  const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
-  const [sub, setSub] = useState({email: ""});
-  const [subBtn, setSubBtn] = useState("Subscribe");
-    const subscribe = (e) => {
-      e.preventDefault();
-      if(sub.email.length <= 4){
-        return;
-      }
-      fetch(`${host}/api/client/subscribe`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: sub.email}),
-      }).then(res => res.json()).then(resData => {
-        console.log(resData);
-        if(resData.success){
-          setSubBtn(" Success");
-          setTimeout(() => {
-            setSubBtn("Subscribed");
-          }, 10000)
-        }
-        else if(!resData.success && resData.error === "Email is already subscribed!"){
-          setSubBtn("Subscribed");
-        }
-        else{
-          setSubBtn(" Error");
-        }
-      })
-      // subscribe this email
+  const [sub, setSub] = useState({ email: "" });
+  const [subBtn, setSubBtn] = useState(false);
+  const subscribe = (e) => {
+    e.preventDefault();
+    if (sub.email.length <= 4) {
+      return;
     }
-    const handleChange = (e) => {
-      setSub({...sub, [e.target.name]: e.target.value});
-    }
+    setProgress(30);
+    fetch(`${host}/api/client/subscribe`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: sub.email }),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        setProgress(50);
+        if (resData.success) {
+          setProgress(70);
+          setSubBtn(true);
+          toast.success("Subscribe successful");
+          setProgress(100);
+        } else if (resData.error === "Internal Server Error!") {
+          setProgress(70);
+          setSubBtn(false);
+          setProgress(100);
+          toast.error("Something went wrong, Please try again later!");
+        } else {
+          toast.success(resData.error);
+          setProgress(70);
+          setSubBtn(true);
+          setProgress(100);
+        }
+      });
+    // subscribe this email
+  };
+  const handleChange = (e) => {
+    setSub({ ...sub, [e.target.name]: e.target.value });
+  };
   return (
     <footer>
       <form id="mid" onSubmit={subscribe}>
@@ -51,7 +59,10 @@ const Footer = () => {
             onChange={handleChange}
             required
           />
-          <button id="footer-btn">{subBtn === " Success" ? (<i class="fa-solid fa-check fa-beat"></i>): ""}{subBtn}</button>
+          <button id="footer-btn">
+            {subBtn ? "Subscribed" : "Subscribe"}
+            {subBtn}
+          </button>
         </div>
       </form>
       <div id="end">
@@ -77,8 +88,13 @@ const Footer = () => {
         <hr id="only-mobile" />
         <ul className="footer-list no">
           <li className="footer-nav">
-            <Link to="https://instagram.com/_seth_shivam" rel="noreferrer" target="_blank">
-              <i className="fa fa-instagram"></i>&nbsp;&nbsp;&nbsp;&nbsp;Instagram
+            <Link
+              to="https://instagram.com/_seth_shivam"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <i className="fa fa-instagram"></i>
+              &nbsp;&nbsp;&nbsp;&nbsp;Instagram
             </Link>
           </li>
           <li className="footer-nav">
@@ -91,26 +107,39 @@ const Footer = () => {
             </Link>
           </li>
           <li className="footer-nav">
-            <Link to="https://www.linkedin.com/in/shivam-soni-20531a28b" rel="noreferrer" target="_blank">
+            <Link
+              to="https://www.linkedin.com/in/shivam-soni-20531a28b"
+              rel="noreferrer"
+              target="_blank"
+            >
               <i className="fa fa-linkedin"></i>&nbsp;&nbsp;&nbsp;&nbsp;LinkedIn
             </Link>
           </li>
           <li className="footer-nav">
-            <Link to="https://twitter.com/shivam700216" rel="noreferrer" target="_blank">
+            <Link
+              to="https://twitter.com/shivam700216"
+              rel="noreferrer"
+              target="_blank"
+            >
               <i className="fa fa-twitter"></i>&nbsp;&nbsp;&nbsp;&nbsp;Twitter
             </Link>
           </li>
         </ul>
         <span>
-          <i className="fa fa-copyright"></i>
-          &nbsp;All Rights Reserved. Developer:&nbsp;
-          <a
-            href="https://www.linkedin.com/in/shivam-soni-20531a28b"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Shivam Soni
-          </a>
+          <div>
+            <i className="fa fa-copyright"></i>
+            &nbsp;All Rights Reserved. Developer:&nbsp;
+            <a
+              href="https://www.linkedin.com/in/shivam-soni-20531a28b"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Shivam Soni
+            </a>
+          </div>
+          <Link to="/seller" style={{ position: "relative", right: "50px" }}>
+            Seller Section
+          </Link>
         </span>
       </div>
     </footer>

@@ -3,7 +3,8 @@ import "../../style/client/productpage.css";
 import Navbar from "./Navbar";
 import { useParams, useNavigate } from "react-router-dom";
 
-const ProductPage = () => {
+const ProductPage = (props) => {
+  const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
   const { id } = useParams();
   const token = localStorage.getItem("gadgetstore-user-token");
@@ -19,9 +20,10 @@ const ProductPage = () => {
     price: "",
     more: "",
     date: "",
-    id,
+    id
   });
   const fetchProduct = useCallback(() => {
+    setProgress(50);
     fetch(`${host}/api/client/product/${id}`, {
       method: "GET",
       headers: {
@@ -30,20 +32,26 @@ const ProductPage = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
+        setProgress(70);
         if (resData.success) {
           setProduct(resData.product);
         } else {
           console.log(resData.error);
           console.log(resData.message);
         }
+        setProgress(100);
       });
-  }, [host, id, setProduct]);
+  }, [host, id, setProduct, setProgress]);
   useEffect(() => {
+    setProgress(30);
     fetchProduct();
-  }, [fetchProduct, navigate]);
+  }, [fetchProduct, setProgress]);
   const handleBuy = () => {
+    setProgress(30);
     if (!token) {
+      setProgress(70);
       navigate("/login");
+      setProgress(100);
     }
     fetch(`${host}/api/user/cart/remove`, {
       method: "PUT",
@@ -53,19 +61,27 @@ const ProductPage = () => {
       },
       body: JSON.stringify({ product: product }),
     })
-      .then((res) => res.json())
-      .then((resData) => {
+    .then((res) => res.json())
+    .then((resData) => {
+        setProgress(50);
         if (resData.success) {
           navigate("/cart");
+          setProgress(70);
         } else {
           console.log(resData.error);
+          setProgress(70);
         }
+        setProgress(100);
       });
   };
   const handleCart = () => {
+    setProgress(30);
     if (!token) {
+      setProgress(70);
       navigate("/login");
+      setProgress(100);
     }
+    setProgress(50);
     fetch(`${host}/api/user/cart/add`, {
       method: "PUT",
       headers: {
@@ -73,25 +89,42 @@ const ProductPage = () => {
         token: token,
       },
       body: JSON.stringify({ product: product }),
+    }).then(res => res.json()).then(resData => {
+      if(resData.success){
+        setProgress(70);
+        toast.success(`${product.name ? product.name: "Product"} added to cart`);
+        setProgress(100);
+      }else{
+        console.log(resData.error);
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
+      }
     });
   };
   const handleWishlist = () => {
+    setProgress(30);
     fetch(`${host}/api/user/wishlist/add`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "token": token
+        token: token,
       },
-      body: JSON.stringify({product: product})
-    }).then(res => res.json()).then(resData => {
-      if(resData.success){
-        console.log(resData.user);
-      }
-      else{
-        console.log(resData.error);
-      }
-    });
-  }
+      body: JSON.stringify({ product: product }),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        setProgress(50);
+        if (resData.success) {
+          console.log(resData.user);
+          setProgress(70);
+          toast.success(`${product.name ? product.name: "Product"} added to wishlist`)
+        } else {
+          console.log(resData.error);
+          toast.error("Something went wrong, Please try again later!");
+        }
+        setProgress(100);
+      });
+  };
   return (
     <section>
       <Navbar />
@@ -108,7 +141,9 @@ const ProductPage = () => {
         <button type="button" onClick={handleCart}>
           Add to Cart
         </button>
-        <button type="button" onClick={handleWishlist}>Wishlist</button>
+        <button type="button" onClick={handleWishlist}>
+          Wishlist
+        </button>
       </div>
     </section>
   );

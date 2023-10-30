@@ -2,6 +2,7 @@ import "./App.css";
 import LoadingBar from "react-top-loading-bar";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 // Component Imports for client pages
 import Login from "./components/client/Login";
@@ -28,18 +29,25 @@ const App = () => {
   return (
     <div>
       <LoadingBar color="red" progress={progress} />
+      <Toaster position="bottom-center" gutter={2} />
       <Routes>
-
-
         {/* Client Pages */}
-        <Route element={<Login />} exact path="/login" />
-        <Route element={<Signup />} exact path="/signup" />
-        <Route element={<Home />} exact path="/" />
+        <Route
+          element={<Login setProgress={setProgress} toast={toast} />}
+          exact
+          path="/login"
+        />
+        <Route
+          element={<Signup setProgress={setProgress} toast={toast} />}
+          exact
+          path="/signup"
+        />
+        <Route element={<Home setProgress={setProgress} toast={toast} />} exact path="/" />
         <Route element={<NotFound />} path="/*" />
         <Route
           element={
             <ProductLists
-              setProgress={setProgress}
+              setProgress={setProgress} toast={toast}
               category="mobiles"
               key="mobiles"
             />
@@ -49,7 +57,7 @@ const App = () => {
         />
         <Route
           element={
-            <ProductLists setProgress={setProgress} category="pc" key="pc" />
+            <ProductLists setProgress={setProgress} toast={toast} category="pc" key="pc" />
           }
           exact
           path="/pc"
@@ -57,7 +65,7 @@ const App = () => {
         <Route
           element={
             <ProductLists
-              setProgress={setProgress}
+              setProgress={setProgress} toast={toast}
               category="electronics"
               key="electronics"
             />
@@ -68,7 +76,7 @@ const App = () => {
         <Route
           element={
             <ProductLists
-              setProgress={setProgress}
+              setProgress={setProgress} toast={toast}
               category="accessories"
               key="accessories"
             />
@@ -77,26 +85,50 @@ const App = () => {
           path="/accessories"
         />
         <Route
-          element={<ProductPage />}
+          element={<ProductPage setProgress={setProgress} toast={toast} />}
           key="productpage"
           exact
           path="/product/:id"
         />
 
         {/* Seller Pages */}
-        <Route element={<SellerLogin />} exact path="/seller/login" />
-        <Route element={<SellerSignup />} exact path="/seller/signup" />
-        <Route element={<SellerPage />} exact path="/seller" />
-        <Route element={<CreateProduct />} exact path="/seller/product" />
         <Route
-          element={<UpdateProduct />}
+          element={<SellerLogin setProgress={setProgress} toast={toast} />}
+          exact
+          path="/seller/login"
+        />
+        <Route
+          element={<SellerSignup setProgress={setProgress} toast={toast} />}
+          exact
+          path="/seller/signup"
+        />
+        <Route
+          element={<SellerPage setProgress={setProgress} toast={toast} />}
+          exact
+          path="/seller"
+        />
+        <Route
+          element={<CreateProduct setProgress={setProgress} toast={toast} />}
+          exact
+          path="/seller/product"
+        />
+        <Route
+          element={<UpdateProduct setProgress={setProgress} toast={toast} />}
           exact
           path="/seller/product/update/:productId"
         />
 
         {/* User Pages */}
-        <Route element={<Accounts />} exact path="/account" />
-        <Route element={<Cart />} exact path="/cart" />
+        <Route
+          element={<Accounts setProgress={setProgress} toast={toast} />}
+          exact
+          path="/account"
+        />
+        <Route
+          element={<Cart setProgress={setProgress} toast={toast} />}
+          exact
+          path="/cart"
+        />
       </Routes>
     </div>
   );

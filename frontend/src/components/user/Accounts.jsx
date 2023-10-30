@@ -5,7 +5,8 @@ import Orders from "./Orders";
 import Transactions from "./Transactions";
 import Addresses from "./Addresses";
 
-const Accounts = () => {
+const Accounts = (props) => {
+  const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
   const token = localStorage.getItem("gadgetstore-user-token");
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Accounts = () => {
     password: "123456",
   });
   const fetchAccount = useCallback(() => {
+    setProgress(50);
     fetch(`${host}/api/user/auth/getuser`, {
       method: "GET",
       headers: {
@@ -35,20 +37,26 @@ const Accounts = () => {
     })
       .then((res) => res.json())
       .then((jsonData) => {
+        setProgress(70);
         if (jsonData.success) {
           jsonData.user.password = "123456";
           setCreds(jsonData.user);
           let name = jsonData.user.name;
           let first = name.split(" ")[0].slice(0, 1);
           let second = name.split(" ")[1].slice(0, 1);
-          setAvatar(first.concat(second))
+          setProgress(100);
+          setAvatar(first.concat(second));
         } else {
+          setProgress(70);
+
           console.log(jsonData.error);
           navigate("/login");
+          setProgress(100);
         }
       });
-  }, [host, token, navigate]);
+  }, [host, token, navigate, setProgress]);
   const checkPassword = useCallback(() => {
+    setProgress(50);
     fetch(`${host}/api/user/auth/verify`, {
       method: "POST",
       headers: {
@@ -59,19 +67,24 @@ const Accounts = () => {
     })
       .then((res) => res.json())
       .then((jsonData) => {
+        setProgress(70);
         if (jsonData.success) {
           setCreds(jsonData.user);
           setPasswordModal(false);
           setEdit(true);
           setCheckPass({ password: "" });
           document.body.style.overflowY = "";
+          setProgress(100);
         } else {
+          setProgress(70);
           console.log(jsonData.error);
+          setProgress(100);
         }
       });
-  }, [host, token, checkPass]);
+  }, [host, token, checkPass, setProgress]);
   const handleUpdate = (e) => {
     e.preventDefault();
+    setProgress(30);
     fetch(`${host}/api/user/auth/update`, {
       method: "PUT",
       headers: {
@@ -82,22 +95,39 @@ const Accounts = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
+        setProgress(50);
         if (resData.success) {
-          setCreds(resData.user);
+          setProgress(70);
+          setCreds({
+            name: resData.user.name,
+            email: resData.user.email,
+            password: resData.user.password.slice(0, 6),
+          });
           setEdit(false);
+          setEditPassword(false);
+          setShowMainPassword(false);
+          setProgress(100);
+          toast.success("Account updated successfully");
         } else {
+          setProgress(70);
           console.log(resData.error);
+          setProgress(100);
+          toast.error("Something went wrong, Please try again later!");
         }
       });
   };
   useEffect(() => {
+    setProgress(30);
     if (!token) {
+      setProgress(70);
       navigate("/login");
+      setProgress(100);
     }
     fetchAccount();
-  }, [navigate, token, fetchAccount]);
+  }, [navigate, token, fetchAccount, setProgress]);
   const handleConfirmPassword = (e) => {
     e.preventDefault();
+    setProgress(30);
     checkPassword();
   };
   const handleShowPassword = () => {
@@ -107,7 +137,6 @@ const Accounts = () => {
     setCreds({ ...creds, [e.target.name]: e.target.value });
   };
   const handleShowPasswordMain = () => {
-    console.log(showMainPassword);
     setShowMainPassword(!showMainPassword);
   };
   return (
@@ -118,7 +147,7 @@ const Accounts = () => {
           <p id="account-name">{creds.name}</p>
           <p id="account-email">{creds.email}</p>
         </div>
-        <button id="account-btn" onClick={() => navigate("/")}>
+        <button id="account-btn" type="button" onClick={() => navigate("/")}>
           <i className="fa-solid fa-chevron-left"></i>&nbsp;&nbsp; Back to Home
         </button>
       </div>
@@ -219,7 +248,7 @@ const Accounts = () => {
             }}
             disabled={!edit}
           >
-            {editPassword && edit? "Clear": "Edit"}
+            {editPassword && edit ? "Clear" : "Edit"}
           </button>
           <div>
             <input
@@ -228,6 +257,7 @@ const Accounts = () => {
               id="showpassword"
               onChange={handleShowPasswordMain}
               disabled={!editPassword || !edit}
+              checked={showMainPassword}
             />
             <label
               htmlFor="showpassword"
@@ -242,6 +272,13 @@ const Accounts = () => {
             style={{ display: `${edit ? "none" : ""}` }}
             onClick={() => {
               setPasswordModal(true);
+              toast("Enter Password to continue", {
+                style: {
+                  background: "orange",
+                  color: "white",
+                },
+              });
+
               document.body.style.overflowY = "hidden";
             }}
             className="account-update-btn"
@@ -275,20 +312,14 @@ const Accounts = () => {
           </button>
         </form>
       )}
-      {!profile && orders && !transactions && !addresses && (
-        <Orders/>
-      )}
-      {!profile && !orders && transactions && !addresses && (
-        <Transactions/>
-      )}
-      {!profile && !orders && !transactions && addresses && (
-        <Addresses/>
-      )}
+      {!profile && orders && !transactions && !addresses && <Orders />}
+      {!profile && !orders && transactions && !addresses && <Transactions />}
+      {!profile && !orders && !transactions && addresses && <Addresses />}
       <div
         id="password-modal"
         style={{
           transform: `${
-            passwordModal ? "translateY(0%)" : "translateY(-100%)"
+            passwordModal ? "translateY(0%)" : "translateY(-110%)"
           }`,
         }}
       >

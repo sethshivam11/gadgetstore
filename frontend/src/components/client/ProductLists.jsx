@@ -4,7 +4,9 @@ import "../../style/client/productlists.css";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
 
+
 const ProductLists = (props) => {
+  const { setProgress, toast, category } = props;
   const host = process.env.REACT_APP_HOST;
   const [products, setProducts] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -24,17 +26,33 @@ const ProductLists = (props) => {
   const max = useRef();
   const sortBtn = useRef();
   const lists = useRef();
+
   // Set products
   const fetchData = useCallback(() => {
-    fetch(`${host}/api/client/home?category=${props.category}`, {
+    setProgress(30);
+    setProgress(50);
+    fetch(`${host}/api/client/home?category=${category}`, {
       method: "GET",
     })
-      .then((res) => res.json())
-      .then((jsonData) => setProducts(jsonData.products))
-      .catch((err) => console.log(err));
-  }, [host, props.category]);
+    .then((res) => res.json())
+    .then((jsonData) => {
+        setProgress(70);
+        if(jsonData.success){
+          setProducts(jsonData.products);
+        }
+        else{
+          console.log(jsonData.error);
+        }
+        setProgress(100);
+      }).catch(err => {
+        console.log(err);
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
+      })
+  }, [host, category, toast, setProgress]);
   
   useEffect(() => {
+    fetchData();
     const listenscroll = () => {
       if (window.innerWidth <= 900) {
         let pos = lists.current.getBoundingClientRect();
@@ -54,9 +72,8 @@ const ProductLists = (props) => {
       setFilter(true);
     }
     window.addEventListener("scroll", listenscroll);
-    fetchData();
     return () => window.removeEventListener("scroll", listenscroll);
-  }, [fetchData]);
+  }, [fetchData, setVisible, setProgress]);
   let arr = [
     apple,
     samsung,
@@ -74,7 +91,7 @@ const ProductLists = (props) => {
   function checkChecked(value) {
     let some = [];
     arr.forEach((checkbox) => {
-      props.setProgress(50);
+      setProgress(50);
       if (!checkbox.current.checked) {
         some.push(true);
       } else if (checkbox.current.value === value) {
@@ -84,88 +101,108 @@ const ProductLists = (props) => {
       }
     });
     if (some.includes(false)) {
-      props.setProgress(70);
+      setProgress(70);
       return false;
     }
-    props.setProgress(70);
+    setProgress(70);
     return true;
   }
   // Brand checkboxes
   const handleCheck = (e) => {
     if (e.target.checked) {
-      props.setProgress(30);
+      setProgress(30);
       if (checkChecked(e.target.value)) {
-        props.setProgress(70);
+        setProgress(50);
         fetch(
-          `${host}/api/client/query?brand=${e.target.value}&category=${props.category}`
+          `${host}/api/client/query?brand=${e.target.value}&category=${category}`
         )
           .then((res) => res.json())
           .then((jsonData) => {
+            setProgress(70);
             if (jsonData.success) {
               setProducts(jsonData.products);
             } else {
               console.log(jsonData.error);
             }
-            props.setProgress(100);
+            setProgress(100);
           })
-          .catch((err) => console.log(err) && props.setProgress(100));
+          .catch((err) => {
+            console.log(err);
+            toast.error("Something went wrong, Please try again later!");
+            setProgress(100);
+          });
       } else {
-        props.setProgress(50);
+        setProgress(50);
         fetch(
-          `${host}/api/client/query?brand=${e.target.value}&category=${props.category}`
+          `${host}/api/client/query?brand=${e.target.value}&category=${category}`
         )
           .then((res) => res.json())
           .then((jsonData) => {
+            setProgress(70);
             if (jsonData.success) {
               setProducts(products.concat(jsonData.products));
             } else {
               console.log(jsonData.error);
             }
-            props.setProgress(100);
+            setProgress(100);
           })
-          .catch((err) => console.log(err) && props.setProgress(100));
+          .catch((err) => {
+            console.log(err);
+            toast.error("Something went wrong, Please try again later!");
+            setProgress(100);
+          });
       }
     } else {
-      props.setProgress(50);
       fetchData();
-      props.setProgress(100);
     }
   };
   // Min Price
   const handleMin = (e) => {
-    props.setProgress(30);
+    setProgress(30);
     fetch(
-      `${host}/api/client/query?minprice=${e.target.value}&category=${props.category}&maxprice=${max.current.value}`
+      `${host}/api/client/query?minprice=${e.target.value}&category=${category}&maxprice=${max.current.value}`
     )
       .then((res) => res.json())
       .then((jsonData) => {
+        setProgress(50);
         if (jsonData.success) {
           setProducts(jsonData.products);
+          setProgress(70);
         } else {
           console.log(jsonData.error);
+          setProgress(70);
         }
-        props.setProgress(50);
-        props.setProgress(100);
+        setProgress(100);
       })
-      .catch((err) => console.log(err) && props.setProgress(100));
+      .catch((err) => {
+        console.log(err);
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
+      });
   };
   // Max Price
   const handleMax = (e) => {
-    props.setProgress(30);
+    setProgress(30);
     fetch(
-      `${host}/api/client/query?maxprice=${e.target.value}&category=${props.category}&minprice=${min.current.value}`
+      `${host}/api/client/query?maxprice=${e.target.value}&category=${category}&minprice=${min.current.value}`
     )
       .then((res) => res.json())
       .then((jsonData) => {
+        setProgress(50);
         if (jsonData.success) {
           setProducts(jsonData.products);
+          setProgress(70);
         } else {
           console.log(jsonData.error);
+          setProgress(70);
         }
-        props.setProgress(50);
-        props.setProgress(100);
+        setProgress(100);
       })
-      .catch((err) => console.log(err) && props.setProgress(100));
+      .catch((err) => {
+        console.log(err);
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
+      });
   };
   // Price Sorting
   function priceSort(a, b) {
@@ -211,19 +248,12 @@ const ProductLists = (props) => {
       setVisible(false);
     }
   };
-  const showSort = () => {
-    // TODO ==>
-    // const evt = new MouseEvent("mousedown");
-    // sortBtn.current.dispatchEvent(evt);
-    document.getElementById("product-sorts").click();
-  };
   return (
     <section>
       <Navbar />
       <button
         className="filter-btn"
         id="left-sort"
-        onClick={showSort}
         style={{ display: `${visible ? "inline-block" : "none"}` }}
       >
         <i className="fa-solid fa-arrow-right-arrow-left"></i>
@@ -272,10 +302,14 @@ const ProductLists = (props) => {
           <div className="category">
             <h3>Price</h3>
             <ul className="price-range category-list">
-              <select name="from" id="from" onChange={handleMin} ref={min} defaultValue={0}>
-                <option value={0}>
-                  Min
-                </option>
+              <select
+                name="from"
+                id="from"
+                onChange={handleMin}
+                ref={min}
+                defaultValue={0}
+              >
+                <option value={0}>Min</option>
                 <option value={10000}>&#8377; 10000</option>
                 <option value={20000}>&#8377; 20000</option>
                 <option value={30000}>&#8377; 30000</option>

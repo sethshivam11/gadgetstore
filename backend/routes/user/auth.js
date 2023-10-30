@@ -28,7 +28,7 @@ router.post(
       if (user) {
         return res.status(400).json({
           success,
-          error: "Sorry, a user with this email already exists",
+          error: "A user with this email already exists!",
         });
       }
       const salt = await bcrypt.genSalt(10);
@@ -47,7 +47,7 @@ router.post(
       success = true;
       res.status(200).json({ success, token });
     } catch (err) {
-      res.status(400).json({success, error: "Internal Server Error.", message: err});
+      res.status(400).json({success, error: "Internal Server Error!", message: err});
       console.log(err);
     }
   }
@@ -71,7 +71,7 @@ router.post(
       if (!user) {
         return res.status(400).json({
           success,
-          error: "Please login using correct credentials",
+          error: "Invalid Email!",
         });
       }
       const comparePassword = await bcrypt.compare(
@@ -81,7 +81,7 @@ router.post(
       if (!comparePassword) {
         return res.status(401).json({
           success,
-          error: "Please login using correct credentials"
+          error: "Invalid Password!",
         });
       }
       const data = {
@@ -96,7 +96,7 @@ router.post(
       success = false;
       res
         .status(500)
-        .json({ success, error: "Internal Server Error.", message: err });
+        .json({ success, error: "Internal Server Error!", message: err });
       console.log(err);
     }
   }
@@ -150,7 +150,7 @@ router.post("/verify", fetchuser, async (req, res) => {
 // Route 5: Updating user credentials "/api/user/auth/update"
 router.put("/update", fetchuser, async (req,res) => {
   let success = false;
-  const userId = req.body;
+  const userId = req.user.id;
   const { name, email, password } = req.body;
   let updatedUser = {};
   if(name){

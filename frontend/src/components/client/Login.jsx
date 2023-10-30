@@ -3,7 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import gsap from "gsap";
 import "../../style/client/login.css";
 
-function Login() {
+function Login(props) {
+  const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
   const navigate = useNavigate();
   const [creds, setCreds] = useState({
@@ -16,6 +17,7 @@ function Login() {
   };
   const handleLogin = (e) => {
     e.preventDefault();
+    setProgress(30);
     fetch(`${host}/api/user/auth/login`, {
       method: "POST",
       headers: {
@@ -25,15 +27,27 @@ function Login() {
         email: creds.email,
         password: creds.password,
       }),
-    }).then(res => res.json()).then(resData => {
-      if(resData.success){
-        localStorage.setItem("gadgetstore-user-token", resData.token);
-        navigate("/");
-      }else{
-        console.log(resData);
-      }
-    });
-    
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        setProgress(50);
+        if (resData.success) {
+          setProgress(70);
+          localStorage.setItem("gadgetstore-user-token", resData.token);
+          toast("Successfully Logged In");
+          navigate("/");
+        }
+        else if(resData.error === "Internal Server Error!"){
+          toast.error("Something went wrong, Please try again later!");
+          console.log(resData);
+          setProgress(70);
+        } 
+        else{
+          toast.error(resData.error);
+          setProgress(70);
+        }
+          setProgress(100);
+      });
   };
   const app = useRef();
   useEffect(() => {
@@ -59,7 +73,7 @@ function Login() {
       gsap.from("#circle5", {
         y: -200,
         duration: 2,
-      })
+      });
     }, app);
 
     return () => ctx.revert();
@@ -92,7 +106,7 @@ function Login() {
           <button
             type="submit"
             className="bar"
-            disabled={creds.email.length < 4 || creds.password.length < 5}
+            disabled={creds.email.length < 4 || creds.password.length < 6}
             id="loginbtn"
           >
             Login

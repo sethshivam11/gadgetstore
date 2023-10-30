@@ -44,13 +44,13 @@
 #left-car {
     border-radius: 0px 10px 10px 0px;
     border-left: none;
-    left: 0%;
+    left: 1%;
 }
 
 #right-car {
     border-radius: 10px 0px 0px 10px;
     border-right: none;
-    right: 0%;
+    right: 0.69%;
 }
 
 #posters {

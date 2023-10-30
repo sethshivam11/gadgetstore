@@ -15,7 +15,7 @@ router.post("/subscribe", [body("email", "Enter a valid email")], async (req, re
     try{
         let email = await Email.findOne({email: reqEmail});
         if(email){
-            return res.status(401).json({success, error: "Email is already subscribed!"});
+            return res.status(401).json({success, error: "Already subscribed!"});
         }
         email = await Email.create({ email: reqEmail });
         success = true;

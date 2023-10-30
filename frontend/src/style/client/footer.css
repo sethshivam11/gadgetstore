@@ -113,7 +113,10 @@ footer {
 
 #end span {
     color: #b3b3b3;
-    padding: 20px;
+    margin: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 #end span a {

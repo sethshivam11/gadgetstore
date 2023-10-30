@@ -120,6 +120,8 @@ padding: 2% 0;
 }
 .product-box img{
     width: 200px;
+    object-fit: contain;
+    max-height: 230px;
     padding: 5%;
 }
 .filter-btn{

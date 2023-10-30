@@ -1,17 +1,25 @@
+.cart-products{
+    display: flex;
+    flex-direction: row;
+    padding: 1%;
+    justify-content: space-between;
+}
+.cart-top{
+    width: 70%;
+}
 .options {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    border-radius: 10px;
+    border-radius: 5px;
     overflow-x: hidden;
-    width: 65%;
-    margin-left: 10px;
+    width: 100%;
 }
 
 .options h3 {
     font-size: 30px;
-    width: 30%;
+    width: 50%;
     background-color: white;
     text-align: center;
     padding: 1rem 0;
@@ -26,8 +34,8 @@
     margin-top: 8px;
     margin-bottom: -16px;
     border-radius: 3px;
-    width: 70%;
-    margin-left: 15%;
+    width: 60%;
+    margin-left: 20%;
     transform: scaleX(0);
     background-color: #0066ff;
     transform-origin: center;
@@ -39,16 +47,69 @@
     transform: scaleX(1) !important;
 }
 .cart-bottom{
-    margin: 0 10px;
-    margin-top: 15px;
-    border-radius: 25px;
+    margin-top: 10px;
+    border-radius: 5px;
     width: fit-content;
-    height: 100vh;
+    height: fit-content;
     background-color: white;
-    padding: 2rem;
+    padding: 1rem;
+    width: 100%;
 }
 .cart-sum{
+    padding: 1rem;
     width: 29%;
     font-size: 30px;
+    border-radius: 5px;
+    height: fit-content;
     background-color: white;
+}
+.cart-summary-seperator{
+    margin-top: 15px;
+    background-color: grey;
+}
+
+.cart-item{
+    border: 1px solid #dadada;
+    padding: 1rem 3rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.cart-product-main {
+    display: flex;
+}
+.cart-product-image{
+    width: 100px;
+    object-fit: contain;
+}
+.cart-product-details{
+    font-family: "Didact Gothic";
+    margin-left: 2.5rem;
+}
+.cart-product-details h3{
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+.cart-product-details p{
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+.cart-product-extra{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.cart-product-extra button{
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid skyblue;
+    margin-top: 10px;
+    background: skyblue;
+    color: white;
+}
+.cart-product-extra .remove-product{
+    background: red;
+    border: 1px solid red;
+    color: white;
 }

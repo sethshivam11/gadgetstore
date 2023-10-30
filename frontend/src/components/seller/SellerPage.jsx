@@ -1,45 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "../../style/seller/sellerpage.css";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "./ConfirmModal";
 
-const SellerPage = () => {
+const SellerPage = (props) => {
+  const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState("");
   const [delId, setDelId] = useState("");
   let token = localStorage.getItem("gadgetstore-seller-token");
+  const fetchProducts = useCallback(() => {
+    setProgress(30);
+    if (!token) {
+      setProgress(100);
+      return navigate("/seller/login");
+    }
+    setProgress(50);
+    fetch(`${host}/api/seller/product/fetch`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    })
+      .then((res) => res.json())
+      .then((jsonData) => {
+        if (jsonData.success) {
+          setProgress(70);
+          setProducts(jsonData.products);
+        } else if (
+          jsonData.error === "Please authenticate using a valid token"
+        ) {
+          navigate("/seller/login");
+          console.log("Token Error Occured");
+          toast.error("Session expired, Please login again!");
+          localStorage.removeItem("gadgetstore-seller-token");
+        } else {
+          console.log(jsonData.error);
+          toast.error("Something went wrong, Please try again later!");
+        }
+        setProgress(100);
+      });
+  }, [setProgress, toast, token, navigate, host, setProducts]);
   useEffect(() => {
-    const fetchProducts = async () => {
-      if (!token) {
-        return navigate("/seller/login");
-      }
-      fetch(`${host}/api/seller/product/fetch`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          token: token,
-        },
-      })
-        .then((res) => res.json())
-        .then((jsonData) => {
-          if (jsonData.success) {
-            setProducts(jsonData.products);
-          }
-          else if (jsonData.error === "Please authenticate using a valid token") {
-            navigate("/seller/login");
-            console.log("Token Error Occured");
-            localStorage.removeItem("gadgetstore-seller-token");
-          }
-          else{
-            console.log(jsonData.error);
-          }
-        });
-      }
     fetchProducts();
-    // eslint-disable-next-line
-  }, []);
+  }, [fetchProducts]);
   const handleDelete = (id) => {
     setDelId(id);
     setOpen("open");
@@ -59,14 +66,19 @@ const SellerPage = () => {
     if (data.success) {
       setOpen("");
       setProducts(products - data.product);
-    } else {
+      toast.success("Product deleted")
+    } else if(data.error === "Internal Server Error!") {
       console.log(data.error);
+      toast.error("Something went wrong");
+    }
+    else{
+      toast.error(data.error);
     }
   };
   const handleLogOut = () => {
     localStorage.removeItem("gadgetstore-seller-token");
     navigate("/seller/login");
-  }
+  };
   return (
     <div className="seller-homepage">
       <ConfirmModal

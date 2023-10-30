@@ -26,7 +26,7 @@ router.post(
       if (seller) {
         return res.status(401).json({
           success,
-          error: "Sorry, a seller with this email already exists",
+          error: "A seller already exists with this email!",
         });
       }
       const salt = await bcrypt.genSalt(10);
@@ -45,7 +45,7 @@ router.post(
       success = true;
       res.status(200).json({ success, token });
     } catch (err) {
-      res.status(400).send("Internal Server Error.");
+      res.status(400).json({success, error: "Internal Server Error!", message: err});
       console.log(err);
     }
   }
@@ -69,7 +69,7 @@ router.post(
       if (!seller) {
         return res.status(400).json({
           success,
-          error: "User with this email does not exists",
+          error: "Invalid Email!",
         });
       }
       const comparePassword = await bcrypt.compare(
@@ -79,7 +79,7 @@ router.post(
       if (!comparePassword) {
         return res.status(401).json({
           success,
-          error: "Please login using correct credentials",
+          error: "Invalid Password!",
         });
       }
       const data = {
@@ -92,7 +92,9 @@ router.post(
       res.status(200).json({ success, token });
     } catch (err) {
       success = false;
-      res.status(500).json({ success, error: "Internal Server Error." });
+      res
+        .status(400)
+        .json({ success, error: "Internal Server Error!", message: err });
       console.log(err);
     }
   }

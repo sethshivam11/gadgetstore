@@ -10,7 +10,7 @@ router.put("/cart/add", fetchuser, async (req, res) => {
   let success = false;
   const { product } = req.body;
   const userId = req.user.id;
-  if (!product.id) {
+  if (!product._id) {
     return res
       .status(400)
       .json({ success, error: "Please provide a valid product!" });
@@ -19,13 +19,13 @@ router.put("/cart/add", fetchuser, async (req, res) => {
     const user = await User.findById(userId);
     let updatedCart = user;
     let quantity = 1;
-    const index = updatedCart.cart.findIndex((item) => item.id === product.id);
+    const index = updatedCart.cart.findIndex((item) => item.id === product._id);
 
     if (index !== -1) {
       updatedCart.cart[index].quantity += quantity;
     } else {
-      let productId = product.id;
-      delete product.id;
+      let productId = product._id;
+      delete product._id;
       updatedCart.cart.push({ id: productId, product, quantity });
     }
     const added = await User.findByIdAndUpdate(userId, {
@@ -47,7 +47,7 @@ router.put("/cart/remove", fetchuser, async (req, res) => {
   const userId = req.user.id;
   const { product } = req.body;
   let success = false;
-  if (!product.id) {
+  if (!product._id) {
     return res
       .status(400)
       .json({ success, error: "Please provide a valid product!" });
@@ -56,7 +56,7 @@ router.put("/cart/remove", fetchuser, async (req, res) => {
     const findUser = await User.findById(userId);
     let updatedCart = findUser;
     let quantity = 1;
-    const index = updatedCart.cart.findIndex((item) => item.id === product.id);
+    const index = updatedCart.cart.findIndex((item) => item.id === product._id);
     if (index !== -1) {
       if (updatedCart.cart[index].quantity > 0) {
       updatedCart.cart[index].quantity -= quantity;
@@ -64,8 +64,8 @@ router.put("/cart/remove", fetchuser, async (req, res) => {
       updatedCart.cart.splice(index, 1);
     }
     } else {
-      let productId = product.id;
-      delete product.id;
+      let productId = product._id;
+      delete product._id;
       updatedCart.cart.push({ id: productId, product, quantity });
     }
     const user = await User.findByIdAndUpdate(userId, {
@@ -87,7 +87,7 @@ router.put("/wishlist/add", fetchuser, async (req, res) => {
   const userId = req.user.id;
   const { product } = req.body;
   let success = false;
-  if (!product.id) {
+  if (!product._id) {
     return res
       .status(400)
       .json({ success, error: "Please provide valid product!" });
@@ -96,12 +96,12 @@ router.put("/wishlist/add", fetchuser, async (req, res) => {
     const findUser = await User.findById(userId);
     let updated = findUser;
     let quantity = 1;
-    const index = updated.wishlist.findIndex((item) => item.id === product.id);
+    const index = updated.wishlist.findIndex((item) => item.id === product._id);
     if (index !== -1) {
       updated.wishlist[index].quantity += quantity;
     } else {
-      let productId = product.id;
-      delete product.id;
+      let productId = product._id;
+      delete product._id;
       updated.wishlist.push({ id: productId, product, quantity });
     }
     const user = await User.findByIdAndUpdate(userId, {
@@ -123,7 +123,7 @@ router.put("/wishlist/remove", fetchuser, async (req, res) => {
   const userId = req.user.id;
   const { product } = req.body;
   let success = false;
-  if (!product.id) {
+  if (!product._id) {
     return res
       .status(400)
       .json({ success, error: "Please provide valid product!" });
@@ -132,15 +132,15 @@ router.put("/wishlist/remove", fetchuser, async (req, res) => {
     const findUser = await User.findById(userId);
     let updated = findUser;
     let quantity = 1;
-    const index = updated.wishlist.findIndex((item) => item.id === product.id);
+    const index = updated.wishlist.findIndex((item) => item.id === product._id);
     if (index !== -1) {
       updated.wishlist[index].quantity -= quantity;
       if (updated.wishlist[index].quantity <= 0) {
         updated.wishlist.splice(index, 1);
       }
     } else {
-      let productId = product.id;
-      delete product.id;
+      let productId = product._id;
+      delete product._id;
       updated.wishlist.push({ id: productId, product, quantity });
     }
     const user = await User.findByIdAndUpdate(userId, {

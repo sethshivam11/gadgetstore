@@ -29,7 +29,6 @@ router.post(
       const { name, category, brand, subCategory, discount, images, price, stock, description, more } =
         req.body;
       const sellerId = req.seller;
-      try {
         const product = new Product({
           name,
           seller: sellerId,
@@ -46,13 +45,9 @@ router.post(
         const savedProduct = await product.save();
         success = true;
         res.status(200).json({ success, product: savedProduct });
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ success, error: "Internal Server Error!" });
-      }
     } catch (err) {
       console.log(err);
-      res.status(500).json({ success, error: "Something went wrong!" });
+      res.status(500).json({ success, error: "Internal Server Error!" });
     }
   }
 );
@@ -77,7 +72,7 @@ router.put("/update/:id", fetchSeller, async (req, res) => {
   const sellerId = req.seller;
   const productId = req.params.id;
   if(!productId){
-    return res.status(400).json({success, error: "Please provide a valid product id"});
+    return res.status(400).json({success, error: "Please provide a valid product!"});
   }
   let success = false;
   const newProduct = {};
@@ -115,7 +110,7 @@ router.put("/update/:id", fetchSeller, async (req, res) => {
       return res.status(400).json({success, error: "Product not found!"});
     }
     if(product.seller.toString() != sellerId){
-      return res.status(401).json({success, error: "Product updation not allowed"});
+      return res.status(401).json({success, error: "Not allowed"});
     }
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
@@ -145,7 +140,7 @@ router.delete("/delete/:id", fetchSeller, async(req, res) => {
       return res.status(400).json({success, error: "Product not found!"});
     }
     if(product.seller.toString() != sellerId){
-      return res.status(401).json({success, error: "Product deletion not allowed!"});
+      return res.status(401).json({success, error: "Not allowed!"});
     }
     const deleted = await Product.findByIdAndDelete(productId);
     success = true;
@@ -165,10 +160,10 @@ router.get("/fetch/:id", fetchSeller, async (req, res) => {
   try {
     const product = await Product.findById(productId);
     if(!product){
-      res.status(400).json({ success, error: "Product not found" });
+      res.status(400).json({ success, error: "Product not found!" });
     }
     if(product.seller.toString() != sellerId){
-      res.status(401).json({success, error: "Not Allowed"});
+      res.status(401).json({success, error: "Not Allowed!"});
     }
     success = true;
     res.status(200).json({success, product});

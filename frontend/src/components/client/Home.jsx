@@ -6,7 +6,7 @@ import Section2 from "./Section2";
 import Accessories from "./Accessories";
 import Footer from "./Footer";
 
-const Home = () => {
+const Home = (props) => {
   return (
     <section>
       <Navbar />
@@ -14,15 +14,15 @@ const Home = () => {
       <Section2 heading="Finest Gaming PCs" category="pc" />
       <Section2 heading="New Launches" category="mobiles" />
       <Accessories
-        heading="Headphones"
-        category="headphones"
-      />
-      <Accessories
         heading="Accessories"
         category="accessories"
       />
+      <Accessories
+        heading="Headphones"
+        category="accessories"
+      />
       <Section2 heading="Best of Electronics" category="electronics" />
-      <Footer />
+      <Footer setProgress={props.setProgress} toast={props.toast}/>
     </section>
   );
 };

@@ -207,7 +207,7 @@
     place-items: center;
     position: fixed;
     background-color: transparent;
-    transform: translateY(-100%);
+    transform: translateY(-110%);
     user-select: none;
 }
 
