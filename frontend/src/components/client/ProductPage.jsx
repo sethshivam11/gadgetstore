@@ -53,7 +53,7 @@ const ProductPage = (props) => {
       navigate("/login");
       setProgress(100);
     }
-    fetch(`${host}/api/user/cart/remove`, {
+    fetch(`${host}/api/user/cart/add`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

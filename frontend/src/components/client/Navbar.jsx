@@ -56,7 +56,7 @@ const Navbar = () => {
       </button>
       {/* main nav */}
       <nav id="navbar">
-        <img src={logo} alt="" id="logo" onClick={() => navigate("/")} />
+        <img src={logo} alt="Gadget Store" title="Home" id="logo" onClick={() => navigate("/")} />
         <span id="nav-list">
           <Link
             to="/mobiles"
@@ -92,13 +92,13 @@ const Navbar = () => {
           </Link>
         </span>
         <span id="nav-user">
-          <button id="search-toggle" className="user-item" onClick={showSearch}>
+          <button id="search-toggle" title="Search" className="user-item" onClick={showSearch}>
             <img src={search} alt="search" />
           </button>
-          <Link to="/account" className="user-item">
+          <Link to="/account" title="Account" className="user-item">
             <img src={user} alt="user" />
           </Link>
-          <Link to="/cart" className="user-item">
+          <Link to="/cart" title="Cart" className="user-item">
             <img src={cart} alt="cart" />
           </Link>
         </span>

@@ -29,7 +29,7 @@ const App = () => {
   return (
     <div>
       <LoadingBar color="red" progress={progress} />
-      <Toaster position="bottom-center" gutter={2} />
+      <Toaster position="bottom-center" />
       <Routes>
         {/* Client Pages */}
         <Route

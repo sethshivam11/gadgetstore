@@ -209,6 +209,7 @@
     background-color: transparent;
     transform: translateY(-110%);
     user-select: none;
+    transition: transform 0.2s ease-out;
 }
 
 #password-modal form {
