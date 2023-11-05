@@ -17,7 +17,9 @@ router.post(
     body("stock", "Enter a valid stock").notEmpty(),
     body("brand", "Enter a valid brand").notEmpty(),
     body("description", "Enter a valid description").isLength({ min: 10 }),
-    body("brand", "Enter a valid brand").notEmpty()
+    body("brand", "Enter a valid brand").notEmpty(),
+    body("highlights", "Enter valid highlights").notEmpty(),
+    body("rating", "Enter a valid rating").notEmpty()
   ],
   async (req, res) => {
     let success = false;
@@ -26,7 +28,7 @@ router.post(
       if (!errors.isEmpty()) {
         return res.status(400).json({ success, errors: errors.array() });
       }
-      const { name, category, brand, subCategory, discount, images, price, stock, description, more } =
+      const { name, category, brand, subCategory, highlights, rating, discount, images, price, stock, description, more } =
         req.body;
       const sellerId = req.seller;
         const product = new Product({
@@ -36,6 +38,8 @@ router.post(
           brand,
           subCategory,
           discount,
+          highlights,
+          rating,
           images,
           price,
           stock,
@@ -68,7 +72,7 @@ router.get("/fetch", fetchSeller, async (req, res) => {
 
 // Route 3: Update a product: PUT "/api/seller/product/update/:id"
 router.put("/update/:id", fetchSeller, async (req, res) => {
-  const { name, brand, category, subCategory, images, price, stock, description, more } = req.body;
+  const { name, brand, category, subCategory, highlights, rating, images, price, stock, description, more } = req.body;
   const sellerId = req.seller;
   const productId = req.params.id;
   if(!productId){
@@ -103,7 +107,12 @@ router.put("/update/:id", fetchSeller, async (req, res) => {
   if(more){
     newProduct.more = more;
   }
-
+  if(highlights){
+    newProduct.highlights = highlights;
+  }
+  if(rating){
+    newProduct.rating = rating;
+  }
   try{
     let product = await Product.findById(productId);
     if(!product){
@@ -150,7 +159,6 @@ router.delete("/delete/:id", fetchSeller, async(req, res) => {
     res.status(500).json({success, error: "Internal Server Error!"});
   }
 });
-
 
 // Route 5: Fetching a single product details: GET "/api/seller/product/fetch:id"
 router.get("/fetch/:id", fetchSeller, async (req, res) => {

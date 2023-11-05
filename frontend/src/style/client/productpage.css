@@ -19,6 +19,7 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
 .product-img-glimpses {
     bottom: 0;
     margin-top: 20px;
@@ -75,13 +76,15 @@
     font-size: 20px;
     margin-bottom: 20px;
 }
-.product-page-name{
+
+.product-page-name {
     font-size: 50px;
     font-family: "Montserrat";
     font-weight: 600;
     margin-bottom: 10px;
 }
-.product-page-price{
+
+.product-page-price {
     font-family: "Montserrat";
     font-size: 35px;
     margin-bottom: 20px;
@@ -90,21 +93,25 @@
     justify-content: space-between;
     width: 88%;
 }
-.product-ratings{
+
+.product-ratings {
     font-size: 18px;
     vertical-align: middle;
 }
-.product-data-para{
+
+.product-data-para {
     margin-bottom: 10px;
 }
-.product-page-para{
+
+.product-page-para {
     width: 100%;
     display: flex;
     margin: 50px 0px;
     align-items: center;
     justify-content: space-evenly;
 }
-.product-page-btn{
+
+.product-page-btn {
     width: 220px;
     color: black;
     font-size: 22px;
@@ -114,17 +121,21 @@
     transition: all 0.2s ease;
     border: 2px solid white;
 }
-.hollow-btn{
+
+.hollow-btn {
     color: white;
     background-color: #000;
 }
-.product-page-btn:hover{
+
+.product-page-btn:hover {
     box-shadow: 0 0 0.5em 0.05em #ffffffb9, 0 0 0.5em .05em #ffffffb9;
 }
-.hollow-btn:hover{
+
+.hollow-btn:hover {
     box-shadow: 0 0 0.5em 0.05em #ffffffb9, 0 0 0.5em .05em #ffffffb9;
 }
-.product-details-list{
+
+.product-details-list {
     display: flex;
     list-style: none;
     align-items: center;
@@ -134,6 +145,7 @@
     font-size: 20px;
     display: none;
 }
-.product-details-list li{
+
+.product-details-list li {
     border-bottom: 5px solid white;
 }
