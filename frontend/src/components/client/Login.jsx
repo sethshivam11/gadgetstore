@@ -92,12 +92,14 @@ function Login(props) {
           <input
             className="bar"
             name="email"
+            autoComplete="email"
             type="email"
             placeholder="Email"
             onChange={onChange}
           />
           <input
             className="bar"
+            autoComplete="current-password"
             name="password"
             type="password"
             placeholder="Password"

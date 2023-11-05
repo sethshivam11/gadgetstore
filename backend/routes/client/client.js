@@ -119,10 +119,24 @@ router.get("/query", async (req, res) => {
       }
       success = true;
       res.status(200).json({ success, products });
+    }else if(name && brand && !category && !minprice && !maxprice){
+      const products1 = await Product.find({
+        name: name,
+      });
+      const products2 = await Product.find({
+        brand: brand,
+      });
+      let products = products1.concat(products2);
+      if(products.length <= 0){
+        let error = "No products found with given query";
+        return res.status(200).json({success, error})
+      }
+      success = true;
+      res.status(200).json({success, products})
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ success, error: "Internal Server Error! ", err });
+    res.status(500).json({ success, error: "Internal Server Error! ", message: err });
   }
 });
 

@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Navbar from "./Navbar";
 import "../../style/client/productlists.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 
 
 const ProductLists = (props) => {
-  const { setProgress, toast, category } = props;
+  const { setProgress, toast, category, query, setQuery } = props;
   const host = process.env.REACT_APP_HOST;
+  const location = useLocation();
   const [products, setProducts] = useState([]);
   const [visible, setVisible] = useState(false);
   const [filter, setFilter] = useState(false);
@@ -26,6 +27,7 @@ const ProductLists = (props) => {
   const max = useRef();
   const sortBtn = useRef();
   const lists = useRef();
+
 
   // Set products
   const fetchData = useCallback(() => {
@@ -50,30 +52,53 @@ const ProductLists = (props) => {
         setProgress(100);
       })
   }, [host, category, toast, setProgress]);
-  
-  useEffect(() => {
-    fetchData();
-    const listenscroll = () => {
-      if (window.innerWidth <= 900) {
-        let pos = lists.current.getBoundingClientRect();
-        let win = window.innerHeight;
-        if (pos.bottom <= win) {
-          setVisible(false);
-        } else {
-          setVisible(true);
-        }
-      } else {
-        setVisible(false);
+  const fetchQuery = useCallback(() => {
+    setProgress(30);
+    setProgress(50);
+    fetch(`${host}/api/client/query?name=${query}&brand=${query}`,{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
       }
-    };
-    if (window.innerWidth <= 900) {
-      setVisible(true);
-    } else {
-      setFilter(true);
-    }
-    window.addEventListener("scroll", listenscroll);
-    return () => window.removeEventListener("scroll", listenscroll);
-  }, [fetchData, setVisible, setProgress]);
+    }).then(res => res.json()).then(resData => {
+      setProgress(70);
+      if(resData.success){
+        setProducts(resData.products);
+      }else if(resData.error === "Internal Server Error!"){
+        toast.error("Something went wrong, Please try again later!");
+      }else{
+        toast.error(resData.error);
+      }
+      setProgress(100);
+    })
+  }, [host, query, toast, setProgress])
+    useEffect(() => {
+      if (location.pathname !== "/search") {
+        fetchData();
+      }else{
+      fetchQuery();
+      }
+      const listenscroll = () => {
+        if (window.innerWidth <= 900) {
+          let pos = lists.current.getBoundingClientRect();
+          let win = window.innerHeight;
+          if (pos.bottom <= win) {
+            setVisible(false);
+          } else {
+            setVisible(true);
+          }
+        } else {
+          setVisible(false);
+        }
+      };
+      if (window.innerWidth <= 900) {
+        setVisible(true);
+      } else {
+        setFilter(true);
+      }
+      window.addEventListener("scroll", listenscroll);
+      return () => window.removeEventListener("scroll", listenscroll);
+    }, [fetchData, setVisible, setProgress, location, fetchQuery]);
   let arr = [
     apple,
     samsung,
@@ -179,6 +204,7 @@ const ProductLists = (props) => {
         toast.error("Something went wrong, Please try again later!");
         setProgress(100);
       });
+
   };
   // Max Price
   const handleMax = (e) => {
@@ -250,7 +276,7 @@ const ProductLists = (props) => {
   };
   return (
     <section>
-      <Navbar />
+      <Navbar setQuery={setQuery} />
       <button
         className="filter-btn"
         id="left-sort"
@@ -374,6 +400,7 @@ const ProductLists = (props) => {
             <ul className="category-list" id="brand-list">
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="apple"
@@ -388,6 +415,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="samsung"
@@ -402,6 +430,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="xiaomi"
@@ -416,6 +445,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="realme"
@@ -430,6 +460,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="oppo"
@@ -444,6 +475,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="vivo"
@@ -458,6 +490,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="oneplus"
@@ -472,6 +505,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="google"
@@ -486,6 +520,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="motorola"
@@ -500,6 +535,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="poco"
@@ -514,6 +550,7 @@ const ProductLists = (props) => {
               </li>
               <li>
                 <input
+                  autoComplete="off"
                   type="checkbox"
                   name="brand"
                   id="nothing"
@@ -564,7 +601,11 @@ const ProductLists = (props) => {
                     className="product-box"
                     key={product._id}
                   >
-                    <img src={product.images[0]} alt={product.name} />
+                    <img
+                      loading="lazy"
+                      src={product.images[0]}
+                      alt={product.name}
+                    />
                     <h3>{product.name}</h3>
                     <p>&#8377; {product.price}</p>
                   </Link>

@@ -53,6 +53,7 @@ const Footer = (props) => {
         <div>
           <input
             type="email"
+            autoComplete="email"
             name="email"
             placeholder="Enter your email address"
             id="subscribe"
@@ -75,7 +76,7 @@ const Footer = (props) => {
           </li>
           <li className="footer-nav" id="footer-logo">
             <Link to="/">
-              <img src={logo} alt="logo" />
+              <img loading="lazy" src={logo} alt="logo" />
             </Link>
           </li>
           <li className="footer-nav">

@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Syne:wght@400;600&display=swap');
 *{
   padding: 0;
   margin: 0;
@@ -12,6 +16,7 @@ html {
 body{
   overflow-x: hidden;
   height: 100%;
+  background-color: #dadada;
 }
 
 body::-webkit-scrollbar {
@@ -27,3 +32,17 @@ body::-webkit-scrollbar-thumb {
   background: #727272;
 }
 
+.center-loader{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+}
+.center-loader h3{
+  font-family: "Didact Gothic";
+  font-weight: 600;
+  font-size: 25px;
+}

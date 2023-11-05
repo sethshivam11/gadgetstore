@@ -20,6 +20,7 @@
     position: relative;
     top: 55px;
     left: 30px;
+    cursor: pointer;
 }
 
 #nav-list {
@@ -77,6 +78,7 @@
     transition: all 0.5s ease;
     background: #fff;
     border: none;
+    cursor: pointer;
 }
 
 .user-item:hover {

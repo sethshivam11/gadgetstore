@@ -20,7 +20,7 @@ const ProductPage = (props) => {
     price: "",
     more: "",
     date: "",
-    id
+    id,
   });
   const fetchProduct = useCallback(() => {
     setProgress(50);
@@ -61,8 +61,8 @@ const ProductPage = (props) => {
       },
       body: JSON.stringify({ product: product }),
     })
-    .then((res) => res.json())
-    .then((resData) => {
+      .then((res) => res.json())
+      .then((resData) => {
         setProgress(50);
         if (resData.success) {
           navigate("/cart");
@@ -89,17 +89,21 @@ const ProductPage = (props) => {
         token: token,
       },
       body: JSON.stringify({ product: product }),
-    }).then(res => res.json()).then(resData => {
-      if(resData.success){
-        setProgress(70);
-        toast.success(`${product.name ? product.name: "Product"} added to cart`);
-        setProgress(100);
-      }else{
-        console.log(resData.error);
-        toast.error("Something went wrong, Please try again later!");
-        setProgress(100);
-      }
-    });
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        if (resData.success) {
+          setProgress(70);
+          toast.success(
+            `${product.name ? product.name : "Product"} added to cart`
+          );
+          setProgress(100);
+        } else {
+          console.log(resData.error);
+          toast.error("Something went wrong, Please try again later!");
+          setProgress(100);
+        }
+      });
   };
   const handleWishlist = () => {
     setProgress(30);
@@ -117,7 +121,9 @@ const ProductPage = (props) => {
         if (resData.success) {
           console.log(resData.user);
           setProgress(70);
-          toast.success(`${product.name ? product.name: "Product"} added to wishlist`)
+          toast.success(
+            `${product.name ? product.name : "Product"} added to wishlist`
+          );
         } else {
           console.log(resData.error);
           toast.error("Something went wrong, Please try again later!");
@@ -125,25 +131,89 @@ const ProductPage = (props) => {
         setProgress(100);
       });
   };
+  const handleShare = () => {
+    toast.success("Share success");
+  };
   return (
     <section>
       <Navbar />
       <div className="product-page-content">
-        <h1>{product.name}</h1>
-        <img
-          src={product.images[0]}
-          alt={product.name}
-          style={{ width: "250px", objectFit: "contain" }}
-        />
-        <button type="button" onClick={handleBuy}>
-          Buy Now
-        </button>
-        <button type="button" onClick={handleCart}>
-          Add to Cart
-        </button>
-        <button type="button" onClick={handleWishlist}>
-          Wishlist
-        </button>
+        <div className="product-image-box">
+          <img
+            loading="eager"
+            src={product.images[0]}
+            alt={product.name}
+            className="big-image"
+          />
+          <button
+            type="button"
+            className="product-floating-button"
+            id="product-wishlist-btn"
+            onClick={handleWishlist}
+          >
+            <i className="fa fa-heart"></i>
+          </button>
+          <button
+            type="button"
+            className="product-floating-button"
+            id="product-share-btn"
+            onClick={handleShare}
+          >
+            <i className="fa fa-share"></i>
+          </button>
+          <div className="product-img-glimpses">
+            {product.images.map((image, index) => {
+              return (
+                <img
+                  src={image}
+                  loading="lazy"
+                  className="small-images"
+                  alt={image + index}
+                  key={image}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div className="product-info-box">
+          <p className="product-page-category">{product.category}</p>
+          <h3 className="product-page-name">{product.name}</h3>
+          <h4 className="product-page-price">
+            <span>&#8377;&nbsp;{product.price}</span>
+            <span className="product-ratings">
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star-half-stroke"></i>
+              <i class="fa-regular fa-star"></i>
+            </span>
+          </h4>
+          <p className="product-data-para">Only {product.stock} Pieces left</p>
+          <p className="product-data-para">+ &#8377;0 Packaging Fee</p>
+          <p className="product-page-para">
+            <button
+              type="button"
+              onClick={handleBuy}
+              className="product-page-btn hollow-btn"
+            >
+              Buy Now
+            </button>
+            <button
+              type="button"
+              onClick={handleCart}
+              className="product-page-btn"
+            >
+              Add to Cart
+            </button>
+          </p>
+          <p>
+            <ul className="product-details-list">
+              <li>Highlights</li>
+              <li>Description</li>
+              <li>Specifications</li>
+            </ul>
+          </p>
+        </div>
       </div>
     </section>
   );

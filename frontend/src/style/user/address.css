@@ -1,0 +1,139 @@
+.address-head {
+    width: 100%;
+    font-size: 32px;
+    background: white;
+    padding: 1rem;
+    font-family: "Didact Gothic";
+    text-align: center;
+}
+
+.address-head img {
+    object-fit: contain;
+}
+
+.address-auto-locate {
+    padding: 0.7rem;
+    color: white;
+    background-color: #2976ff;
+    border-radius: 5px;
+    font-size: 15px;
+    display: block;
+    border: none;
+}
+
+.address-tab {
+    padding: 0.2rem;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.no-saved-addresses {
+    margin-top: 10px;
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.saved-address-head {
+    font-size: 25px;
+    font-family: "Didact Gothic";
+}
+
+.savedaddress-name {
+    font-weight: 600;
+    font-size: 20px;
+    text-transform: capitalize;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.address-saved-glimpse {
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-top: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.savedaddress-type {
+    text-align: center;
+    background-color: #dadada;
+    padding: 0.2rem;
+    text-transform: capitalize;
+    border-radius: 5px;
+    padding-left: 0.4rem;
+    margin: 0 0.5rem;
+    color: dimgrey;
+}
+
+.address-float-right {
+    float: right;
+    margin: 0px 10px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    font-weight: 600;
+    padding: 5px;
+}
+
+.address-float-right:hover {
+    color: #2976ff;
+}
+
+.address-float-delete:hover {
+    color: red;
+}
+
+.address-select-label {
+    cursor: pointer;
+}
+
+.address-label {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 16px;
+    display: inline-block;
+    margin-top: 10px;
+    padding-left: 0;
+}
+
+.address-input {
+    width: 100%;
+    outline: none;
+    font-weight: 400;
+    font-size: 18px;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid #dadada;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.address-input:hover,
+.address-input:focus {
+    border: 1px solid grey;
+}
+
+.address-textarea {
+    resize: vertical;
+}
+
+.form-item-small{
+    width: 49%;
+    margin-right: 1%;
+    display: inline-block;
+}
+.address-input-radio{
+    margin-top: 10px;
+}
+.address-label-radio{
+    margin-left: 10px;
+    margin-right: 50px;
+}

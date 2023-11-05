@@ -34,6 +34,7 @@
     font-size: 50px;
     font-family: "Syne";
     user-select: none;
+    text-transform: uppercase;
 }
 
 #account-btn {

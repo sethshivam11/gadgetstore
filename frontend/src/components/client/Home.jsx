@@ -9,20 +9,14 @@ import Footer from "./Footer";
 const Home = (props) => {
   return (
     <section>
-      <Navbar />
+      <Navbar setQuery={props.setQuery}/>
       <Section1 />
       <Section2 heading="Finest Gaming PCs" category="pc" />
       <Section2 heading="New Launches" category="mobiles" />
-      <Accessories
-        heading="Accessories"
-        category="accessories"
-      />
-      <Accessories
-        heading="Headphones"
-        category="accessories"
-      />
+      <Accessories heading="Accessories" category="accessories" />
+      <Accessories heading="Headphones" category="accessories" />
       <Section2 heading="Best of Electronics" category="electronics" />
-      <Footer setProgress={props.setProgress} toast={props.toast}/>
+      <Footer setProgress={props.setProgress} toast={props.toast} />
     </section>
   );
 };

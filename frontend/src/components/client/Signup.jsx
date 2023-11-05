@@ -89,6 +89,8 @@ const Signup = (props) => {
         <h1 id="signuptext">SignUp</h1>
         <form onSubmit={handleLogin}>
           <input
+          autoCapitalize="on"
+          autoComplete="name"
             className="bar"
             name="name"
             type="text"
@@ -96,6 +98,7 @@ const Signup = (props) => {
             onChange={onChange}
           ></input>
           <input
+          autoComplete="email"
             className="bar"
             name="email"
             type="email"
@@ -103,6 +106,7 @@ const Signup = (props) => {
             onChange={onChange}
           ></input>
           <input
+          autoComplete="new-password"
             className="bar"
             name="password"
             type="password"

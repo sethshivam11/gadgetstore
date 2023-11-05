@@ -1,135 +1,192 @@
 import "./App.css";
 import LoadingBar from "react-top-loading-bar";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import { TailSpin } from "react-loader-spinner";
 
 // Component Imports for client pages
-import Login from "./components/client/Login";
-import Signup from "./components/client/Signup";
-import NotFound from "./components/client/NotFound";
-import Home from "./components/client/Home";
-import ProductLists from "./components/client/ProductLists";
-import ProductPage from "./components/client/ProductPage";
+const Login = lazy(() => import("./components/client/Login"));
+const Signup = lazy(() => import("./components/client/Signup"));
+const NotFound = lazy(() => import("./components/client/NotFound"));
+const Home = lazy(() => import("./components/client/Home"));
+const ProductLists = lazy(() => import("./components/client/ProductLists"));
+const ProductPage = lazy(() => import("./components/client/ProductPage"));
 
 // Component Imports for seller pages
-import SellerLogin from "./components/seller/SellerLogin";
-import SellerSignup from "./components/seller/SellerSignup";
-import SellerPage from "./components/seller/SellerPage";
-import CreateProduct from "./components/seller/CreateProduct";
-import UpdateProduct from "./components/seller/UpdateProduct";
+const SellerLogin = lazy(() => import("./components/seller/SellerLogin"));
+const SellerSignup = lazy(() => import("./components/seller/SellerSignup"));
+const SellerPage = lazy(() => import("./components/seller/SellerPage"));
+const CreateProduct = lazy(() => import("./components/seller/CreateProduct"));
+const UpdateProduct = lazy(() => import("./components/seller/UpdateProduct"));
 
 // Component Imports for user pages
-import Accounts from "./components/user/Accounts";
-import Cart from "./components/user/Cart";
-
+const Cart = lazy(() => import("./components/user/Cart"));
+const Accounts = lazy(() => import("./components/user/Accounts"));
+const OrderSuccess = lazy(() => import("./components/user/OrderSuccess"));
 
 const App = () => {
   const [progress, setProgress] = useState(0);
+  const [query, setQuery] = useState("");
   return (
     <div>
       <LoadingBar color="red" progress={progress} />
       <Toaster position="bottom-center" />
-      <Routes>
-        {/* Client Pages */}
-        <Route
-          element={<Login setProgress={setProgress} toast={toast} />}
-          exact
-          path="/login"
-        />
-        <Route
-          element={<Signup setProgress={setProgress} toast={toast} />}
-          exact
-          path="/signup"
-        />
-        <Route element={<Home setProgress={setProgress} toast={toast} />} exact path="/" />
-        <Route element={<NotFound />} path="/*" />
-        <Route
-          element={
-            <ProductLists
-              setProgress={setProgress} toast={toast}
-              category="mobiles"
-              key="mobiles"
+      <Suspense
+        fallback={
+          <div className="center-loader">
+            <TailSpin
+              height="80"
+              width="80"
+              color="red"
+              ariaLabel="tail-spin-loading"
+              radius="1"
+              visible={true}
             />
-          }
-          exact
-          path="/mobiles"
-        />
-        <Route
-          element={
-            <ProductLists setProgress={setProgress} toast={toast} category="pc" key="pc" />
-          }
-          exact
-          path="/pc"
-        />
-        <Route
-          element={
-            <ProductLists
-              setProgress={setProgress} toast={toast}
-              category="electronics"
-              key="electronics"
-            />
-          }
-          exact
-          path="/electronics"
-        />
-        <Route
-          element={
-            <ProductLists
-              setProgress={setProgress} toast={toast}
-              category="accessories"
-              key="accessories"
-            />
-          }
-          exact
-          path="/accessories"
-        />
-        <Route
-          element={<ProductPage setProgress={setProgress} toast={toast} />}
-          key="productpage"
-          exact
-          path="/product/:id"
-        />
+            <h3>Loading...</h3>
+          </div>
+        }
+      >
+        <Routes>
+          {/* Client Pages */}
+          <Route
+            element={<Login setProgress={setProgress} toast={toast} />}
+            exact
+            path="/login"
+          />
+          <Route
+            element={<Signup setProgress={setProgress} toast={toast} />}
+            exact
+            path="/signup"
+          />
+          <Route
+            element={
+              <Home
+                setProgress={setProgress}
+                toast={toast}
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/"
+          />
+          <Route element={<NotFound />} path="/*" />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="mobiles"
+                key="search"
+                setQuery={setQuery}
+                query={query}
+              />
+            }
+            exact
+            path="/search"
+          />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="mobiles"
+                key="mobiles"
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/mobiles"
+          />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="pc"
+                key="pc"
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/pc"
+          />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="electronics"
+                key="electronics"
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/electronics"
+          />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="accessories"
+                key="accessories"
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/accessories"
+          />
+          <Route
+            element={<ProductPage setProgress={setProgress} toast={toast} />}
+            key="productpage"
+            exact
+            path="/product/:id"
+            setQuery={setQuery}
+          />
 
-        {/* Seller Pages */}
-        <Route
-          element={<SellerLogin setProgress={setProgress} toast={toast} />}
-          exact
-          path="/seller/login"
-        />
-        <Route
-          element={<SellerSignup setProgress={setProgress} toast={toast} />}
-          exact
-          path="/seller/signup"
-        />
-        <Route
-          element={<SellerPage setProgress={setProgress} toast={toast} />}
-          exact
-          path="/seller"
-        />
-        <Route
-          element={<CreateProduct setProgress={setProgress} toast={toast} />}
-          exact
-          path="/seller/product"
-        />
-        <Route
-          element={<UpdateProduct setProgress={setProgress} toast={toast} />}
-          exact
-          path="/seller/product/update/:productId"
-        />
+          {/* Seller Pages */}
+          <Route
+            element={<SellerLogin setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller/login"
+          />
+          <Route
+            element={<SellerSignup setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller/signup"
+          />
+          <Route
+            element={<SellerPage setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller"
+          />
+          <Route
+            element={<CreateProduct setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller/product"
+          />
+          <Route
+            element={<UpdateProduct setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller/product/update/:productId"
+          />
 
-        {/* User Pages */}
-        <Route
-          element={<Accounts setProgress={setProgress} toast={toast} />}
-          exact
-          path="/account"
-        />
-        <Route
-          element={<Cart setProgress={setProgress} toast={toast} />}
-          exact
-          path="/cart"
-        />
-      </Routes>
+          {/* User Pages */}
+          <Route
+            element={<Accounts setProgress={setProgress} toast={toast} />}
+            exact
+            path="/account"
+          />
+          <Route
+            element={<Cart setProgress={setProgress} toast={toast} />}
+            exact
+            path="/cart"
+            setQuery={setQuery}
+          />
+          <Route element={<OrderSuccess />} exact path="/ordersuccess" />
+        </Routes>
+      </Suspense>
     </div>
   );
 };

@@ -26,6 +26,9 @@ const UserSchema = new Schema({
   address: {
     type: Array,
   },
+  orders: {
+    type: Array,
+  },
   date: {
     type: String,
     default: Date,

@@ -2,8 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import "../../style/user/accounts.css";
 import { useNavigate } from "react-router-dom";
 import Orders from "./Orders";
-import Transactions from "./Transactions";
-import Addresses from "./Addresses";
+import Address from "./Address";
 
 const Accounts = (props) => {
   const { setProgress, toast } = props;
@@ -11,15 +10,18 @@ const Accounts = (props) => {
   const token = localStorage.getItem("gadgetstore-user-token");
   const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
+  // eslint-disable-next-line
+  const[delivery, setDelivery] = useState({});
   const [profile, setProfile] = useState(true);
   const [orders, setOrders] = useState(false);
-  const [transactions, setTransactions] = useState(false);
   const [addresses, setAddresses] = useState(false);
   const [passwordModal, setPasswordModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [checkPass, setCheckPass] = useState({ password: "" });
   const [editPassword, setEditPassword] = useState(false);
   const [showMainPassword, setShowMainPassword] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("GS");
   const [creds, setCreds] = useState({
     name: "",
@@ -42,13 +44,20 @@ const Accounts = (props) => {
           jsonData.user.password = "123456";
           setCreds(jsonData.user);
           let name = jsonData.user.name;
+          if(name.includes(" ")){
           let first = name.split(" ")[0].slice(0, 1);
           let second = name.split(" ")[1].slice(0, 1);
-          setProgress(100);
           setAvatar(first.concat(second));
+          }
+          else{
+            let first = name.slice(0,2);
+            setAvatar(first);
+          }
+          setName(jsonData.user.name)
+          setEmail(jsonData.user.email)
+          setProgress(100);
         } else {
           setProgress(70);
-
           console.log(jsonData.error);
           navigate("/login");
           setProgress(100);
@@ -99,10 +108,12 @@ const Accounts = (props) => {
         if (resData.success) {
           setProgress(70);
           setCreds({
-            name: resData.user.name,
-            email: resData.user.email,
-            password: resData.user.password.slice(0, 6),
+            name: creds.name,
+            email: creds.email,
+            password: creds.password.slice(0, 6),
           });
+          setName(creds.name)
+          setEmail(creds.email)
           setEdit(false);
           setEditPassword(false);
           setShowMainPassword(false);
@@ -144,8 +155,8 @@ const Accounts = (props) => {
       <div id="account-top">
         <div className="account-creds">
           <div className="avatar">{avatar}</div>
-          <p id="account-name">{creds.name}</p>
-          <p id="account-email">{creds.email}</p>
+          <p id="account-name">{name}</p>
+          <p id="account-email">{email}</p>
         </div>
         <button id="account-btn" type="button" onClick={() => navigate("/")}>
           <i className="fa-solid fa-chevron-left"></i>&nbsp;&nbsp; Back to Home
@@ -158,7 +169,6 @@ const Accounts = (props) => {
             setProfile(true);
             setOrders(false);
             setAddresses(false);
-            setTransactions(false);
           }}
         >
           Profile
@@ -168,41 +178,30 @@ const Accounts = (props) => {
           onClick={() => {
             setProfile(false);
             setOrders(true);
-            setTransactions(false);
             setAddresses(false);
           }}
         >
           Orders
         </li>
         <li
-          className={`${transactions ? "account-active" : ""}`}
-          onClick={() => {
-            setProfile(false);
-            setOrders(false);
-            setTransactions(true);
-            setAddresses(false);
-          }}
-        >
-          Transactions
-        </li>
-        <li
           className={`${addresses ? "account-active" : ""}`}
           onClick={() => {
             setProfile(false);
             setOrders(false);
-            setTransactions(false);
             setAddresses(true);
           }}
         >
           Saved Address
         </li>
       </ul>
-      {profile && !orders && !transactions && !addresses && (
+      {profile && !orders && !addresses && (
         <form className="account-bottom" onSubmit={handleUpdate}>
           <label htmlFor="name" className="account-update-label">
             Name
           </label>
           <input
+          autoComplete="name"
+          autoCapitalize="on"
             type="text"
             name="name"
             id="name"
@@ -216,6 +215,7 @@ const Accounts = (props) => {
           </label>
           <input
             type="email"
+            autoComplete="email"
             name="email"
             id="email"
             className="account-update-input"
@@ -229,6 +229,7 @@ const Accounts = (props) => {
           <input
             type={`${showMainPassword ? "text" : "password"}`}
             name="password"
+            autoComplete="new-password"
             id="password"
             className="account-update-input"
             value={creds.password ?? ""}
@@ -253,6 +254,7 @@ const Accounts = (props) => {
           <div>
             <input
               type="checkbox"
+              autoComplete="off"
               name="showpassword"
               id="showpassword"
               onChange={handleShowPasswordMain}
@@ -312,9 +314,8 @@ const Accounts = (props) => {
           </button>
         </form>
       )}
-      {!profile && orders && !transactions && !addresses && <Orders />}
-      {!profile && !orders && transactions && !addresses && <Transactions />}
-      {!profile && !orders && !transactions && addresses && <Addresses />}
+      {!profile && orders && !addresses && <Orders />}
+      {!profile && !orders && addresses && <Address width={"100%"} address={true} setDelivery={setDelivery} host={host} token={token} toast={toast} setProgress={setProgress} />}
       <div
         id="password-modal"
         style={{
@@ -327,6 +328,7 @@ const Accounts = (props) => {
           <h3>Confirm Password</h3>
           <label htmlFor="cpassword">Password</label>
           <input
+          autoComplete="current-password"
             type={`${showPassword ? "text" : "password"}`}
             name="password"
             id="cpassword"
@@ -338,6 +340,7 @@ const Accounts = (props) => {
           />
           <input
             type="checkbox"
+            autoComplete="off"
             name="show"
             id="show"
             style={{ width: "fit-content", marginLeft: "5px" }}

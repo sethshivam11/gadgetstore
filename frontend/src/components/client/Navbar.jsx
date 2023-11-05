@@ -8,13 +8,14 @@ import logo from "../../img/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 
-const Navbar = () => {
+const Navbar = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const Ref = useRef();
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(e.target.search.value);
+    props.setQuery(e.target.search.value);
+    navigate("/search");
   };
   const showSearch = () => {
     if (Ref.current.style.transform === "translateY(50px)") {
@@ -56,7 +57,7 @@ const Navbar = () => {
       </button>
       {/* main nav */}
       <nav id="navbar">
-        <img src={logo} alt="Gadget Store" title="Home" id="logo" onClick={() => navigate("/")} />
+        <img src={logo} loading="eager" alt="Gadget Store" title="Home" id="logo" onClick={() => navigate("/")} />
         <span id="nav-list">
           <Link
             to="/mobiles"
@@ -112,6 +113,7 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search"
+            autoCapitalize="on"
             name="search"
             id="search-input"
           />

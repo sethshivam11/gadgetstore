@@ -42,6 +42,7 @@ const Section1 = () => {
           }}
         >
           <img
+            loading="lazy"
             src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/ee78de50f9dbe993.jpg?q=20"
             alt="poster1"
           />
@@ -55,6 +56,7 @@ const Section1 = () => {
           }}
         >
           <img
+            loading="lazy"
             src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/cb8a624c94eb850e.jpg?q=20"
             alt="poster2"
           />
@@ -68,6 +70,7 @@ const Section1 = () => {
           }}
         >
           <img
+            loading="lazy"
             src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/364c9a92201246a6.jpg?q=20"
             alt="poster3"
           />
@@ -81,6 +84,7 @@ const Section1 = () => {
           }}
         >
           <img
+            loading="lazy"
             src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/ee78de50f9dbe993.jpg?q=20"
             alt="poster4"
           />
@@ -95,36 +99,33 @@ const Section1 = () => {
         </button>
       </div>
       <div id="carousel-mobile">
-        <Link
-          to="/mobiles"
-          className="carousel-slide-mobile"
-        >
-          <img
-            src={poster1}
-            alt="poster1"
-          />
+        <Link to="/mobiles" className="carousel-slide-mobile">
+          <img loading="lazy" src={poster1} alt="poster1" />
         </Link>
       </div>
       <div id="posters">
-        <Link to="/mobiles" className="poster">
+        <Link to="/mobiles" className="poster" id="section1-poster1">
           <h3>Coming Soon</h3>
           <img
+            loading="lazy"
             src="http://res.cloudinary.com/dv3qbj0bn/image/upload/v1696261588/gadget-store/vkcq1vkwwvxgqytsgb0s.webp"
             alt="IPhone 15 Pro Max"
             className="poster-img"
           />
         </Link>
-        <Link to="/mobiles" className="poster black">
+        <Link to="/mobiles" className="poster black" id="section1-poster2">
           <h3>Sale is Live!</h3>
           <img
+            loading="lazy"
             src="http://res.cloudinary.com/dv3qbj0bn/image/upload/v1696261591/gadget-store/cdwhai2dyzik597ie8fr.png"
             alt="Samsung S23 Ultra"
             className="poster-img"
           />
         </Link>
-        <Link to="/accessories" className="poster">
+        <Link to="/accessories" className="poster" id="section1-poster3">
           <h3>Great Offers</h3>
           <img
+            loading="lazy"
             src="http://res.cloudinary.com/dv3qbj0bn/image/upload/v1696261591/gadget-store/imusw3ekxbcsvbgyulrz.webp"
             alt="Boat Airdopes"
             className="poster-img"

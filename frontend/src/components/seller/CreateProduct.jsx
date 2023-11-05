@@ -18,6 +18,8 @@ const CreateProduct = (props) => {
     subCategory: "",
     brand: "",
     discount: "",
+    rating: "",
+    highlights: "",
     description: "",
     images: [],
     price: "",
@@ -91,6 +93,8 @@ const CreateProduct = (props) => {
       subCategory: productData.subCategory.toLowerCase(),
       discount: productData.discount,
       description: productData.description,
+      highlights: productData.highlights,
+      rating: productData.rating,
       images: images,
       price: productData.price,
       stock: productData.stock,
@@ -175,6 +179,20 @@ const CreateProduct = (props) => {
             />
           </div>
           <div className="form-group">
+            <label htmlFor="rating" className="label-createproduct">
+              Ratings:
+            </label>
+            <input
+              type="text"
+              id="rating"
+              name="rating"
+              className="input-createproduct"
+              value={productData.rating}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
             <label htmlFor="category" className="label-createproduct">
               Category:
             </label>
@@ -198,6 +216,19 @@ const CreateProduct = (props) => {
               name="subCategory"
               className="input-createproduct"
               value={productData.subCategory}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="highlights" className="label-createproduct">
+              Highlights:
+            </label>
+            <textarea
+              name="highlights"
+              id="highlights"
+              className="input-createproduct"
+              value={productData.highlights}
               onChange={handleChange}
               required
             />

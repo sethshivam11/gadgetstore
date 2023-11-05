@@ -26,6 +26,8 @@ const UpdateProduct = (props) => {
             obrand: jsonData.product.brand,
             ocategory: jsonData.product.category,
             odiscount: jsonData.product.discount,
+            ohighlights: jsonData.product.highlights,
+            orating: jsonData.product.rating,
             osubCategory: jsonData.product.subCategory,
             odescription: jsonData.product.description,
             oimages: jsonData.product.images,
@@ -54,6 +56,8 @@ const UpdateProduct = (props) => {
     obrand: "",
     ocategory: "",
     odescription: "",
+    ohighlights: "",
+    orating: "",
     odiscount: "",
     osubCategory: "",
     oimages: [],
@@ -124,12 +128,15 @@ const UpdateProduct = (props) => {
     const discountN = Number(productData.odiscount);
     const priceN = Number(productData.oprice);
     const stockN = Number(productData.ostock);
+    const ratingN = Number(productData.orating)
     const data = {
       name: productData.oname,
       brand: productData.obrand.toLowerCase(),
       category: productData.ocategory.toLowerCase(),
       discount: discountN,
+      rating: ratingN,
       description: productData.odescription,
+      highlights: productData.ohighlights,
       subCategory: productData.osubCategory.toLowerCase(),
       images: images.concat(productData.oimages),
       price: priceN,
@@ -216,6 +223,19 @@ const UpdateProduct = (props) => {
             />
           </div>
           <div className="form-group">
+            <label htmlFor="rating" className="label-createproduct">
+              Ratings:
+            </label>
+            <input
+              type="number"
+              id="rating"
+              name="orating"
+              className="input-createproduct"
+              value={productData.orating}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
             <label htmlFor="category" className="label-createproduct">
               Category:
             </label>
@@ -240,6 +260,19 @@ const UpdateProduct = (props) => {
               className="input-createproduct"
               value={productData.osubCategory}
               onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="highlights" className="label-createproduct">
+              Highlights:
+            </label>
+            <textarea
+              id="highlights"
+              name="ohighlights"
+              className="input-createproduct"
+              value={productData.ohighlights}
+              onChange={handleChange}
+              required
             />
           </div>
           <div className="form-group">

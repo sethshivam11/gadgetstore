@@ -1,16 +1,45 @@
 import React, { useCallback, useState, useEffect } from "react";
 import "../../style/user/cart.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../client/Navbar";
+import Address from "./Address";
+import Payment from "./Payment";
 
 const Cart = (props) => {
   const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
   const navigate = useNavigate();
+  let currentDate = new Date();
+  let delDate = currentDate.getDate();
+  let day = currentDate.getDay();
+  let month = currentDate.getMonth();
+  let delMonth = "";
+  let delDay = "";
   const [cart, setCart] = useState(true);
+  const [address, setAddress] = useState(false);
   const [wishlist, setWishlist] = useState(false);
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [payment, setPayment] = useState(false);
+  const [delivery, setDelivery] = useState({
+    name: "",
+    mobile: "",
+    pincode: "",
+    locality: "",
+    address: "",
+    city: "",
+    state: "",
+    type: "",
+    landmark: "",
+    alternate: "",
+  });
+  const [order, setOrder] = useState({
+    products: [],
+    total: "",
+    date: currentDate,
+    address: delivery,
+    payment: "",
+  });
   const [remove, setRemove] = useState({});
   const token = localStorage.getItem("gadgetstore-user-token");
   const fetchUser = useCallback(() => {
@@ -39,12 +68,6 @@ const Cart = (props) => {
         setProgress(100);
       });
   }, [host, token, cart, wishlist, setProgress]);
-  let currentDate = new Date();
-  let delDate = currentDate.getDate();
-  let day = currentDate.getDay();
-  let month = currentDate.getMonth();
-  let delMonth = "";
-  let delDay = "";
   switch (day) {
     case 0:
       delDay = "Sun";
@@ -289,7 +312,10 @@ const Cart = (props) => {
             </button>
           </div>
         </div>
-        <div className="cart-top">
+        <div
+          className="cart-top"
+          style={{ display: `${address || payment ? "none" : "block"}` }}
+        >
           <div className="options">
             <h3
               className={cart ? "cart-active" : ""}
@@ -321,19 +347,23 @@ const Cart = (props) => {
             </h3>
           </div>
           {cart ? (
-            <div className="cart-bottom cart">
+            <div className="cart-bottom">
               {products.length > 0 ? (
                 products.map((product) => {
                   return (
                     <div className="cart-item" key={product._id}>
                       <div className="cart-product-main">
-                        <img
-                          className="cart-product-image"
-                          src={product.product.images}
-                          alt={product.product.name}
-                        />
+                        <Link to={`/product/${product._id}`}>
+                          <img loading="lazy"
+                            className="cart-product-image"
+                            src={product.product.images}
+                            alt={product.product.name}
+                          />
+                        </Link>
                         <div className="cart-product-details">
-                          <h3>{product.product.name}</h3>
+                          <Link to={`/product/${product._id}`}>
+                            <h3>{product.product.name}</h3>
+                          </Link>
                           <p>{product.product.brand}</p>
                           <p
                             style={{
@@ -429,7 +459,7 @@ const Cart = (props) => {
                   );
                 })
               ) : (
-                <img
+                <img loading="lazy"
                   src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1698686245/gadget-store/m5ue2sqkmvbowrt69iwx.webp"
                   alt="Cart Empty"
                   className="empty-cart-img"
@@ -440,19 +470,23 @@ const Cart = (props) => {
             ""
           )}
           {wishlist ? (
-            <div className="cart-bottom cart">
+            <div className="cart-bottom">
               {products.length > 0 ? (
                 products.map((product) => {
                   return (
                     <div className="cart-item" key={product._id}>
                       <div className="cart-product-main">
-                        <img
-                          className="cart-product-image"
-                          src={product.product.images}
-                          alt={product.product.name}
-                        />
+                        <Link to={`/product/${product._id}`}>
+                          <img loading="lazy"
+                            className="cart-product-image"
+                            src={product.product.images}
+                            alt={product.product.name}
+                          />
+                        </Link>
                         <div className="cart-product-details">
-                          <h3>{product.product.name}</h3>
+                          <Link to={`/product/${product._id}`}>
+                            <h3>{product.product.name}</h3>
+                          </Link>
                           <p>{product.product.brand}</p>
                           <p
                             style={{
@@ -524,7 +558,7 @@ const Cart = (props) => {
                   );
                 })
               ) : (
-                <img
+                <img loading="lazy"
                   src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1698686245/gadget-store/m5ue2sqkmvbowrt69iwx.webp"
                   alt="Cart Empty"
                   className="empty-cart-img"
@@ -535,28 +569,62 @@ const Cart = (props) => {
             ""
           )}
         </div>
+        <Address
+          address={address}
+          toast={toast}
+          token={token}
+          host={host}
+          width={"70%"}
+          setProgress={setProgress}
+          setDelivery={setDelivery}
+        />
+        <Payment
+          host={host}
+          token={token}
+          toast={toast}
+          navigate={navigate}
+          payment={payment}
+          order={order}
+          setOrder={setOrder}
+        />
         <div className="cart-sum">
           <h3>Cart Summary</h3>
           <hr className="cart-summary-seperator" />
           <p>
             Price (
             {products.length > 0 &&
-              products.reduce((count) => {
-                let quantity = 1;
-                return count + quantity;
-              }, 0)}
-            &nbsp;items) &#8377;&nbsp;
-            {products.length > 0 &&
+            products.reduce((count) => {
+              let quantity = 1;
+              return count + quantity;
+            }, 0)
+              ? products.length > 0 &&
+                products.reduce((count) => {
+                  let quantity = 1;
+                  return count + quantity;
+                }, 0)
+              : 0}
+            &nbsp;items)
+            <span className="cart-sum-right">
+              &#8377;&nbsp;
+              {products.length > 0 &&
               products.reduce((count, item) => {
                 let total = item.product.price;
                 return count + total * item.quantity;
-              }, 0)}
+              }, 0)
+                ? products.length > 0 &&
+                  products.reduce((count, item) => {
+                    let total = item.product.price;
+                    return count + total * item.quantity;
+                  }, 0)
+                : 0}
+            </span>
           </p>
           <p>
             Discount&nbsp;
             <span className="cart-color-green">
-              &#8377;&nbsp;
-              {products.length > 0 &&
+              <span className="cart-sum-right">
+                -&nbsp;&#8377;&nbsp;
+                {products.length > 0 &&
                 products.reduce((count, item) => {
                   let discount = 0;
                   if (item.product.discount) {
@@ -565,20 +633,39 @@ const Cart = (props) => {
                     );
                   }
                   return count + discount * item.quantity;
-                }, 0)}
+                }, 0)
+                  ? products.length > 0 &&
+                    products.reduce((count, item) => {
+                      let discount = 0;
+                      if (item.product.discount) {
+                        discount = Math.floor(
+                          item.product.discount * (item.product.price / 100)
+                        );
+                      }
+                      return count + discount * item.quantity;
+                    }, 0)
+                  : 0}
+              </span>
             </span>
           </p>
           <p>
             Delivery Charges&nbsp;
-            <span className="cart-line-through">
-              &#8377;&nbsp;{products.length > 0 && products.length * 50}
+            <span className="cart-sum-right">
+              <span className="cart-line-through">
+                &#8377;&nbsp;
+                {products.length > 0 && products.length * 50
+                  ? products.length > 0 && products.length * 50
+                  : 0}
+              </span>
+              &nbsp;|<span className="cart-color-green">&nbsp;Free</span>
             </span>
-            &nbsp;|<span className="cart-color-green">&nbsp;Free</span>
           </p>
           <hr className="cart-summary-seperator" />
           <p className="cart-grand-total">
-            Total Amount &#8377;&nbsp;
-            {products.length > 0 &&
+            Total Amount
+            <span className="cart-sum-right">
+              &#8377;&nbsp;
+              {products.length > 0 &&
               products.reduce((total, item) => {
                 let price = item.product.price;
                 let discount = 0;
@@ -588,9 +675,80 @@ const Cart = (props) => {
                   );
                 }
                 return total + (price - discount) * item.quantity;
-              }, 0)}
+              }, 0)
+                ? products.length > 0 &&
+                  products.reduce((total, item) => {
+                    let price = item.product.price;
+                    let discount = 0;
+                    if (item.product.discount) {
+                      discount = Math.floor(
+                        (item.product.price * item.product.discount) / 100
+                      );
+                    }
+                    return total + (price - discount) * item.quantity;
+                  }, 0)
+                : 0}
+            </span>
           </p>
-          <button id="cart-place-order">Place Order</button>
+          <p style={{ display: !payment ? "block" : "none" }}>
+            <button
+              style={{ display: `${!address ? "inline-block" : "none"}` }}
+              className="cart-place-order"
+              onClick={() => {
+                if (cart || address) {
+                  setAddress(true);
+                  setOrder({
+                    products: products,
+                    total:
+                      products.length > 0 &&
+                      products.reduce((total, item) => {
+                        let price = item.product.price;
+                        let discount = 0;
+                        if (item.product.discount) {
+                          discount = Math.floor(
+                            (item.product.price * item.product.discount) / 100
+                          );
+                        }
+                        return total + (price - discount) * item.quantity;
+                      }, 0),
+                    date: order.date,
+                    address: order.address,
+                    payment: order.payment,
+                  });
+                }
+              }}
+              disabled={wishlist || products.length === 0}
+            >
+              Place Order
+            </button>
+            <button
+              style={{ display: `${address ? "inline-block" : "none"}` }}
+              className="cart-place-order"
+              onClick={() => {
+                setAddress(false);
+                setPayment(true);
+                setOrder({
+                  products: order.products,
+                  total: order.total,
+                  date: order.date,
+                  address: delivery,
+                  payment: order.payment,
+                });
+              }}
+              disabled={
+                delivery.name.length <= 0 ||
+                delivery.mobile.length < 10 ||
+                delivery.pincode.length < 6 ||
+                delivery.locality.length <= 0 ||
+                delivery.address.length <= 0 ||
+                delivery.city.length <= 0 ||
+                delivery.state.length <= 0 ||
+                delivery.type.length <= 0
+              }
+            >
+              Continue
+            </button>
+          </p>
         </div>
       </div>
     </section>
