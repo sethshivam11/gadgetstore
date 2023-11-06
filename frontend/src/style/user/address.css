@@ -125,15 +125,128 @@ input[type=number]::-webkit-outer-spin-button {
     resize: vertical;
 }
 
-.form-item-small{
+.form-item-small {
     width: 49%;
     margin-right: 1%;
     display: inline-block;
 }
-.address-input-radio{
+
+.address-input-radio {
     margin-top: 10px;
 }
-.address-label-radio{
+
+.address-label-radio {
     margin-left: 10px;
     margin-right: 50px;
+}
+
+.newAddress-btn {
+    width: 49%;
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 2rem;
+    margin-right: 1%;
+    color: #191817;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-color: #00d4ff;
+    transition: transform 0.2s ease;
+}
+
+.newAddress-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.newAddress-btn:hover {
+    background-color: #00c7ef;
+}
+
+.newAddress-bordered {
+    border: 2px solid #00d4ff;
+    background-color: white;
+}
+
+.newAddress-bordered:hover {
+    border: 2px solid #00c7ef;
+    background-color: #fff;
+}
+
+.newAddress-btn:active {
+    transform: scale(0.99);
+}
+
+@media only screen and (max-width: 650px) {
+    .savedaddress-mobile {
+        width: 50%;
+        display: inline-block;
+    }
+
+    .address-float-right {
+        padding: 1rem;
+    }
+
+    .address-full {
+        display: inline-block;
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .savedaddress-mobile {
+        display: flex;
+        width: fit-content;
+        margin-left: 23px;
+        margin-top: 5px;
+    }
+
+    .address-float-right {
+        margin: 0;
+        bottom: 45px;
+        left: 85px;
+        width: 80px;
+        color: white;
+        margin-left: 5px;
+        border-radius: 5px;
+        position: relative;
+        padding: 0.5rem 0.9rem;
+        border: 1px solid #2976ff;
+        background-color: #2976ff;
+    }
+    .address-float-delete{
+        left: 0;
+        bottom: 5px;
+        color: black;
+        border: 1px solid red;
+        background-color: #fff;
+    }
+
+    .form-item-small{
+        width: 99%;
+    }
+    .address-input-radio{
+        width: 8%;
+    }
+    .address-label-radio{
+        margin: 0;
+        width: 92%;
+        display: inline-block;
+    }
+    .newAddress-btn{
+        width: 100%;
+        margin-top: 10px;
+    }
+    .newAddress-bordered{
+        margin-top: 20px;
+    }
+    .address-fulll-para{
+        margin-bottom: -20px;
+    }
+    .address-label-full{
+        position: relative;
+        bottom: 15px;
+        margin-bottom: -20px;
+        margin-left: 24px;
+    }
 }

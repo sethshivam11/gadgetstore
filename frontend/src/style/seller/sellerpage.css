@@ -52,6 +52,10 @@
     margin: 10px 0;
 }
 
+.product-capitalize{
+    text-transform: capitalize;
+}
+
 .product-details p {
     margin: 5px 0;
 }
@@ -84,15 +88,30 @@
     background-color: #0056b3;
     border: 1px solid #0056b3;
 }
+.home-btn{
+    background-color: #ffc356;
+    color: #191817;
+    position: absolute;
+    top: 20px;
+    right: 240px;
+    width: max-content;
+    border: 1px solid #ffc356;
+}
+.home-btn:hover{
+    color: #fff;
+}
 @media only screen and (max-width: 900px){
-    .add-new, .log-out{
+    .add-new, .log-out, .home-btn{
         top: 60px;
     }
     .add-new{
-        left: 10%;
+        left: 5%;
     }
     .log-out{
-        right: 10%;
+        right: 5%;
+    }
+    .home-btn{
+        left: 37%;
     }
     .product-list{
         margin-top: 100px;

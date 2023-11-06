@@ -48,7 +48,7 @@ const productSchema = new Schema({
     required: true,
   },
   description: { type: String, required: true },
-  more: { type: Object },
+  more: { type: String },
   date: {
     type: String,
     default: Date.now,

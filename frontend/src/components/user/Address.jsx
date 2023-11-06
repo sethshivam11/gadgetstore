@@ -11,7 +11,6 @@ const Address = (props) => {
     name: "",
     mobile: "",
     pincode: "",
-    street: "",
     locality: "",
     address: "",
     city: "",
@@ -64,7 +63,6 @@ const Address = (props) => {
               name: newAddress.name,
               mobile: newAddress.mobile,
               pincode: newAddress.pincode,
-              street: newAddress.street,
               address: newAddress.address,
               city: district,
               alternate: newAddress.alternate,
@@ -80,7 +78,41 @@ const Address = (props) => {
   };
   const handleNewAddress = (e) => {
     e.preventDefault();
-    console.log(newAddress);
+    fetch(`${host}/api/user/address/${editAddress ? "edit": "add"}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "token": token,
+      },
+      body: JSON.stringify({
+        name: newAddress.name,
+        mobile: newAddress.mobile,
+        pincode: newAddress.pincode,
+        locality: newAddress.locality,
+        address: newAddress.address,
+        city: newAddress.city,
+        state: newAddress.state,
+        landmark: newAddress.landmark,
+        alternate: newAddress.alternate,
+        type: newAddress.type,
+      }),
+    }).then(res => res.json()).then(resData => {
+      if(resData.success){
+        setAddNew(false);
+        setEditAddress(false);
+        console.log(resData);
+        let addId = resData.user.address.length + 1;
+        let newAdd = newAddress;
+        newAdd.id = `address-${addId}`;
+        if(!editAddress){
+          setSavedAddresses(savedAddresses.concat([newAdd]));
+        }
+        toast.success("Address saved");
+      }
+      else if (resData.error === "Internal Server Error!" || resData.error.type) {
+        toast.error("Something went wrong, Please try again later!");
+      }
+    })
   };
   const handleNewChange = (e) => {
     if (e.target.name === "mobile" && e.target.value.length > 10) {
@@ -154,8 +186,8 @@ const Address = (props) => {
                     htmlFor={`${address.id}`}
                     className="address-select-label"
                   >
-                    <span className="savedaddress-name">{address.name} </span>
-                    <span className="savedaddress-type">{address.type} </span>
+                    <span className="savedaddress-name">{address.name}&nbsp;</span>
+                    <span className="savedaddress-type">{address.type}&nbsp;</span>
                     <span className="savedaddress-mobile">
                       {address.mobile}
                     </span>
@@ -164,8 +196,8 @@ const Address = (props) => {
                     className="address-float-right address-float-delete"
                     onClick={() => deleteAddress(address.id)}
                     style={{
-                      display: `${
-                        editAddress || addNew ? "none" : "inline-block"
+                      visibility: `${
+                        editAddress || addNew ? "hidden" : "visible"
                       }`,
                     }}
                   >
@@ -179,20 +211,20 @@ const Address = (props) => {
                       setEditAddress(true);
                     }}
                     style={{
-                      display: `${
-                        editAddress || addNew ? "none" : "inline-block"
+                      visibility: `${
+                        editAddress || addNew ? "hidden" : "visible"
                       }`,
                     }}
                   >
                     EDIT
                   </button>
                 </p>
-                <p>
+                <p className="address-full-para">
                   <label
                     htmlFor={`${address.id}`}
-                    className="address-select-label"
+                    className="address-select-label address-label-full"
                   >
-                    <span>
+                    <span className="address-full">
                       {address.address}, {address.locality}, {address.city},{" "}
                       {address.state} - {address.pincode}
                     </span>
@@ -219,7 +251,7 @@ const Address = (props) => {
                 Name
               </label>
               <input
-              autoComplete="name"
+                autoComplete="name"
                 type="text"
                 className="address-input"
                 id="address-name"
@@ -233,7 +265,7 @@ const Address = (props) => {
                 Mobile
               </label>
               <input
-              autoComplete="tel-national"
+                autoComplete="tel-national"
                 type="number"
                 id="address-mobile"
                 className="address-input"
@@ -248,7 +280,7 @@ const Address = (props) => {
                 Pincode
               </label>
               <input
-              autoComplete="postal-code"
+                autoComplete="postal-code"
                 type="number"
                 id="address-pincode"
                 className="address-input"
@@ -263,7 +295,7 @@ const Address = (props) => {
                 Locality
               </label>
               <input
-              autoComplete="address-line1"
+                autoComplete="address-line1"
                 type="text"
                 className="address-input"
                 id="address-locality"
@@ -291,7 +323,7 @@ const Address = (props) => {
                 City
               </label>
               <input
-              autoComplete="address-level1"
+                autoComplete="address-level1"
                 type="text"
                 className="address-input"
                 id="address-city"
@@ -369,7 +401,7 @@ const Address = (props) => {
                 Landmark
               </label>
               <input
-              autoComplete="off"
+                autoComplete="off"
                 type="text"
                 id="address-landmark"
                 name="landmark"
@@ -383,7 +415,7 @@ const Address = (props) => {
                 Alternate Mobile
               </label>
               <input
-              autoComplete="tel-local"
+                autoComplete="tel-local"
                 type="number"
                 id="address-alternate"
                 name="alternate"
@@ -398,7 +430,7 @@ const Address = (props) => {
                 Address Type
               </span>
               <input
-              autoComplete="off"
+                autoComplete="off"
                 type="radio"
                 id="address-type-home"
                 name="type"
@@ -431,8 +463,6 @@ const Address = (props) => {
             <button
               type="button"
               onClick={() => {
-                setAddNew(false);
-                setEditAddress(false);
                 setNewAddress({
                   name: "",
                   mobile: "",
@@ -446,7 +476,10 @@ const Address = (props) => {
                   alternate: "",
                   type: "",
                 });
+                setAddNew(false);
+                setEditAddress(false);
               }}
+              className="newAddress-btn newAddress-bordered"
             >
               Cancel
             </button>
@@ -456,15 +489,15 @@ const Address = (props) => {
                 newAddress.name.length <= 0 ||
                 newAddress.mobile.length < 10 ||
                 newAddress.pincode.length < 6 ||
-                newAddress.street.length <= 0 ||
                 newAddress.address.length <= 0 ||
                 newAddress.locality.length <= 0 ||
                 newAddress.city.length <= 0 ||
                 newAddress.state.length <= 0 ||
                 newAddress.type.length <= 0
               }
+              className="newAddress-btn"
             >
-              Submit
+              Save
             </button>
           </form>
           <button
@@ -492,8 +525,7 @@ const Address = (props) => {
                 verticalAlign: "super",
               }}
             >
-              {" "}
-              Add a new address
+              &nbsp;Add a new address
             </span>
           </button>
         </div>

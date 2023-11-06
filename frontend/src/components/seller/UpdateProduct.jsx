@@ -239,7 +239,7 @@ const UpdateProduct = (props) => {
             <label htmlFor="category" className="label-createproduct">
               Category:
             </label>
-            <input
+            {/* <input
               type="text"
               id="category"
               name="ocategory"
@@ -247,7 +247,20 @@ const UpdateProduct = (props) => {
               value={productData.ocategory}
               onChange={handleChange}
               required
-            />
+            /> */}
+            <select
+              name="ocategory"
+              className="input-createproduct"
+              defaultValue={"mobiles"}
+              onChange={handleChange}
+              id="category"
+              required
+            >
+              <option value="mobiles">Mobiles</option>
+              <option value="pc">PCs</option>
+              <option value="electronics">Electronics</option>
+              <option value="accessories">Accessories</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="subCategory" className="label-createproduct">

@@ -18,6 +18,7 @@ const OrderSuccess = () => {
         width: "100vw",
         height: "100vh",
         overflow: "hidden",
+        textAlign: "center"
       }}
     >
       <Fireworks />

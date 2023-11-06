@@ -175,7 +175,7 @@ const CreateProduct = (props) => {
               className="input-createproduct"
               value={productData.discount}
               onChange={handleChange}
-              required
+              
             />
           </div>
           <div className="form-group">
@@ -196,15 +196,12 @@ const CreateProduct = (props) => {
             <label htmlFor="category" className="label-createproduct">
               Category:
             </label>
-            <input
-              type="text"
-              id="category"
-              name="category"
-              className="input-createproduct"
-              value={productData.category}
-              onChange={handleChange}
-              required
-            />
+            <select name="category" className="input-createproduct" defaultValue={"mobiles"} onChange={handleChange} id="category" required>
+              <option value="mobiles">Mobiles</option>
+              <option value="pc">PCs</option>
+              <option value="electronics">Electronics</option>
+              <option value="accessories">Accessories</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="subCategory" className="label-createproduct">

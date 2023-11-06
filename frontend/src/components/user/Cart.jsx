@@ -354,7 +354,8 @@ const Cart = (props) => {
                     <div className="cart-item" key={product._id}>
                       <div className="cart-product-main">
                         <Link to={`/product/${product._id}`}>
-                          <img loading="lazy"
+                          <img
+                            loading="lazy"
                             className="cart-product-image"
                             src={product.product.images}
                             alt={product.product.name}
@@ -403,7 +404,7 @@ const Cart = (props) => {
                         </div>
                       </div>
                       <div className="cart-product-extra">
-                        <p>
+                        <p className="cart-delivery-text">
                           Delivery by {`${delDay} `}
                           {delDate > 30 ? 5 : delDate + 2}
                           {` ${delMonth}`} |{" "}
@@ -435,16 +436,18 @@ const Cart = (props) => {
                             <i className="fa-solid fa-chevron-right"></i>
                           </button>
                         </p>
-                        <p>
+                        <p className="cart-actions">
                           <button
                             type="button"
                             onClick={() => handleWishlist(product)}
+                            className="cart-action-btn"
                           >
                             Wishlist
                           </button>
                           <button
                             type="button"
                             id="remove-product-button"
+                            className="cart-action-btn"
                             onClick={() => {
                               setShowModal(true);
                               document.body.style.overflowY = "hidden";
@@ -523,7 +526,7 @@ const Cart = (props) => {
                         </div>
                       </div>
                       <div className="cart-product-extra">
-                        <p>
+                        <p className="cart-delivery-text">
                           Delivery by {`${delDay} `}
                           {delDate > 30 ? 5 : delDate + 2}
                           {` ${delMonth}`} |{" "}
@@ -574,7 +577,7 @@ const Cart = (props) => {
           toast={toast}
           token={token}
           host={host}
-          width={"70%"}
+          width={window.innerWidth < 1000 ? "100%": "70%"}
           setProgress={setProgress}
           setDelivery={setDelivery}
         />

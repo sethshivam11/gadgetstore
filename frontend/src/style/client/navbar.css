@@ -213,6 +213,7 @@
         height: 60px;
         overflow: hidden;
         box-shadow: none;
+        margin-bottom: 105px;
     }
     #nav-list{
         flex-direction: column;

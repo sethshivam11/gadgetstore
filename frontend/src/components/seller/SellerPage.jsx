@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import "../../style/client/product.css";
 import "../../style/seller/sellerpage.css";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "./ConfirmModal";
@@ -65,13 +66,13 @@ const SellerPage = (props) => {
     const data = await response.json();
     if (data.success) {
       setOpen("");
-      setProducts(products - data.product);
-      toast.success("Product deleted")
-    } else if(data.error === "Internal Server Error!") {
+      console.log(data.product)
+      setProducts(products.filter(product => product._id !== data.product._id));
+      toast.success("Product deleted");
+    } else if (data.error === "Internal Server Error!") {
       console.log(data.error);
       toast.error("Something went wrong");
-    }
-    else{
+    } else {
       toast.error(data.error);
     }
   };
@@ -100,6 +101,9 @@ const SellerPage = (props) => {
       <button className="log-out seller-button danger" onClick={handleLogOut}>
         Log Out
       </button>
+      <button className="seller-button home-btn" onClick={() => navigate("/")}>
+        <i className="fa fa-home"></i>&nbsp;&nbsp;Home
+      </button>
       <div className="product-list">
         {products.length > 0 &&
           products.map((product) => (
@@ -108,9 +112,11 @@ const SellerPage = (props) => {
                 <div className="img-div">
                   <img src={product.images[0]} alt={product.name} />
                 </div>
-                <strong>{product.name}</strong>
-                <p>Brand: {product.brand}</p>
-                <p>Category: {product.category}</p>
+                <strong className="product-capitalize">{product.name}</strong>
+                <p className="product-capitalize">Brand: {product.brand}</p>
+                <p className="product-capitalize">
+                  Category: {product.category}
+                </p>
                 <p>Description: {product.description}</p>
                 <p>Price: &#8377;{product.price}</p>
                 <p>Stock Units: {product.stock}</p>

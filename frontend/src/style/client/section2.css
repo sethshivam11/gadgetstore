@@ -31,10 +31,6 @@
     margin-bottom: 0;
 }
 
-.flexbox:hover{
-    pointer-events: none;
-}
-
 .d-none{
     display: none;
 }
