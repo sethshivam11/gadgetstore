@@ -357,7 +357,7 @@ const Cart = (props) => {
                           <img
                             loading="lazy"
                             className="cart-product-image"
-                            src={product.product.images}
+                            src={product.product.images[0]}
                             alt={product.product.name}
                           />
                         </Link>
@@ -482,7 +482,7 @@ const Cart = (props) => {
                         <Link to={`/product/${product._id}`}>
                           <img loading="lazy"
                             className="cart-product-image"
-                            src={product.product.images}
+                            src={product.product.images[0]}
                             alt={product.product.name}
                           />
                         </Link>

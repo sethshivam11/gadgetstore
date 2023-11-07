@@ -30,7 +30,7 @@ const App = () => {
   const [query, setQuery] = useState("");
   return (
     <div>
-      <LoadingBar color="red" progress={progress} />
+      <LoadingBar color="red" progress={progress} height={"3px"} />
       <Toaster position="bottom-center" />
       <Suspense
         fallback={

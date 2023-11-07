@@ -4,7 +4,6 @@ import "../../style/client/productlists.css";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 
-
 const ProductLists = (props) => {
   const { setProgress, toast, category, query, setQuery } = props;
   const host = process.env.REACT_APP_HOST;
@@ -28,7 +27,6 @@ const ProductLists = (props) => {
   const sortBtn = useRef();
   const lists = useRef();
 
-
   // Set products
   const fetchData = useCallback(() => {
     setProgress(30);
@@ -36,69 +34,71 @@ const ProductLists = (props) => {
     fetch(`${host}/api/client/home?category=${category}`, {
       method: "GET",
     })
-    .then((res) => res.json())
-    .then((jsonData) => {
+      .then((res) => res.json())
+      .then((jsonData) => {
         setProgress(70);
-        if(jsonData.success){
+        if (jsonData.success) {
           setProducts(jsonData.products);
-        }
-        else{
+        } else {
           console.log(jsonData.error);
         }
         setProgress(100);
-      }).catch(err => {
+      })
+      .catch((err) => {
         console.log(err);
         toast.error("Something went wrong, Please try again later!");
         setProgress(100);
-      })
+      });
   }, [host, category, toast, setProgress]);
   const fetchQuery = useCallback(() => {
     setProgress(30);
     setProgress(50);
-    fetch(`${host}/api/client/query?name=${query}&brand=${query}`,{
+    fetch(`${host}/api/client/query?name=${query}&brand=${query}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json"
-      }
-    }).then(res => res.json()).then(resData => {
-      setProgress(70);
-      if(resData.success){
-        setProducts(resData.products);
-      }else if(resData.error === "Internal Server Error!"){
-        toast.error("Something went wrong, Please try again later!");
-      }else{
-        toast.error(resData.error);
-      }
-      setProgress(100);
+        "Content-Type": "application/json",
+      },
     })
-  }, [host, query, toast, setProgress])
-    useEffect(() => {
-      if (location.pathname !== "/search") {
-        fetchData();
-      }else{
-      fetchQuery();
-      }
-      const listenscroll = () => {
-        if (window.innerWidth <= 900) {
-          let pos = lists.current.getBoundingClientRect();
-          let win = window.innerHeight;
-          if (pos.bottom <= win) {
-            setVisible(false);
-          } else {
-            setVisible(true);
-          }
+      .then((res) => res.json())
+      .then((resData) => {
+        setProgress(70);
+        if (resData.success) {
+          setProducts(resData.products);
+        } else if (resData.error === "Internal Server Error!") {
+          toast.error("Something went wrong, Please try again later!");
         } else {
-          setVisible(false);
+          toast.error(resData.error);
         }
-      };
+        setProgress(100);
+      });
+  }, [host, query, toast, setProgress]);
+  useEffect(() => {
+    if (location.pathname !== "/search") {
+      fetchData();
+    } else {
+      fetchQuery();
+    }
+    const listenscroll = () => {
       if (window.innerWidth <= 900) {
-        setVisible(true);
+        let pos = lists.current.getBoundingClientRect();
+        let win = window.innerHeight;
+        if (pos.bottom <= win) {
+          setVisible(false);
+        } else {
+          setVisible(true);
+        }
       } else {
-        setFilter(true);
+        setVisible(false);
       }
-      window.addEventListener("scroll", listenscroll);
-      return () => window.removeEventListener("scroll", listenscroll);
-    }, [fetchData, setVisible, setProgress, location, fetchQuery]);
+    };
+    if (window.innerWidth <= 900) {
+      setVisible(true);
+    } else {
+      setFilter(true);
+    }
+    window.addEventListener("scroll", listenscroll);
+    return () => window.removeEventListener("scroll", listenscroll);
+  }, [fetchData, setVisible, setProgress, location, fetchQuery]);
   let arr = [
     apple,
     samsung,
@@ -204,7 +204,6 @@ const ProductLists = (props) => {
         toast.error("Something went wrong, Please try again later!");
         setProgress(100);
       });
-
   };
   // Max Price
   const handleMax = (e) => {
@@ -264,8 +263,10 @@ const ProductLists = (props) => {
   const showFilters = () => {
     if (window.innerWidth <= 900) {
       if (filter) {
+        document.body.style.overflowY = "";
         setFilter(false);
       } else {
+        document.body.style.overflowY = "hidden";
         setFilter(true);
         setVisible(true);
       }
@@ -300,12 +301,22 @@ const ProductLists = (props) => {
         <div
           id="filters"
           style={{
-            transform: `${filter ? "translateY(0%)" : "translateY(110%)"}`,
+            transform: `${
+              filter
+                ? window.innerWidth > 865
+                  ? "translateY(0%)"
+                  : "translateY(-14%)"
+                : "translateY(110%)"
+            }`,
+            zIndex: filter ? "10" : "0",
           }}
         >
           {/* Categories */}
           <div className="category">
             <h3>Categories</h3>
+            <button onClick={showFilters} className="close-filters-btn">
+              <i className="fa fa-close"></i>
+            </button>
             <ul className="category-list">
               <li>
                 <Link to="/">All</Link>
@@ -575,11 +586,6 @@ const ProductLists = (props) => {
                 ref={sortBtn}
                 id="product-sorts"
                 onChange={handleSort}
-                style={{
-                  transform: `${
-                    filter ? "translateY(0%)" : "translateY(110%)"
-                  }`,
-                }}
               >
                 <option value={"10"}>Newest Arrivals</option>
                 <option value={"20"}>Best Selling</option>

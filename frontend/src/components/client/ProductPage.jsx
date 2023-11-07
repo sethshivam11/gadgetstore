@@ -1,14 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "../../style/client/productpage.css";
 import Navbar from "./Navbar";
 import { useParams, useNavigate } from "react-router-dom";
 
 const ProductPage = (props) => {
   const { setProgress, toast } = props;
+  const wishlist = useRef();
+  const share = useRef();
   const host = process.env.REACT_APP_HOST;
   const { id } = useParams();
   const token = localStorage.getItem("gadgetstore-user-token");
   const navigate = useNavigate();
+  const [bigImage, setBigImage] = useState("");
   const [product, setProduct] = useState({
     name: "",
     category: "",
@@ -35,6 +38,7 @@ const ProductPage = (props) => {
         setProgress(70);
         if (resData.success) {
           setProduct(resData.product);
+          setBigImage(resData.product.images[0]);
         } else {
           console.log(resData.error);
           console.log(resData.message);
@@ -124,16 +128,28 @@ const ProductPage = (props) => {
           toast.success(
             `${product.name ? product.name : "Product"} added to wishlist`
           );
-        } else {
+          wishlist.current.style.color = "#ef5466";
+        } else if (
+          resData.error === "Internal Server Error!" ||
+          resData.error === "Please provide a valid product!"
+        ) {
           console.log(resData.error);
           toast.error("Something went wrong, Please try again later!");
+        } else if (resData.error === "Product already in wishlist") {
+          toast.success(resData.error)
+          wishlist.current.style.color = "#ef5466";
         }
         setProgress(100);
       });
   };
-  const handleShare = () => {
-    toast.success("Share success");
+  const handleShare = async () => {
+    navigator.clipboard.writeText(window.location);
+    share.current.style.color = "#ffc356";
+    toast.success("Copied to clipboard");
   };
+  setTimeout(() => {
+    share.current.style.color = "#dadada";
+  }, 6000)
   return (
     <section>
       <Navbar />
@@ -141,7 +157,7 @@ const ProductPage = (props) => {
         <div className="product-image-box">
           <img
             loading="eager"
-            src={product.images[0]}
+            src={bigImage}
             alt={product.name}
             className="big-image"
           />
@@ -150,6 +166,7 @@ const ProductPage = (props) => {
             className="product-floating-button"
             id="product-wishlist-btn"
             onClick={handleWishlist}
+            ref={wishlist}
           >
             <i className="fa fa-heart"></i>
           </button>
@@ -158,6 +175,7 @@ const ProductPage = (props) => {
             className="product-floating-button"
             id="product-share-btn"
             onClick={handleShare}
+            ref={share}
           >
             <i className="fa fa-share"></i>
           </button>
@@ -169,23 +187,48 @@ const ProductPage = (props) => {
                   loading="lazy"
                   className="small-images"
                   alt={image + index}
-                  key={image}
+                  key={image + "-" + index}
+                  onMouseEnter={() => setBigImage(image)}
+                  style={{
+                    border:
+                      bigImage === image
+                        ? "1px solid black "
+                        : "1px solid transparent",
+                    transform: bigImage === image ? "scale(0.95)" : "scale(1)",
+                    padding: "2px",
+                    transition: "transform 0.2s ease",
+                    borderRadius: "5px",
+                  }}
                 />
               );
             })}
           </div>
         </div>
         <div className="product-info-box">
-          <p className="product-page-category">{product.category}</p>
+          <p className="product-page-category">
+            {product.category === "pc" ? "PCs" : product.category}
+          </p>
           <h3 className="product-page-name">{product.name}</h3>
           <h4 className="product-page-price">
             <span>&#8377;&nbsp;{product.price}</span>
             <span className="product-ratings">
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star-half-stroke"></i>
-              <i class="fa-regular fa-star"></i>
+              {Array.from({ length: Math.floor(product.rating) }, (_, i) => (
+                <i key={"full" + i} className="fa fa-star"></i>
+              ))}
+              {Array.from(
+                { length: Math.floor(product.rating) - product.rating ? 1 : 0 },
+                (_, i) => (
+                  <i key={"half" + i} className="fa fa-star-half-stroke"></i>
+                )
+              )}
+              {product.rating <= 4
+                ? Array.from(
+                    { length: Math.floor(5 - product.rating) },
+                    (_, i) => (
+                      <i key={"hollow" + i} className="fa-regular fa-star"></i>
+                    )
+                  )
+                : ""}
             </span>
           </h4>
           <p className="product-data-para">Only {product.stock} Pieces left</p>
@@ -206,13 +249,11 @@ const ProductPage = (props) => {
               Add to Cart
             </button>
           </p>
-          <p>
-            <ul className="product-details-list">
-              <li>Highlights</li>
-              <li>Description</li>
-              <li>Specifications</li>
-            </ul>
-          </p>
+          <ul className="product-details-list">
+            <li>Highlights</li>
+            <li>Description</li>
+            <li>Specifications</li>
+          </ul>
         </div>
       </div>
     </section>

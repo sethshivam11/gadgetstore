@@ -117,7 +117,7 @@ const SellerPage = (props) => {
                 <p className="product-capitalize">
                   Category: {product.category}
                 </p>
-                <p>Description: {product.description}</p>
+                <p>Description: {product.description.slice(0,120) + "..."}</p>
                 <p>Price: &#8377;{product.price}</p>
                 <p>Stock Units: {product.stock}</p>
                 <div className="product-image">
