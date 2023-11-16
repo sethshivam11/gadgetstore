@@ -6,9 +6,15 @@ const Product = require("../../models/Product");
 // Route 1: Get all the products listed by sellers "/api/client/home"
 router.get("/home", async (req, res) => {
   let success = false;
-  const { category } = req.query;
+  const { category, subCategory } = req.query;
   try {
-    const products = await Product.find({ category: category });
+    let products = {};
+    if(category){
+    products = await Product.find({ category });
+    }
+    else if(subCategory){
+      products = await Product.find({ subCategory })
+    }
     success = true;
     res.status(200).json({ success, products });
   } catch (err) {

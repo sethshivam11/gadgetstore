@@ -14,7 +14,7 @@ const Home = (props) => {
       <Section2 heading="Finest Gaming PCs" category="pc" />
       <Section2 heading="New Launches" category="mobiles" />
       <Accessories heading="Accessories" category="accessories" />
-      <Accessories heading="Headphones" category="accessories" />
+      <Accessories heading="Headphones" subCategory="headphones" />
       <Section2 heading="Best of Electronics" category="electronics" />
       <Footer setProgress={props.setProgress} toast={props.toast} />
     </section>

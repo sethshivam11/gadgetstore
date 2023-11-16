@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../../style/client/login.css";
 import "../../style/client/signup.css";
-import gsap from "gsap";
 
 const Signup = (props) => {
   const { setProgress, toast } = props;
+  const token = localStorage.getItem("gadgetstore-user-token");
   const host = process.env.REACT_APP_HOST;
   const navigate = useNavigate();
   const [creds, setCreds] = useState({
@@ -19,6 +19,10 @@ const Signup = (props) => {
   };
   const handleLogin = (e) => {
     e.preventDefault();
+    if (token) {
+      console.log(token);
+      localStorage.removeItem("gadgetstore-user-token");
+    }
     setProgress(30);
     fetch(`${host}/api/user/auth/signup`, {
       method: "POST",
@@ -49,37 +53,8 @@ const Signup = (props) => {
         setProgress(100);
       });
   };
-  const app = useRef();
-  useEffect(() => {
-    let ctx = gsap.context(() => {
-      gsap.to("#circle1", {
-        x: -800,
-        duration: 2,
-      });
-      gsap.to("#circle2", {
-        x: 100,
-        y: 100,
-        duration: 2,
-      });
-      gsap.to("#circle3", {
-        x: -100,
-        y: -100,
-        duration: 2,
-      });
-      gsap.to("#circle4", {
-        x: 800,
-        duration: 2,
-      });
-      gsap.to("#circle5", {
-        y: -200,
-        duration: 2,
-      });
-    }, app);
-
-    return () => ctx.revert();
-  }, []);
   return (
-    <div className="main" ref={app}>
+    <div className="main">
       <div id="circle1"></div>
       <div id="circle2"></div>
       <div id="circle3"></div>
@@ -89,8 +64,8 @@ const Signup = (props) => {
         <h1 id="signuptext">SignUp</h1>
         <form onSubmit={handleLogin}>
           <input
-          autoCapitalize="on"
-          autoComplete="name"
+            autoCapitalize="on"
+            autoComplete="name"
             className="bar"
             name="name"
             type="text"
@@ -98,7 +73,7 @@ const Signup = (props) => {
             onChange={onChange}
           ></input>
           <input
-          autoComplete="email"
+            autoComplete="email"
             className="bar"
             name="email"
             type="email"
@@ -106,7 +81,7 @@ const Signup = (props) => {
             onChange={onChange}
           ></input>
           <input
-          autoComplete="new-password"
+            autoComplete="new-password"
             className="bar"
             name="password"
             type="password"

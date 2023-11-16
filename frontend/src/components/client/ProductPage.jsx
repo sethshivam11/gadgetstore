@@ -41,11 +41,14 @@ const ProductPage = (props) => {
           setBigImage(resData.product.images[0]);
         } else {
           console.log(resData.error);
-          console.log(resData.message);
+          navigate(`/${id}`)
         }
         setProgress(100);
-      });
-  }, [host, id, setProduct, setProgress]);
+      }).catch(err => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
+      })
+  }, [host, id, setProduct, setProgress, navigate, toast]);
   useEffect(() => {
     setProgress(30);
     fetchProduct();
@@ -75,6 +78,10 @@ const ProductPage = (props) => {
           console.log(resData.error);
           setProgress(70);
         }
+        setProgress(100);
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
         setProgress(100);
       });
   };
@@ -107,6 +114,10 @@ const ProductPage = (props) => {
           toast.error("Something went wrong, Please try again later!");
           setProgress(100);
         }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
   };
   const handleWishlist = () => {
@@ -136,9 +147,13 @@ const ProductPage = (props) => {
           console.log(resData.error);
           toast.error("Something went wrong, Please try again later!");
         } else if (resData.error === "Product already in wishlist") {
-          toast.success(resData.error)
+          toast.success(resData.error);
           wishlist.current.style.color = "#ef5466";
         }
+        setProgress(100);
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
         setProgress(100);
       });
   };
@@ -146,10 +161,11 @@ const ProductPage = (props) => {
     navigator.clipboard.writeText(window.location);
     share.current.style.color = "#ffc356";
     toast.success("Copied to clipboard");
+      setTimeout(() => {
+        share.current.style.color = "#dadada";
+      }, 6000);
   };
-  setTimeout(() => {
-    share.current.style.color = "#dadada";
-  }, 6000)
+
   return (
     <section>
       <Navbar />
@@ -210,7 +226,24 @@ const ProductPage = (props) => {
           </p>
           <h3 className="product-page-name">{product.name}</h3>
           <h4 className="product-page-price">
-            <span>&#8377;&nbsp;{product.price}</span>
+            <span>
+              &#8377;&nbsp;
+              {product.discount
+                ? Math.floor(
+                    product.price - product.discount * (product.price / 100)
+                  )
+                : product.price}
+            </span>
+            {product.discount ? (
+              <span>
+                <span className="product-price-linethrough">
+                  &#8377;&nbsp;{product.price}
+                </span>
+                <span className="product-page-discount">&nbsp;&nbsp;{product.discount}%</span>
+              </span>
+            ) : (
+              ""
+            )}
             <span className="product-ratings">
               {Array.from({ length: Math.floor(product.rating) }, (_, i) => (
                 <i key={"full" + i} className="fa fa-star"></i>

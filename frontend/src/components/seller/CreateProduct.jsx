@@ -14,7 +14,7 @@ const CreateProduct = (props) => {
   });
   const [productData, setProductData] = useState({
     name: "",
-    category: "",
+    category: "mobiles",
     subCategory: "",
     brand: "",
     discount: "",

@@ -104,9 +104,13 @@ router.post(
 
 // Route 3: Getting the data of logged in user "/api/user/auth/getuser"
 router.get("/getuser", fetchuser, async (req, res) => {
+  let success = false;
   try {
     const userId = req.user.id;
     const user = await User.findById(userId).select("-password");
+    if(!user){
+      return res.status(400).json({success, error: "User Not Found!"})
+    }
     success = true;
     res.status(200).json({ success, user });
   } catch (err) {

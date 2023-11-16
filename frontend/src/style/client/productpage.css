@@ -9,6 +9,7 @@
 
 .big-image {
     height: 400px;
+    max-width: 100%;
     object-fit: contain;
 }
 
@@ -24,6 +25,7 @@
     align-items: center;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
 }
 
 .product-img-glimpses {
@@ -89,6 +91,7 @@
     font-family: "Montserrat";
     font-size: 35px;
     margin-bottom: 20px;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -151,41 +154,62 @@
     border-bottom: 5px solid white;
 }
 
-@media only screen and (max-width: 865px){
-    .product-page-content{
+.product-price-linethrough {
+    text-decoration: line-through;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.product-page-discount {
+    color: green;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: "Didact Gothic";
+}
+
+@media only screen and (max-width: 865px) {
+    .product-page-content {
         flex-direction: column;
     }
-    .product-image-box{
+
+    .product-image-box {
         border-top-right-radius: 5px;
         border-top-left-radius: 5px;
         width: 100%;
         position: relative;
     }
-    .product-info-box{
+
+    .product-info-box {
         width: 100%;
         border-radius: 0;
         border-bottom-right-radius: 5px;
         border-bottom-left-radius: 5px;
     }
 }
-@media only screen and (max-width: 613px){
-    .product-img-glimpses{
+
+@media only screen and (max-width: 613px) {
+    .product-img-glimpses {
         overflow-x: auto;
     }
-    .product-info-box{
+
+    .product-info-box {
         padding: 2rem 1rem;
     }
-    .big-image{
+
+    .big-image {
         height: 350px;
     }
-    .product-page-btn{
+
+    .product-page-btn {
         font-size: 18px;
         width: 150px;
     }
-    .product-page-name{
+
+    .product-page-name {
         font-size: 35px;
     }
-    .product-page-price{
+
+    .product-page-price {
         font-size: 25px;
     }
 }

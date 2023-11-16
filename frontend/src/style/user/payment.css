@@ -15,10 +15,10 @@
     margin: 0 auto;
 }
 .button-payment-confirm{
-    padding: 0.8rem;
+    padding: 1rem;
     font-family: "Syne";
     font-size: 25px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid #ffc356;
     background-color: #ffc356;
     color: #191817;

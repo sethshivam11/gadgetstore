@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import "../../style/seller/sellerlogin.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SellerLogin(props) {
-  const {setProgress, toast} = props;
+  const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
   const navigate = useNavigate();
-    const [credentials, setCredentials] = useState({email: "", password: ""});
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCredentials({...credentials, [name]: value});
+    setCredentials({ ...credentials, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -19,22 +19,23 @@ function SellerLogin(props) {
     const response = await fetch(`${host}/api/seller/auth/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({email: credentials.email, password: credentials.password})
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      }),
     });
     setProgress(50);
     const tokenResponse = await response.json();
     setProgress(70);
-    if(tokenResponse.success){
+    if (tokenResponse.success) {
       const token = tokenResponse.token;
       localStorage.setItem("gadgetstore-seller-token", token);
       navigate("/seller");
-    }
-    else if(tokenResponse.error === "Internal Server Error!"){
+    } else if (tokenResponse.error === "Internal Server Error!") {
       toast.error("Something went wrong, Please try again later");
-    }
-    else{
+    } else {
       toast.error(tokenResponse.error);
     }
     setProgress(100);
@@ -42,7 +43,7 @@ function SellerLogin(props) {
 
   return (
     <div id="container">
-      <div className="login-form">
+      <div className="seller-login-form">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -67,7 +68,13 @@ function SellerLogin(props) {
               required
             />
           </div>
-          <button type="submit">Login</button>
+          <span className="change-mode">
+            Don't have an account,&nbsp;
+            <Link type="button" to="/seller/signup">
+              Signup
+            </Link>
+          </span>
+          <button type="submit">Continue</button>
         </form>
       </div>
     </div>

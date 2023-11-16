@@ -43,7 +43,6 @@ const Section1 = () => {
         >
           <img
             loading="lazy"
-            src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/ee78de50f9dbe993.jpg?q=20"
             alt="poster1"
           />
         </Link>
@@ -57,12 +56,11 @@ const Section1 = () => {
         >
           <img
             loading="lazy"
-            src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/cb8a624c94eb850e.jpg?q=20"
             alt="poster2"
           />
         </Link>
         <Link
-          to="/mobiles"
+          to="/product/65533587866ab4dc4d046d46"
           className="carousel-slide"
           style={{
             transform: `translateX(-${slideIndex * 100}%)`,
@@ -71,22 +69,7 @@ const Section1 = () => {
         >
           <img
             loading="lazy"
-            src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/364c9a92201246a6.jpg?q=20"
             alt="poster3"
-          />
-        </Link>
-        <Link
-          to="/mobiles"
-          className="carousel-slide"
-          style={{
-            transform: `translateX(-${slideIndex * 100}%)`,
-            transition: "transform 0.5s ease-in-out",
-          }}
-        >
-          <img
-            loading="lazy"
-            src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/ee78de50f9dbe993.jpg?q=20"
-            alt="poster4"
           />
         </Link>
         <button
@@ -104,8 +87,12 @@ const Section1 = () => {
         </Link>
       </div>
       <div id="posters">
-        <Link to="/mobiles" className="poster" id="section1-poster1">
-          <h3>Coming Soon</h3>
+        <Link
+          to="/product/6552102c4ea3dc5baaee89c1"
+          className="poster"
+          id="section1-poster1"
+        >
+          <h3>Best Selling</h3>
           <img
             loading="lazy"
             src="http://res.cloudinary.com/dv3qbj0bn/image/upload/v1696261588/gadget-store/vkcq1vkwwvxgqytsgb0s.webp"
@@ -113,7 +100,11 @@ const Section1 = () => {
             className="poster-img"
           />
         </Link>
-        <Link to="/mobiles" className="poster black" id="section1-poster2">
+        <Link
+          to="/product/65532047866ab4dc4d046cf1"
+          className="poster black"
+          id="section1-poster2"
+        >
           <h3>Sale is Live!</h3>
           <img
             loading="lazy"
@@ -122,7 +113,11 @@ const Section1 = () => {
             className="poster-img"
           />
         </Link>
-        <Link to="/accessories" className="poster" id="section1-poster3">
+        <Link
+          to="/product/65532329866ab4dc4d046d05"
+          className="poster"
+          id="section1-poster3"
+        >
           <h3>Great Offers</h3>
           <img
             loading="lazy"

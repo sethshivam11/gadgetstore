@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "This is backend for Gadget Store website which sells electronics and technology devices",
   "main": "server.js",
   "scripts": {

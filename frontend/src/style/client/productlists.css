@@ -17,6 +17,7 @@
     padding: 0.5%;
     border-radius: 5px;
     translate: none;
+    user-select: none;
 }
 
 .category {
@@ -71,6 +72,7 @@
     font-weight: 400;
     display: inline-block;
     margin-left: 10px;
+    text-transform: capitalize;
 }
 
 #brand-list li:nth-child(1) {
@@ -110,7 +112,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     font-family: "Didact Gothic";
     padding: 1%;
     gap: 1%;
@@ -126,8 +128,15 @@
     transition: all 0.2s ease;
     border: 1px solid white;
     border-radius: 5px;
-    padding: 2%;
+    padding: 1.5%;
     margin-top: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 330px;
+    width: auto;
+    max-width: 235px;
 }
 
 .product-box h3,
@@ -141,10 +150,15 @@
 }
 
 .product-box img {
-    width: 200px;
+    width: 180px;
     object-fit: contain;
     max-height: 230px;
     padding: 5%;
+}
+
+.product-list-page-price {
+    font-size: 22px;
+    font-weight: 600;
 }
 
 .filter-btn {
@@ -153,6 +167,15 @@
 
 .close-filters-btn {
     display: none;
+}
+
+.product-page-price-linethrough {
+    text-decoration: line-through;
+}
+
+.pl-discount {
+    text-decoration: none;
+    color: green;
 }
 
 @media only screen and (max-width: 900px) {

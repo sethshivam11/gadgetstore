@@ -66,8 +66,12 @@ const Cart = (props) => {
           console.log(resData.error);
         }
         setProgress(100);
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
-  }, [host, token, cart, wishlist, setProgress]);
+  }, [host, token, cart, wishlist, setProgress, toast]);
   switch (day) {
     case 0:
       delDay = "Sun";
@@ -164,6 +168,10 @@ const Cart = (props) => {
         }
         setShowModal(false);
         document.body.style.overflow = "";
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
   };
   const handleIncrease = (quantity, com) => {
@@ -218,6 +226,10 @@ const Cart = (props) => {
         } else {
           toast.error(resData.error);
         }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
   };
   const handleMove = (move) => {
@@ -249,6 +261,10 @@ const Cart = (props) => {
         } else {
           toast.error(resData.error);
         }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
   };
   const handleWishlist = (wish) => {
@@ -278,6 +294,10 @@ const Cart = (props) => {
         } else {
           toast.error(resData.error);
         }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
   };
   return (

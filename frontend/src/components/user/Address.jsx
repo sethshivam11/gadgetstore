@@ -100,7 +100,6 @@ const Address = (props) => {
       if(resData.success){
         setAddNew(false);
         setEditAddress(false);
-        console.log(resData);
         let addId = resData.user.address.length + 1;
         let newAdd = newAddress;
         newAdd.id = `address-${addId}`;

@@ -7,11 +7,11 @@ import Address from "./Address";
 const Accounts = (props) => {
   const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
+  console.log(host)
   const token = localStorage.getItem("gadgetstore-user-token");
   const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
-  // eslint-disable-next-line
-  const[delivery, setDelivery] = useState({});
+  const [delivery, setDelivery] = useState({});
   const [profile, setProfile] = useState(true);
   const [orders, setOrders] = useState(false);
   const [addresses, setAddresses] = useState(false);
@@ -44,17 +44,20 @@ const Accounts = (props) => {
           jsonData.user.password = "123456";
           setCreds(jsonData.user);
           let name = jsonData.user.name;
-          if(name.includes(" ")){
-          let first = name.split(" ")[0].slice(0, 1);
-          let second = name.split(" ")[1].slice(0, 1);
-          setAvatar(first.concat(second));
-          }
-          else{
-            let first = name.slice(0,2);
+          if (name.includes(" ")) {
+            let first = name.split(" ")[0].slice(0, 1);
+            let second = name.split(" ")[1].slice(0, 1);
+            setAvatar(first.concat(second));
+          } else {
+            let first = name.slice(0, 2);
             setAvatar(first);
           }
-          setName(jsonData.user.name)
-          setEmail(jsonData.user.email)
+          setName(jsonData.user.name);
+          setEmail(jsonData.user.email);
+          setProgress(100);
+        } else if (jsonData.error === "User Not Found!") {
+          toast.error("Please login to continue");
+          navigate("/login");
           setProgress(100);
         } else {
           setProgress(70);
@@ -62,8 +65,12 @@ const Accounts = (props) => {
           navigate("/login");
           setProgress(100);
         }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
-  }, [host, token, navigate, setProgress]);
+  }, [host, token, navigate, setProgress, toast]);
   const checkPassword = useCallback(() => {
     setProgress(50);
     fetch(`${host}/api/user/auth/verify`, {
@@ -89,8 +96,12 @@ const Accounts = (props) => {
           console.log(jsonData.error);
           setProgress(100);
         }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
-  }, [host, token, checkPass, setProgress]);
+  }, [host, token, checkPass, setProgress, toast]);
   const handleUpdate = (e) => {
     e.preventDefault();
     setProgress(30);
@@ -112,8 +123,8 @@ const Accounts = (props) => {
             email: creds.email,
             password: creds.password.slice(0, 6),
           });
-          setName(creds.name)
-          setEmail(creds.email)
+          setName(creds.name);
+          setEmail(creds.email);
           setEdit(false);
           setEditPassword(false);
           setShowMainPassword(false);
@@ -125,6 +136,10 @@ const Accounts = (props) => {
           setProgress(100);
           toast.error("Something went wrong, Please try again later!");
         }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
   };
   useEffect(() => {
@@ -315,7 +330,7 @@ const Accounts = (props) => {
         </form>
       )}
       {!profile && orders && !addresses && <Orders />}
-      {!profile && !orders && addresses && <Address width={"100%"} address={true} setDelivery={setDelivery} host={host} token={token} toast={toast} setProgress={setProgress} />}
+      {!profile && !orders && addresses && <Address width={"100%"} address={true} delivery={delivery} setDelivery={setDelivery} host={host} token={token} toast={toast} setProgress={setProgress} />}
       <div
         id="password-modal"
         style={{

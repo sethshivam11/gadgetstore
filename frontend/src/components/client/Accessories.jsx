@@ -3,6 +3,7 @@ import Product from "./Product";
 import "../../style/client/accessories.css";
 
 const Accessories = (props) => {
+  const { category, subCategory } = props;
   const host = process.env.REACT_APP_HOST;
   const left = useRef();
   const right = useRef();
@@ -18,7 +19,7 @@ if (window.innerWidth >= 900) {
   };
   const [results, setResults] = useState([]);
   const fetchData = useCallback(() => {
-    fetch(`${host}/api/client/home?category=${props.category}`, {
+    fetch(`${host}/api/client/home?${category ? ("category=" + category): ("subCategory=" + subCategory)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,11 +28,13 @@ if (window.innerWidth >= 900) {
       .then((jsonData) => jsonData.json())
       .then((data) => {
         if (data.success) {
-          setResults(data.products);
+          if(data.products.length){
+            setResults(data.products);
+          }
         }
       })
       .catch((err) => console.log(err));
-    }, [host, props.category]);
+    }, [host, category, subCategory]);
   useEffect(() => {
     fetchData();
     if (window.innerWidth >= 900) {
@@ -65,7 +68,7 @@ if (window.innerWidth >= 900) {
             >
               <i className="fa fa-chevron-right"></i>
             </button>
-            {results &&
+            {results.length > 0 &&
               results.map((result_1) => {
                 return (
                   <Product

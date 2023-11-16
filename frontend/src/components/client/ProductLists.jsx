@@ -7,25 +7,18 @@ import Footer from "./Footer";
 const ProductLists = (props) => {
   const { setProgress, toast, category, query, setQuery } = props;
   const host = process.env.REACT_APP_HOST;
-  const location = useLocation();
-  const [products, setProducts] = useState([]);
-  const [visible, setVisible] = useState(false);
-  const [filter, setFilter] = useState(false);
-  const apple = useRef();
-  const samsung = useRef();
-  const xiaomi = useRef();
-  const oppo = useRef();
-  const realme = useRef();
-  const vivo = useRef();
-  const oneplus = useRef();
-  const google = useRef();
-  const motorola = useRef();
-  const poco = useRef();
-  const nothing = useRef();
   const min = useRef();
   const max = useRef();
   const sortBtn = useRef();
   const lists = useRef();
+  const location = useLocation();
+  const [products, setProducts] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [filter, setFilter] = useState(false);
+  const [brands, setBrands] = useState([]);
+  const [dataFetched, setDataFetched] = useState(false);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [productsData, setProductsData] = useState([]);
 
   // Set products
   const fetchData = useCallback(() => {
@@ -39,6 +32,12 @@ const ProductLists = (props) => {
         setProgress(70);
         if (jsonData.success) {
           setProducts(jsonData.products);
+          let brand = new Set(
+            jsonData.products.map((product) => product.brand)
+          );
+          setBrands(brand);
+          setDataFetched(true);
+          setProductsData(jsonData.products);
         } else {
           console.log(jsonData.error);
         }
@@ -49,7 +48,7 @@ const ProductLists = (props) => {
         toast.error("Something went wrong, Please try again later!");
         setProgress(100);
       });
-  }, [host, category, toast, setProgress]);
+  }, [host, category, toast, setProgress, setBrands]);
   const fetchQuery = useCallback(() => {
     setProgress(30);
     setProgress(50);
@@ -99,167 +98,80 @@ const ProductLists = (props) => {
     window.addEventListener("scroll", listenscroll);
     return () => window.removeEventListener("scroll", listenscroll);
   }, [fetchData, setVisible, setProgress, location, fetchQuery]);
-  let arr = [
-    apple,
-    samsung,
-    oppo,
-    xiaomi,
-    vivo,
-    realme,
-    oneplus,
-    google,
-    motorola,
-    poco,
-    nothing,
-  ];
-  // only one checked box
-  function checkChecked(value) {
-    let some = [];
-    arr.forEach((checkbox) => {
-      setProgress(50);
-      if (!checkbox.current.checked) {
-        some.push(true);
-      } else if (checkbox.current.value === value) {
-        some.push(true);
+
+  const handleCheck = (brand) => {
+    setSelectedBrands((prevSelectedBrands) => {
+      if (prevSelectedBrands.includes(brand)) {
+        return prevSelectedBrands.filter(
+          (selectedBrand) => selectedBrand !== brand
+        );
       } else {
-        some.push(false);
+        return [...prevSelectedBrands, brand];
       }
     });
-    if (some.includes(false)) {
-      setProgress(70);
-      return false;
-    }
-    setProgress(70);
-    return true;
-  }
-  // Brand checkboxes
-  const handleCheck = (e) => {
-    if (e.target.checked) {
-      setProgress(30);
-      if (checkChecked(e.target.value)) {
-        setProgress(50);
-        fetch(
-          `${host}/api/client/query?brand=${e.target.value}&category=${category}`
-        )
-          .then((res) => res.json())
-          .then((jsonData) => {
-            setProgress(70);
-            if (jsonData.success) {
-              setProducts(jsonData.products);
-            } else {
-              console.log(jsonData.error);
-            }
-            setProgress(100);
-          })
-          .catch((err) => {
-            console.log(err);
-            toast.error("Something went wrong, Please try again later!");
-            setProgress(100);
-          });
-      } else {
-        setProgress(50);
-        fetch(
-          `${host}/api/client/query?brand=${e.target.value}&category=${category}`
-        )
-          .then((res) => res.json())
-          .then((jsonData) => {
-            setProgress(70);
-            if (jsonData.success) {
-              setProducts(products.concat(jsonData.products));
-            } else {
-              console.log(jsonData.error);
-            }
-            setProgress(100);
-          })
-          .catch((err) => {
-            console.log(err);
-            toast.error("Something went wrong, Please try again later!");
-            setProgress(100);
-          });
-      }
-    } else {
-      fetchData();
+    if (dataFetched) {
+      setProducts(productsData);
+      setSelectedBrands((prevSelectedBrands) => {
+        const filteredProducts = productsData.filter((product) =>
+          prevSelectedBrands.length === 0
+            ? true
+            : prevSelectedBrands.includes(product.brand)
+        );
+        setProducts(filteredProducts);
+        return prevSelectedBrands;
+      });
     }
   };
-  // Min Price
+
+  // Minimum Price
   const handleMin = (e) => {
-    setProgress(30);
-    fetch(
-      `${host}/api/client/query?minprice=${e.target.value}&category=${category}&maxprice=${max.current.value}`
-    )
-      .then((res) => res.json())
-      .then((jsonData) => {
-        setProgress(50);
-        if (jsonData.success) {
-          setProducts(jsonData.products);
-          setProgress(70);
-        } else {
-          console.log(jsonData.error);
-          setProgress(70);
-        }
-        setProgress(100);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Something went wrong, Please try again later!");
-        setProgress(100);
-      });
+    const min = e.target.value;
+    const filteredProducts = productsData.filter(
+      (product) =>
+        product.price - (product.price / 100) * product.discount >= min
+    );
+    setProducts(filteredProducts);
   };
-  // Max Price
+
+  // Maximum Price
   const handleMax = (e) => {
-    setProgress(30);
-    fetch(
-      `${host}/api/client/query?maxprice=${e.target.value}&category=${category}&minprice=${min.current.value}`
-    )
-      .then((res) => res.json())
-      .then((jsonData) => {
-        setProgress(50);
-        if (jsonData.success) {
-          setProducts(jsonData.products);
-          setProgress(70);
-        } else {
-          console.log(jsonData.error);
-          setProgress(70);
-        }
-        setProgress(100);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Something went wrong, Please try again later!");
-        setProgress(100);
-      });
+    const max = e.target.value;
+    const filteredProducts = productsData.filter(
+      (product) =>
+        product.price - (product.price / 100) * product.discount <= max
+    );
+    setProducts(filteredProducts);
   };
-  // Price Sorting
-  function priceSort(a, b) {
-    return a.price - b.price;
-  }
-  // Date Sorting
-  function dateSort(a, b) {
-    return a.data - b.date;
-  }
+
   // Sorting products
   const handleSort = (e) => {
+    // Newest Arrivals
     if (e.target.value === "10") {
       let sortedProducts = products;
-      sortedProducts.reverse();
+      sortedProducts.sort((a, b) => a.date - b.date);
       setProducts((products) => [...products]);
-    } else if (e.target.value === "20") {
+    }
+    // Best Selling
+    else if (e.target.value === "20") {
       let sortedProducts = products;
-      sortedProducts.sort(dateSort);
-      sortedProducts.reverse();
-      setProducts((products) => [...sortedProducts]);
-    } else if (e.target.value === "30") {
+      sortedProducts.sort((a, b) => a.quantity - b.quantity);
+      setProducts(() => [...sortedProducts]);
+    }
+    // Price - low to high
+    else if (e.target.value === "30") {
       let sortedProducts = products;
-      sortedProducts.sort(priceSort);
-      setProducts((products) => [...sortedProducts]);
-    } else if (e.target.value === "40") {
+      sortedProducts.sort((a, b) => a.price - b.price);
+      setProducts(() => [...sortedProducts]);
+    }
+    // Price - high to low
+    else if (e.target.value === "40") {
       let sortedProducts = products;
-      sortedProducts.sort(priceSort);
-      sortedProducts.reverse();
-      setProducts((products) => [...sortedProducts]);
+      sortedProducts.sort((a, b) => b.price - a.price);
+      setProducts(() => [...sortedProducts]);
     }
   };
-  // show filters in mobiles
+  
+  // Show filters in mobiles
   const showFilters = () => {
     if (window.innerWidth <= 900) {
       if (filter) {
@@ -409,171 +321,24 @@ const ProductLists = (props) => {
           <div className="category">
             <h3>Brand</h3>
             <ul className="category-list" id="brand-list">
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="apple"
-                  value="apple"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={apple}
-                />
-                <label htmlFor="apple" className="category-label">
-                  Apple
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="samsung"
-                  value="samsung"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={samsung}
-                />
-                <label htmlFor="samsung" className="category-label">
-                  Samsung
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="xiaomi"
-                  value="xiaomi"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={xiaomi}
-                />
-                <label htmlFor="xiaomi" className="category-label">
-                  Xiaomi
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="realme"
-                  value="realme"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={realme}
-                />
-                <label htmlFor="realme" className="category-label">
-                  Realme
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="oppo"
-                  value="oppo"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={oppo}
-                />
-                <label htmlFor="oppo" className="category-label">
-                  Oppo
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="vivo"
-                  value="vivo"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={vivo}
-                />
-                <label htmlFor="vivo" className="category-label">
-                  Vivo
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="oneplus"
-                  value="oneplus"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={oneplus}
-                />
-                <label htmlFor="oneplus" className="category-label">
-                  OnePlus
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="google"
-                  value="google"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={google}
-                />
-                <label htmlFor="google" className="category-label">
-                  Google
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="motorola"
-                  value="motorola"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={motorola}
-                />
-                <label htmlFor="motorola" className="category-label">
-                  Motorola
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="poco"
-                  value="poco"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={poco}
-                />
-                <label htmlFor="poco" className="category-label">
-                  Poco
-                </label>
-              </li>
-              <li>
-                <input
-                  autoComplete="off"
-                  type="checkbox"
-                  name="brand"
-                  id="nothing"
-                  value="nothing"
-                  onChange={handleCheck}
-                  defaultChecked={false}
-                  ref={nothing}
-                />
-                <label htmlFor="nothing" className="category-label">
-                  Nothing
-                </label>
-              </li>
+              {[...brands].map((brand) => {
+                return (
+                  <li key={brand}>
+                    <input
+                      autoComplete="off"
+                      type="checkbox"
+                      name="brand"
+                      id={brand}
+                      value={brand}
+                      onChange={() => handleCheck(brand)}
+                      checked={selectedBrands.includes(brand)}
+                    />
+                    <label htmlFor={brand} className="category-label">
+                      {brand}
+                    </label>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -613,7 +378,30 @@ const ProductLists = (props) => {
                       alt={product.name}
                     />
                     <h3>{product.name}</h3>
-                    <p>&#8377; {product.price}</p>
+                    <p>
+                      <span className="product-list-page-price">
+                        &#8377;&nbsp;
+                        {product.discount
+                          ? Math.floor(
+                              product.price -
+                                product.discount * (product.price / 100)
+                            )
+                          : product.price}
+                        &nbsp;&nbsp;
+                      </span>
+                      {product.discount ? (
+                        <>
+                          <span className="product-page-price-linethrough">
+                            &#8377;&nbsp;{product.price}
+                          </span>
+                          <span className="pl-discount">
+                            &nbsp;&nbsp;{product.discount}%
+                          </span>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </p>
                   </Link>
                 );
               })}

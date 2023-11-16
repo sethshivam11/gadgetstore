@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import gsap from "gsap";
 import "../../style/client/login.css";
 
 function Login(props) {
   const { setProgress, toast } = props;
+  const token = localStorage.getItem("gadgetstore-user-token");
   const host = process.env.REACT_APP_HOST;
   const navigate = useNavigate();
   const [creds, setCreds] = useState({
@@ -17,6 +17,10 @@ function Login(props) {
   };
   const handleLogin = (e) => {
     e.preventDefault();
+    if (token) {
+      console.log(token);
+      localStorage.removeItem("gadgetstore-user-token");
+    }
     setProgress(30);
     fetch(`${host}/api/user/auth/login`, {
       method: "POST",
@@ -36,51 +40,20 @@ function Login(props) {
           localStorage.setItem("gadgetstore-user-token", resData.token);
           toast("Successfully Logged In");
           navigate("/");
-        }
-        else if(resData.error === "Internal Server Error!"){
+        } else if (resData.error === "Internal Server Error!") {
           toast.error("Something went wrong, Please try again later!");
           console.log(resData);
           setProgress(70);
-        } 
-        else{
+        } else {
           toast.error(resData.error);
           setProgress(70);
         }
-          setProgress(100);
+        setProgress(100);
       });
   };
-  const app = useRef();
-  useEffect(() => {
-    let ctx = gsap.context(() => {
-      gsap.from("#circle1", {
-        x: -800,
-        duration: 2,
-      });
-      gsap.from("#circle2", {
-        x: 100,
-        y: 100,
-        duration: 2,
-      });
-      gsap.from("#circle3", {
-        x: -100,
-        y: -100,
-        duration: 2,
-      });
-      gsap.from("#circle4", {
-        x: 800,
-        duration: 2,
-      });
-      gsap.from("#circle5", {
-        y: -200,
-        duration: 2,
-      });
-    }, app);
-
-    return () => ctx.revert();
-  }, []);
 
   return (
-    <div className="main" ref={app}>
+    <div className="main">
       <div id="circle1"></div>
       <div id="circle2"></div>
       <div id="circle3"></div>

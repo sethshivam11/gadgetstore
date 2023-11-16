@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import "../../style/seller/sellerlogin.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SellerLogin(props) {
-  const {setProgress, toast} = props;
+  const { setProgress, toast } = props;
   const host = process.env.REACT_APP_HOST;
   const navigate = useNavigate();
-  const [credentials, setCredentials] = useState({ name: "", email: "", password: "" });
+  const [credentials, setCredentials] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,9 +38,9 @@ function SellerLogin(props) {
       const token = tokenResponse.token;
       localStorage.setItem("gadgetstore-seller-token", token);
       navigate("/seller");
-    }else if(tokenResponse.error === "Internal Server Error!"){
+    } else if (tokenResponse.error === "Internal Server Error!") {
       toast.error("Something went wrong, Please try again later!");
-    }else{
+    } else {
       toast.error(tokenResponse.error);
     }
     setProgress(100);
@@ -44,11 +48,11 @@ function SellerLogin(props) {
 
   return (
     <div id="container">
-      <div className="login-form">
+      <div className="seller-login-form">
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Name:</label>
+            <label htmlFor="name">Name:</label>
             <input
               type="text"
               id="name"
@@ -80,7 +84,13 @@ function SellerLogin(props) {
               required
             />
           </div>
-          <button type="submit">Login</button>
+          <span className="change-mode">
+            Already have an account,&nbsp;
+            <Link type="button" to="/seller/login">
+              Login
+            </Link>
+          </span>
+          <button type="submit">Continue</button>
         </form>
       </div>
     </div>

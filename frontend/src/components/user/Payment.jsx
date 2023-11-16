@@ -23,21 +23,12 @@ const Payment = (props) => {
       if(resData.success){
         toast.success("Order placed");
         navigate("/ordersuccess");
-      }else if(resData.error === "Internal Server Error!"){
-        toast.error("Something went wrong, Please try again later");
-      }
-      else if(resData.error === "Product is out of stock"){
-        console.log(resData);
-        toast.error("Something went wrong, Please try again later");
       }
       else{
         toast.error("Something went wrong, Please try again later");
-        resData.error.forEach((err) => {
-          console.log(err.msg);
-        })
+        console.log(resData.error)
       }
     })
-    console.log(order);
   };
   const paymentChange = (e) => {
     setOrder({...order, [e.target.name]: e.target.value});
