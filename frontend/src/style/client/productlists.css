@@ -109,13 +109,14 @@
 }
 
 .product-map {
+    gap: 1%;
+    padding: 1%;
     display: flex;
     flex-wrap: wrap;
+    user-select: none;
     align-items: flex-start;
-    justify-content: space-evenly;
     font-family: "Didact Gothic";
-    padding: 1%;
-    gap: 1%;
+    justify-content: space-evenly;
 }
 
 .d-none {

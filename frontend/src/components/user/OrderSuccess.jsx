@@ -21,7 +21,7 @@ const OrderSuccess = () => {
         textAlign: "center"
       }}
     >
-      <Fireworks />
+      {/* <Fireworks /> */}
       <img
         src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1699165818/gadget-store/cxxjv0grgnrmuenb65ke.svg"
         alt="success"

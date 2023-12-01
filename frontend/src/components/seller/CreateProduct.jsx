@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const CreateProduct = (props) => {
   const { setProgress, toast } = props;
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const navigate = useNavigate();
   const token = localStorage.getItem("gadgetstore-seller-token");
   useEffect(() => {
@@ -114,14 +114,18 @@ const CreateProduct = (props) => {
         if (jsonData.success) {
           setProgress(70);
           navigate("/seller");
-        }else if(jsonData.error === "Internal Server Error!"){
+        } else if (jsonData.error === "Internal Server Error!") {
           toast.error("Something went wrong!");
           console.log(jsonData);
-        }
-        else{
+        } else {
           toast.error(jsonData.error);
         }
         setProgress(100);
+      })
+      .catch((err) => {
+        setProgress(100);
+        console.log(err);
+        toast.error("Something went wrong, Please try again later!");
       });
   };
   const isFormValid =
@@ -136,7 +140,7 @@ const CreateProduct = (props) => {
       <div className="create-product">
         <h2>Create Product</h2>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="name" className="label-createproduct">
               Name:
             </label>
@@ -150,7 +154,7 @@ const CreateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="brand" className="label-createproduct">
               Brand:
             </label>
@@ -164,7 +168,21 @@ const CreateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
+            <label htmlFor="price" className="label-createproduct">
+              Price:
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              className="input-createproduct"
+              value={productData.price}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="create-product-form-group">
             <label htmlFor="discount" className="label-createproduct">
               Discount:
             </label>
@@ -175,10 +193,9 @@ const CreateProduct = (props) => {
               className="input-createproduct"
               value={productData.discount}
               onChange={handleChange}
-              
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="rating" className="label-createproduct">
               Ratings:
             </label>
@@ -192,18 +209,25 @@ const CreateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="category" className="label-createproduct">
               Category:
             </label>
-            <select name="category" className="input-createproduct" defaultValue={"mobiles"} onChange={handleChange} id="category" required>
+            <select
+              name="category"
+              className="input-createproduct"
+              defaultValue={"mobiles"}
+              onChange={handleChange}
+              id="category"
+              required
+            >
               <option value="mobiles">Mobiles</option>
               <option value="pc">PCs</option>
               <option value="electronics">Electronics</option>
               <option value="accessories">Accessories</option>
             </select>
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="subCategory" className="label-createproduct">
               Sub-Category:
             </label>
@@ -217,7 +241,7 @@ const CreateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="highlights" className="label-createproduct">
               Highlights:
             </label>
@@ -230,7 +254,7 @@ const CreateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="description" className="label-createproduct">
               Description:
             </label>
@@ -243,7 +267,7 @@ const CreateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="image-input" className="label-createproduct">
               Images:
             </label>
@@ -279,21 +303,7 @@ const CreateProduct = (props) => {
               })}
             </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="price" className="label-createproduct">
-              Price:
-            </label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              className="input-createproduct"
-              value={productData.price}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="stock" className="label-createproduct">
               Stock Units:
             </label>
@@ -307,7 +317,7 @@ const CreateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="more" className="label-createproduct">
               More:
             </label>

@@ -10,11 +10,13 @@
     font-size: 20px;
     padding: 0.5rem;
 }
-.form-button-container{
+
+.form-button-container {
     display: block;
     margin: 0 auto;
 }
-.button-payment-confirm{
+
+.button-payment-confirm {
     padding: 1rem;
     font-family: "Syne";
     font-size: 25px;
@@ -23,17 +25,20 @@
     background-color: #ffc356;
     color: #191817;
 }
-.button-payment-confirm:active{
+
+.button-payment-confirm:active {
     border: 2px solid #191817;
 }
-.button-payment-confirm:disabled{
+
+.button-payment-confirm:disabled {
     opacity: 0.8;
 }
 
-.payment-input-radio{
+.payment-input-radio {
     margin-right: 10px;
 }
-.payment-warning-message{
+
+.payment-warning-message {
     color: red;
     margin-top: 20px;
     display: block;

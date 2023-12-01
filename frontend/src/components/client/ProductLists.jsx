@@ -3,10 +3,12 @@ import Navbar from "./Navbar";
 import "../../style/client/productlists.css";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "./Footer";
+import { faArrowRightArrowLeft, faClose, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProductLists = (props) => {
   const { setProgress, toast, category, query, setQuery } = props;
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const min = useRef();
   const max = useRef();
   const sortBtn = useRef();
@@ -66,10 +68,14 @@ const ProductLists = (props) => {
         } else if (resData.error === "Internal Server Error!") {
           toast.error("Something went wrong, Please try again later!");
         } else {
-          toast.error(resData.error);
+          toast.success(resData.error);
         }
         setProgress(100);
-      });
+      }).catch(err => {
+        toast.error("Something went wrong, Please try again later!");
+        console.log(err);
+        setProgress(100);
+      })
   }, [host, query, toast, setProgress]);
   useEffect(() => {
     if (location.pathname !== "/search") {
@@ -195,7 +201,7 @@ const ProductLists = (props) => {
         id="left-sort"
         style={{ display: `${visible ? "inline-block" : "none"}` }}
       >
-        <i className="fa-solid fa-arrow-right-arrow-left"></i>
+        <FontAwesomeIcon icon={faArrowRightArrowLeft} />
         &nbsp;&nbsp;Sort
       </button>
       <button
@@ -204,7 +210,7 @@ const ProductLists = (props) => {
         onClick={showFilters}
         style={{ display: `${visible ? "inline-block" : "none"}` }}
       >
-        <i className="fa-solid fa-filter"></i>
+        <FontAwesomeIcon icon={faFilter} />
         &nbsp;&nbsp;Filters
       </button>
       {/* main content */}
@@ -227,7 +233,7 @@ const ProductLists = (props) => {
           <div className="category">
             <h3>Categories</h3>
             <button onClick={showFilters} className="close-filters-btn">
-              <i className="fa fa-close"></i>
+              <FontAwesomeIcon icon={faClose} />
             </button>
             <ul className="category-list">
               <li>

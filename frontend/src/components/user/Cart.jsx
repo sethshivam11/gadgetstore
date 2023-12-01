@@ -4,10 +4,12 @@ import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../client/Navbar";
 import Address from "./Address";
 import Payment from "./Payment";
+import { faChevronLeft, faChevronRight, faHeart, faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Cart = (props) => {
   const { setProgress, toast } = props;
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const navigate = useNavigate();
   let currentDate = new Date();
   let delDate = currentDate.getDate();
@@ -347,7 +349,7 @@ const Cart = (props) => {
               }}
             >
               <span style={{ color: "#ffb326" }}>
-                <i className="fa fa-shopping-basket"></i>
+                <FontAwesomeIcon icon={faShoppingBasket} />
               </span>
               &nbsp;&nbsp;Cart
             </h3>
@@ -361,7 +363,7 @@ const Cart = (props) => {
               }}
             >
               <span style={{ color: "#ef5466" }}>
-                <i className="fa fa-heart"></i>
+                <FontAwesomeIcon icon={faHeart} />
               </span>
               &nbsp;&nbsp;Wishlist
             </h3>
@@ -436,24 +438,26 @@ const Cart = (props) => {
                           Quantity:&nbsp;&nbsp;
                           <button
                             type="button"
+                            title="Decrease Quantity"
                             onClick={() => {
                               handleIncrease(product, "remove");
                             }}
                             disabled={product.quantity === 1}
                           >
-                            <i className="fa-solid fa-chevron-left"></i>
+                            <FontAwesomeIcon icon={faChevronLeft} />
                           </button>
                           <span id="cart-item-quantity">
                             {product.quantity}
                           </span>
                           <button
                             type="button"
+                            title="Increase Quantity"
                             onClick={() => {
                               handleIncrease(product, "add");
                             }}
                             disabled={product.quantity === 10}
                           >
-                            <i className="fa-solid fa-chevron-right"></i>
+                            <FontAwesomeIcon icon={faChevronRight} />
                           </button>
                         </p>
                         <p className="cart-actions">

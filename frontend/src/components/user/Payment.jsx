@@ -1,38 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../style/user/cart.css";
 import "../../style/user/payment.css";
 
 const Payment = (props) => {
   const { host, token, payment, navigate, toast, order, setOrder } = props;
+  const [loading, setLoading] = useState(false);
   const placeOrder = (e) => {
     e.preventDefault();
+    setLoading(true);
     fetch(`${host}/api/user/order/create`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "token": token
+        token: token,
       },
       body: JSON.stringify({
         products: order.products,
         total: order.total,
         date: order.date,
         address: order.address,
-        payment: order.payment
-      })
-    }).then(res => res.json()).then(resData => {
-      if(resData.success){
-        toast.success("Order placed");
-        navigate("/ordersuccess");
-      }
-      else{
-        toast.error("Something went wrong, Please try again later");
-        console.log(resData.error)
-      }
+        payment: order.payment,
+      }),
     })
+      .then((res) => res.json())
+      .then((resData) => {
+        if (resData.success) {
+          toast.success("Order placed");
+          setLoading(false);
+          navigate("/ordersuccess");
+        } else {
+          toast.error("Something went wrong, Please try again later");
+          console.log(resData.error);
+          setLoading(false);
+        }
+      });
   };
   const paymentChange = (e) => {
-    setOrder({...order, [e.target.name]: e.target.value});
-  }
+    setOrder({ ...order, [e.target.name]: e.target.value });
+  };
   return (
     <div
       className="cart-top"
@@ -45,7 +50,7 @@ const Payment = (props) => {
         <form onSubmit={placeOrder} className="form-payment">
           <div className="form-container">
             <input
-            autoComplete="off"
+              autoComplete="off"
               onChange={paymentChange}
               type="radio"
               value={"wallets"}
@@ -60,7 +65,7 @@ const Payment = (props) => {
           </div>
           <div className="form-container">
             <input
-            autoComplete="off"
+              autoComplete="off"
               onChange={paymentChange}
               type="radio"
               id="UPI"
@@ -75,7 +80,7 @@ const Payment = (props) => {
           </div>
           <div className="form-container">
             <input
-            autoComplete="off"
+              autoComplete="off"
               onChange={paymentChange}
               type="radio"
               id="credit"
@@ -90,7 +95,7 @@ const Payment = (props) => {
           </div>
           <div className="form-container">
             <input
-            autoComplete="off"
+              autoComplete="off"
               onChange={paymentChange}
               type="radio"
               id="debit"
@@ -105,7 +110,7 @@ const Payment = (props) => {
           </div>
           <div className="form-container">
             <input
-            autoComplete="off"
+              autoComplete="off"
               onChange={paymentChange}
               type="radio"
               id="netbanking"
@@ -120,7 +125,7 @@ const Payment = (props) => {
           </div>
           <div className="form-container">
             <input
-            autoComplete="off"
+              autoComplete="off"
               onChange={paymentChange}
               type="radio"
               id="cash"
@@ -132,12 +137,15 @@ const Payment = (props) => {
               Cash on Delivery
             </label>
           </div>
-          <p className="payment-warning-message">Warning: This is just a project, don't expect any product or don't pay anyone for this.</p>
+          <p className="payment-warning-message">
+            Warning: This is just a project, don't expect any product or don't
+            pay anyone for this.
+          </p>
           <div className="form-container form-button-container">
             <button
               type="submit"
               className="button-payment-confirm"
-              disabled={order.payment.length <= 0}
+              disabled={order.payment.length <= 0 || loading}
             >
               Confirm Order
             </button>

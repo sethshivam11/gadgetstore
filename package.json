@@ -1,14 +1,17 @@
 {
   "name": "backend",
-  "version": "1.2.0",
+  "version": "1.0.0",
   "description": "This is backend for Gadget Store website which sells electronics and technology devices",
   "main": "server.js",
   "scripts": {
     "test": "node --version",
     "start": "node backend/server.js",
     "build": "npm install && npm run client-install",
-    "dev": "nodemon backend/server.js",
-    "client-install": "cd frontend && npm install && npm run build"
+    "client-install": "cd frontend && npm install --production=false && npm run build",
+    "dev": "nodemon backend/server.js"
+  },
+  "engines": {
+    "node": "18.16.0"
   },
   "author": "shivam",
   "license": "ISC",

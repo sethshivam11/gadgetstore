@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const UpdateProduct = (props) => {
   const { setProgress, toast } = props;
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const navigate = useNavigate();
   const token = localStorage.getItem("gadgetstore-seller-token");
   let { productId } = useParams();
@@ -167,6 +167,11 @@ const UpdateProduct = (props) => {
           toast.error(jsonData.error);
         }
         setProgress(70);
+      })
+      .catch((err) => {
+        setProgress(100);
+        console.log(err);
+        toast.error("Something went wrong, Please try again later!");
       });
   };
   const isFormValid =
@@ -181,7 +186,7 @@ const UpdateProduct = (props) => {
       <div className="create-product">
         <h2>Update Product</h2>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="name" className="label-createproduct">
               Name:
             </label>
@@ -195,7 +200,7 @@ const UpdateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="brand" className="label-createproduct">
               Brand:
             </label>
@@ -209,7 +214,7 @@ const UpdateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="discount" className="label-createproduct">
               Discount:
             </label>
@@ -222,7 +227,7 @@ const UpdateProduct = (props) => {
               onChange={handleChange}
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="rating" className="label-createproduct">
               Ratings:
             </label>
@@ -235,19 +240,10 @@ const UpdateProduct = (props) => {
               onChange={handleChange}
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="category" className="label-createproduct">
               Category:
             </label>
-            {/* <input
-              type="text"
-              id="category"
-              name="ocategory"
-              className="input-createproduct"
-              value={productData.ocategory}
-              onChange={handleChange}
-              required
-            /> */}
             <select
               name="ocategory"
               className="input-createproduct"
@@ -262,7 +258,7 @@ const UpdateProduct = (props) => {
               <option value="accessories">Accessories</option>
             </select>
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="subCategory" className="label-createproduct">
               Sub-Category:
             </label>
@@ -275,7 +271,7 @@ const UpdateProduct = (props) => {
               onChange={handleChange}
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="highlights" className="label-createproduct">
               Highlights:
             </label>
@@ -288,7 +284,7 @@ const UpdateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="description" className="label-createproduct">
               Description:
             </label>
@@ -301,7 +297,7 @@ const UpdateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="image-input" className="label-createproduct">
               Images:
             </label>
@@ -356,7 +352,7 @@ const UpdateProduct = (props) => {
                 })}
             </div>
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="price" className="label-createproduct">
               Price:
             </label>
@@ -370,7 +366,7 @@ const UpdateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="stock" className="label-createproduct">
               Stock Units:
             </label>
@@ -384,7 +380,7 @@ const UpdateProduct = (props) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="create-product-form-group">
             <label htmlFor="more" className="label-createproduct">
               More:
             </label>

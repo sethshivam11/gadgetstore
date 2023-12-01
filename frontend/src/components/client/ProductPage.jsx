@@ -2,16 +2,24 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import "../../style/client/productpage.css";
 import Navbar from "./Navbar";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  faHeart,
+  faShare,
+  faStar,
+  faStarHalfStroke,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProductPage = (props) => {
   const { setProgress, toast } = props;
   const wishlist = useRef();
   const share = useRef();
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const { id } = useParams();
   const token = localStorage.getItem("gadgetstore-user-token");
   const navigate = useNavigate();
   const [bigImage, setBigImage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState({
     name: "",
     category: "",
@@ -26,6 +34,7 @@ const ProductPage = (props) => {
     id,
   });
   const fetchProduct = useCallback(() => {
+    setLoading(true);
     setProgress(50);
     fetch(`${host}/api/client/product/${id}`, {
       method: "GET",
@@ -41,19 +50,23 @@ const ProductPage = (props) => {
           setBigImage(resData.product.images[0]);
         } else {
           console.log(resData.error);
-          navigate(`/${id}`)
+          navigate(`/${id}`);
         }
         setProgress(100);
-      }).catch(err => {
+        setLoading(false);
+      })
+      .catch((err) => {
         toast.error("Something went wrong, Please try again later!");
         setProgress(100);
-      })
-  }, [host, id, setProduct, setProgress, navigate, toast]);
+        setLoading(false);
+      });
+  }, [host, id, setProduct, setLoading, setProgress, navigate, toast]);
   useEffect(() => {
     setProgress(30);
     fetchProduct();
   }, [fetchProduct, setProgress]);
   const handleBuy = () => {
+    setLoading(true);
     setProgress(30);
     if (!token) {
       setProgress(70);
@@ -79,13 +92,16 @@ const ProductPage = (props) => {
           setProgress(70);
         }
         setProgress(100);
+        setLoading(false);
       })
       .catch((err) => {
         toast.error("Something went wrong, Please try again later!");
         setProgress(100);
+        setLoading(false);
       });
   };
   const handleCart = () => {
+    setLoading(true);
     setProgress(30);
     if (!token) {
       setProgress(70);
@@ -108,19 +124,21 @@ const ProductPage = (props) => {
           toast.success(
             `${product.name ? product.name : "Product"} added to cart`
           );
-          setProgress(100);
         } else {
           console.log(resData.error);
           toast.error("Something went wrong, Please try again later!");
-          setProgress(100);
         }
+        setProgress(100);
+        setLoading(false);
       })
       .catch((err) => {
         toast.error("Something went wrong, Please try again later!");
         setProgress(100);
+        setLoading(false);
       });
   };
   const handleWishlist = () => {
+    setLoading(true);
     setProgress(30);
     fetch(`${host}/api/user/wishlist/add`, {
       method: "PUT",
@@ -151,19 +169,21 @@ const ProductPage = (props) => {
           wishlist.current.style.color = "#ef5466";
         }
         setProgress(100);
+        setLoading(false);
       })
       .catch((err) => {
         toast.error("Something went wrong, Please try again later!");
         setProgress(100);
+        setLoading(false);
       });
   };
   const handleShare = async () => {
     navigator.clipboard.writeText(window.location);
     share.current.style.color = "#ffc356";
     toast.success("Copied to clipboard");
-      setTimeout(() => {
-        share.current.style.color = "#dadada";
-      }, 6000);
+    setTimeout(() => {
+      share.current.style.color = "#dadada";
+    }, 6000);
   };
 
   return (
@@ -183,8 +203,9 @@ const ProductPage = (props) => {
             id="product-wishlist-btn"
             onClick={handleWishlist}
             ref={wishlist}
+            disabled={loading}
           >
-            <i className="fa fa-heart"></i>
+            <FontAwesomeIcon icon={faHeart} />
           </button>
           <button
             type="button"
@@ -193,7 +214,7 @@ const ProductPage = (props) => {
             onClick={handleShare}
             ref={share}
           >
-            <i className="fa fa-share"></i>
+            <FontAwesomeIcon icon={faShare} />
           </button>
           <div className="product-img-glimpses">
             {product.images.map((image, index) => {
@@ -202,7 +223,7 @@ const ProductPage = (props) => {
                   src={image}
                   loading="lazy"
                   className="small-images"
-                  alt={image + index}
+                  alt={index}
                   key={image + "-" + index}
                   onMouseEnter={() => setBigImage(image)}
                   style={{
@@ -239,26 +260,28 @@ const ProductPage = (props) => {
                 <span className="product-price-linethrough">
                   &#8377;&nbsp;{product.price}
                 </span>
-                <span className="product-page-discount">&nbsp;&nbsp;{product.discount}%</span>
+                <span className="product-page-discount">
+                  &nbsp;&nbsp;{product.discount}%
+                </span>
               </span>
             ) : (
               ""
             )}
             <span className="product-ratings">
               {Array.from({ length: Math.floor(product.rating) }, (_, i) => (
-                <i key={"full" + i} className="fa fa-star"></i>
+                <FontAwesomeIcon icon={faStar} key={"full" + i} />
               ))}
               {Array.from(
                 { length: Math.floor(product.rating) - product.rating ? 1 : 0 },
                 (_, i) => (
-                  <i key={"half" + i} className="fa fa-star-half-stroke"></i>
+                  <FontAwesomeIcon icon={faStarHalfStroke} key={"half" + i} />
                 )
               )}
               {product.rating <= 4
                 ? Array.from(
                     { length: Math.floor(5 - product.rating) },
                     (_, i) => (
-                      <i key={"hollow" + i} className="fa-regular fa-star"></i>
+                      <FontAwesomeIcon icon={faStar} key={"hollow" + i} />
                     )
                   )
                 : ""}
@@ -271,6 +294,7 @@ const ProductPage = (props) => {
               type="button"
               onClick={handleBuy}
               className="product-page-btn hollow-btn"
+              disabled={loading}
             >
               Buy Now
             </button>
@@ -278,6 +302,7 @@ const ProductPage = (props) => {
               type="button"
               onClick={handleCart}
               className="product-page-btn"
+              disabled={loading}
             >
               Add to Cart
             </button>

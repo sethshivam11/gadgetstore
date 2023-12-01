@@ -7,6 +7,8 @@ import search2 from "../../img/search.png";
 import logo from "../../img/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = (props) => {
   const location = useLocation();
@@ -26,16 +28,19 @@ const Navbar = (props) => {
   };
   const [nav, setNav] = useState(-100);
   const [backdrop, setBackdrop] = useState("d-none");
+  const [z, setZ] = useState(0);
   const handleNav = () => {
     if (nav === -100) {
       // not hidden
       setNav(0);
       setBackdrop("d-block");
+      setZ(8);
       document.body.style.overflowY = "hidden";
     } else {
       // hidden
       setBackdrop("d-none");
       setNav(-100);
+      setZ(0);
       document.body.style.overflowY = "unset";
     }
   };
@@ -44,20 +49,32 @@ const Navbar = (props) => {
     handleNav();
   };
   return (
-    <div style={{marginBottom: "-25px"}}>
+    <div style={{ marginBottom: "-25px" }}>
       {/* backdrop filter */}
-      <div id="backdrop" className={backdrop} onClick={() => handleBackdrop(location.pathname)}></div>
+      <div
+        id="backdrop"
+        className={backdrop}
+        onClick={() => handleBackdrop(location.pathname)}
+      ></div>
       {/* button for mobile nav */}
       <button
         id="nav-mobile"
         onClick={handleNav}
-        style={{ color: `${nav === 0 ? "white" : "black"}` }}
+        title="Menu"
+        style={{ color: `${nav === 0 ? "white" : "black"}`, zIndex: `${z ? z + 1: "5"}`}}
       >
-        <i className="fa-solid fa-bars"></i>
+        <FontAwesomeIcon icon={faBars} />
       </button>
       {/* main nav */}
       <nav id="navbar">
-        <img src={logo} loading="eager" alt="Gadget Store" title="Home" id="logo" onClick={() => navigate("/")} />
+        <img
+          src={logo}
+          loading="eager"
+          alt="Gadget Store"
+          title="Home"
+          id="logo"
+          onClick={() => navigate("/")}
+        />
         <span id="nav-list">
           <Link
             to="/mobiles"
@@ -93,14 +110,19 @@ const Navbar = (props) => {
           </Link>
         </span>
         <span id="nav-user">
-          <button id="search-toggle" title="Search" className="user-item" onClick={showSearch}>
-            <img src={search} alt="search" />
+          <button
+            id="search-toggle"
+            title="Search"
+            className="user-item"
+            onClick={showSearch}
+          >
+            <img loading="eager" src={search} alt="search" />
           </button>
           <Link to="/account" title="Account" className="user-item">
-            <img src={user} alt="user" />
+            <img loading="eager" src={user} alt="user" />
           </Link>
           <Link to="/cart" title="Cart" className="user-item">
-            <img src={cart} alt="cart" />
+            <img loading="eager" src={cart} alt="cart" />
           </Link>
         </span>
       </nav>
@@ -108,7 +130,7 @@ const Navbar = (props) => {
       <nav id="sec-nav" ref={Ref}>
         <form id="search-bar" onSubmit={handleSearch}>
           <button id="search-btn" type="submit">
-            <img src={search2} alt="search" />
+            <img loading="eager" src={search2} alt="search" />
           </button>
           <input
             type="text"
@@ -125,6 +147,7 @@ const Navbar = (props) => {
         style={{
           transition: "transform 0.3s ease",
           transform: `translateX(${nav}%)`,
+          zIndex: z
         }}
       >
         <span className="third-nav-list">

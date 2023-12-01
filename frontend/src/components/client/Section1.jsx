@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import "../../style/client/section1.css";
 import { Link } from "react-router-dom";
 import poster1 from "../../img/poster1.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Section1 = () => {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -30,11 +35,12 @@ const Section1 = () => {
           className="btn-car"
           id="left-car"
           onClick={handleLeft}
+          title="Previous Slide"
         >
-          <i className="fa fa-chevron-left"></i>
+          <FontAwesomeIcon icon={faChevronLeft} />
         </button>
         <Link
-          to="/mobiles"
+          to="/product/65570677fff32e1334137d8e"
           className="carousel-slide"
           style={{
             transform: `translateX(-${slideIndex * 100}%)`,
@@ -42,12 +48,13 @@ const Section1 = () => {
           }}
         >
           <img
-            loading="lazy"
-            alt="poster1"
+            src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1700152858/gadget-store/sv1x9mvkpnwulkyxvnuk.webp"
+            loading="eager"
+            alt="Redmi Note 12 Pro 5G"
           />
         </Link>
         <Link
-          to="/mobiles"
+          to="/product/655708f5fff32e1334137d91"
           className="carousel-slide"
           style={{
             transform: `translateX(-${slideIndex * 100}%)`,
@@ -55,12 +62,13 @@ const Section1 = () => {
           }}
         >
           <img
+            src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1700152858/gadget-store/dldza9wau2nzxvlzrllo.webp"
             loading="lazy"
-            alt="poster2"
+            alt="Vivo T2 5G"
           />
         </Link>
         <Link
-          to="/product/65533587866ab4dc4d046d46"
+          to="/product/65570bbefff32e1334137d94"
           className="carousel-slide"
           style={{
             transform: `translateX(-${slideIndex * 100}%)`,
@@ -68,8 +76,37 @@ const Section1 = () => {
           }}
         >
           <img
+            src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1700152858/gadget-store/cxfbybjwhfuufpiepgfu.webp"
             loading="lazy"
-            alt="poster3"
+            alt="Realme 11 Pro+ 5G"
+          />
+        </Link>
+        <Link
+          to="/product/65570fe6fff32e1334137da2"
+          className="carousel-slide"
+          style={{
+            transform: `translateX(-${slideIndex * 100}%)`,
+            transition: "transform 0.5s ease-in-out",
+          }}
+        >
+          <img
+            src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1700152858/gadget-store/coytkw0mqdkbczw66env.webp"
+            loading="lazy"
+            alt="Vivo T2 Pro 5G"
+          />
+        </Link>
+        <Link
+          to="/product/655711ccfff32e1334137da5"
+          className="carousel-slide"
+          style={{
+            transform: `translateX(-${slideIndex * 100}%)`,
+            transition: "transform 0.5s ease-in-out",
+          }}
+        >
+          <img
+            src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1700152858/gadget-store/pbu5vkeangccekjzvbwu.webp"
+            loading="lazy"
+            alt="Realme C53 5G"
           />
         </Link>
         <button
@@ -77,8 +114,9 @@ const Section1 = () => {
           className="btn-car"
           id="right-car"
           onClick={handleRight}
+          title="Next Slide"
         >
-          <i className="fa fa-chevron-right"></i>
+          <FontAwesomeIcon icon={faChevronRight} />
         </button>
       </div>
       <div id="carousel-mobile">
@@ -114,7 +152,7 @@ const Section1 = () => {
           />
         </Link>
         <Link
-          to="/product/65532329866ab4dc4d046d05"
+          to="/product/65635c6e4b12a6f1975d5b2e"
           className="poster"
           id="section1-poster3"
         >

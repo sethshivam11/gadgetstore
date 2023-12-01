@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import "../../style/client/footer.css";
 import logo from "../../img/logo.png";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInstagram, faTwitter, faLinkedin, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { faCopyright } from "@fortawesome/free-regular-svg-icons";
 
 const Footer = (props) => {
   const { setProgress, toast } = props;
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const [sub, setSub] = useState({ email: "" });
   const [subBtn, setSubBtn] = useState(false);
   const subscribe = (e) => {
@@ -94,7 +97,7 @@ const Footer = (props) => {
               rel="noreferrer"
               target="_blank"
             >
-              <i className="fa fa-instagram"></i>
+              <FontAwesomeIcon icon={faInstagram} />
               &nbsp;&nbsp;&nbsp;&nbsp;Instagram
             </Link>
           </li>
@@ -104,7 +107,8 @@ const Footer = (props) => {
               rel="noreferrer"
               target="_blank"
             >
-              <i className="fa fa-facebook"></i>&nbsp;&nbsp;&nbsp;&nbsp;Facebook
+              <FontAwesomeIcon icon={faFacebook} />
+              &nbsp;&nbsp;&nbsp;&nbsp;Facebook
             </Link>
           </li>
           <li className="footer-nav">
@@ -113,7 +117,8 @@ const Footer = (props) => {
               rel="noreferrer"
               target="_blank"
             >
-              <i className="fa fa-linkedin"></i>&nbsp;&nbsp;&nbsp;&nbsp;LinkedIn
+              <FontAwesomeIcon icon={faLinkedin} />
+              &nbsp;&nbsp;&nbsp;&nbsp;LinkedIn
             </Link>
           </li>
           <li className="footer-nav">
@@ -122,13 +127,14 @@ const Footer = (props) => {
               rel="noreferrer"
               target="_blank"
             >
-              <i className="fa fa-twitter"></i>&nbsp;&nbsp;&nbsp;&nbsp;Twitter
+              <FontAwesomeIcon icon={faTwitter} />
+              &nbsp;&nbsp;&nbsp;&nbsp;Twitter
             </Link>
           </li>
         </ul>
         <span>
           <div>
-            <i className="fa fa-copyright"></i>
+            <FontAwesomeIcon icon={faCopyright} />
             &nbsp;All Rights Reserved. Developer:&nbsp;
             <a
               href="https://www.linkedin.com/in/shivam-soni-20531a28b"

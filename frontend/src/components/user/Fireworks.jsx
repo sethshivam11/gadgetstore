@@ -4,9 +4,9 @@ import "../../style/user/fireworks.css";
 const Fireworks = () => {
   return (
     <div className="fireworks">
-      <div class="firework"></div>
-      <div class="firework"></div>
-      <div class="firework"></div>
+      <div className="firework"></div>
+      <div className="firework"></div>
+      <div className="firework"></div>
     </div>
   );
 };

@@ -10,7 +10,7 @@ footer {
 
 #mid {
     display: flex;
-    background: url("../../img/subscribe.jpg") no-repeat center center/cover;
+    background: url("https://res.cloudinary.com/dv3qbj0bn/image/upload/v1700152903/gadget-store/jdbwkdwrvzgp7szgrwnl.jpg") no-repeat center center/cover;
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -124,7 +124,7 @@ footer {
     color: #b3b3b3;
 }
 
-#only-mobile{
+#only-mobile {
     display: none;
 }
 
@@ -176,19 +176,22 @@ footer {
         position: relative;
         bottom: 130px;
     }
-    #only-mobile{
+
+    #only-mobile {
         background: #b3b3b3;
         border: none;
         height: 1px;
         display: block;
     }
-    .no{
+
+    .no {
         flex-direction: column;
         border-bottom: 1px solid #b3b3b3;
         margin-top: 10px;
         padding-bottom: 5px;
     }
-    #end span{
+
+    #end span {
         position: relative;
         bottom: 10px;
     }

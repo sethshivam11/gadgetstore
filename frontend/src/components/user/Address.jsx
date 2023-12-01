@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "../../style/user/cart.css";
 import "../../style/user/address.css";
+import { faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Address = (props) => {
   const { address, token, host, toast, setProgress, setDelivery, width } = props;
@@ -174,6 +176,7 @@ const Address = (props) => {
                     name="address"
                     id={`${address.id}`}
                     value={savedAddresses[0]}
+                    autoComplete="off"
                     onChange={() => {
                       setDelivery(address);
                       setAddNew(false);
@@ -185,8 +188,12 @@ const Address = (props) => {
                     htmlFor={`${address.id}`}
                     className="address-select-label"
                   >
-                    <span className="savedaddress-name">{address.name}&nbsp;</span>
-                    <span className="savedaddress-type">{address.type}&nbsp;</span>
+                    <span className="savedaddress-name">
+                      {address.name}&nbsp;
+                    </span>
+                    <span className="savedaddress-type">
+                      {address.type}&nbsp;
+                    </span>
                     <span className="savedaddress-mobile">
                       {address.mobile}
                     </span>
@@ -242,8 +249,8 @@ const Address = (props) => {
             style={{ display: `${addNew ? "block" : "none"}` }}
           >
             <button className="address-auto-locate" onClick={getAddress}>
-              <i className="fa-solid fa-location-crosshairs"></i> Use my current
-              location
+              <FontAwesomeIcon icon={faLocationCrosshairs} />
+              &nbsp;Use my current location
             </button>
             <div className="form-item-small">
               <label htmlFor="address-name" className="address-label">

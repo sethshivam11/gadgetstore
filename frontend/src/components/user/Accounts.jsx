@@ -3,11 +3,12 @@ import "../../style/user/accounts.css";
 import { useNavigate } from "react-router-dom";
 import Orders from "./Orders";
 import Address from "./Address";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Accounts = (props) => {
   const { setProgress, toast } = props;
-  const host = process.env.REACT_APP_HOST;
-  console.log(host)
+  const host = import.meta.env.VITE_HOST;
   const token = localStorage.getItem("gadgetstore-user-token");
   const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
@@ -165,16 +166,40 @@ const Accounts = (props) => {
   const handleShowPasswordMain = () => {
     setShowMainPassword(!showMainPassword);
   };
+  const avatarColor = [
+    "green",
+    "royalblue",
+    "orange",
+    "hotpink",
+    "goldenrod",
+    "salmon",
+    "darkslategray",
+    "cadetblue",
+    "darkcyan",
+    "darkturquoise",
+    "teal",
+    "coral",
+    "darkkhaki",
+  ];
   return (
     <section>
       <div id="account-top">
         <div className="account-creds">
-          <div className="avatar">{avatar}</div>
+          <div
+            className="avatar"
+            style={{
+              backgroundColor:
+                avatarColor[Math.floor(Math.random() * avatarColor.length)],
+            }}
+          >
+            {avatar}
+          </div>
           <p id="account-name">{name}</p>
           <p id="account-email">{email}</p>
         </div>
         <button id="account-btn" type="button" onClick={() => navigate("/")}>
-          <i className="fa-solid fa-chevron-left"></i>&nbsp;&nbsp; Back to Home
+          <FontAwesomeIcon icon={faChevronLeft} />
+          &nbsp;&nbsp; Back to Home
         </button>
       </div>
       <ul id="account-menu">
@@ -215,8 +240,8 @@ const Accounts = (props) => {
             Name
           </label>
           <input
-          autoComplete="name"
-          autoCapitalize="on"
+            autoComplete="name"
+            autoCapitalize="on"
             type="text"
             name="name"
             id="name"
@@ -329,8 +354,27 @@ const Accounts = (props) => {
           </button>
         </form>
       )}
-      {!profile && orders && !addresses && <Orders />}
-      {!profile && !orders && addresses && <Address width={"100%"} address={true} delivery={delivery} setDelivery={setDelivery} host={host} token={token} toast={toast} setProgress={setProgress} />}
+      {!profile && orders && !addresses && (
+        <Orders
+          visible={true}
+          host={host}
+          toast={toast}
+          setProgress={setProgress}
+          token={token}
+        />
+      )}
+      {!profile && !orders && addresses && (
+        <Address
+          width={"100%"}
+          address={true}
+          delivery={delivery}
+          setDelivery={setDelivery}
+          host={host}
+          token={token}
+          toast={toast}
+          setProgress={setProgress}
+        />
+      )}
       <div
         id="password-modal"
         style={{
@@ -343,7 +387,7 @@ const Accounts = (props) => {
           <h3>Confirm Password</h3>
           <label htmlFor="cpassword">Password</label>
           <input
-          autoComplete="current-password"
+            autoComplete="current-password"
             type={`${showPassword ? "text" : "password"}`}
             name="password"
             id="cpassword"

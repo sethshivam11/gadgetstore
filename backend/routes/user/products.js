@@ -24,8 +24,26 @@ router.put("/cart/add", fetchuser, async (req, res) => {
       updated.cart[index].quantity += quantity;
     } else {
       let productId = product._id;
-      delete product._id;
-      updated.cart.push({ _id: productId, product, quantity });
+      let productName = product.name;
+      let productCategory = product.category;
+      let productBrand = product.brand;
+      let productPrice = product.price;
+      let productStock = product.stock;
+      let productDiscount = product.discount;
+      let productImages = product.images;
+      delete product;
+      updated.cart.push({
+        _id: productId,
+        product: {
+          name: productName,
+          category: productCategory,
+          brand: productBrand,
+          price: productPrice,
+          stock: productStock,
+          images: productImages,
+        },
+        quantity,
+      });
     }
     const added = await User.findByIdAndUpdate(userId, {
       $set: updated,
@@ -106,8 +124,25 @@ router.put("/wishlist/add", fetchuser, async (req, res) => {
         .json({ success, error: "Product already in wishlist" });
     } else {
       let productId = product._id;
-      delete product._id;
-      updated.wishlist.push({ _id: productId, product });
+      let productName = product.name;
+      let productCategory = product.category;
+      let productBrand = product.brand;
+      let productPrice = product.price;
+      let productStock = product.stock;
+      let productDiscount = product.discount;
+      let productImages = product.images;
+      delete product;
+      updated.cart.push({
+        _id: productId,
+        product: {
+          name: productName,
+          category: productCategory,
+          brand: productBrand,
+          price: productPrice,
+          stock: productStock,
+          images: productImages,
+        },
+      });
     }
     const user = await User.findByIdAndUpdate(userId, {
       $set: updated,

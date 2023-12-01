@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 function SellerLogin(props) {
   const { setProgress, toast } = props;
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({ email: "", password: "" });
 

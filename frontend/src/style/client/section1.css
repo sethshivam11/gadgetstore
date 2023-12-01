@@ -3,8 +3,9 @@
 }
 #carousel {
     width: 98%;
-    height: 230px;
-    background: #C7C7C7;
+    height: fit-content;
+    min-height: 200px;
+    background: #dadada;
     margin: 0 auto;
     display: flex;
     align-items: center;

@@ -1,17 +1,23 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import "../../style/client/section2.css";
 import Product from "./Product";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+
 
 const Section2 = (props) => {
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const Ref = useRef();
   const Rbtn = useRef();
   const Lbtn = useRef();
   const slideLeft = () => {
-    Ref.current.scrollLeft -= 990;
+    Ref.current.scrollLeft -= 200;
   };
   const slideRight = () => {
-    Ref.current.scrollLeft += 990;
+    Ref.current.scrollLeft += 200;
     if(window.innerWidth >= 900){
       Lbtn.current.style.display = "inline-block";
     }
@@ -57,15 +63,17 @@ const Section2 = (props) => {
             className="btn-flexbox left-flexbox"
             ref={Lbtn}
             onClick={slideLeft}
+            title="Previous"
           >
-            <i className="fa fa-chevron-left"></i>
+            <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           <button
             className="btn-flexbox right-flexbox"
             ref={Rbtn}
             onClick={slideRight}
+            title="Next"
           >
-            <i className="fa fa-chevron-right"></i>
+            <FontAwesomeIcon icon={faChevronRight} />
           </button>
           {results &&
             results.map((result) => {

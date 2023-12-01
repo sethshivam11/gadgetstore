@@ -3,10 +3,12 @@ import "../../style/client/product.css";
 import "../../style/seller/sellerpage.css";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "./ConfirmModal";
+import { faHome, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SellerPage = (props) => {
   const { setProgress, toast } = props;
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState("");
@@ -43,7 +45,11 @@ const SellerPage = (props) => {
           toast.error("Something went wrong, Please try again later!");
         }
         setProgress(100);
-      });
+      }).catch(err => {
+        setProgress(100);
+        console.log(err);
+        toast.error("Something went wrong, Please try again later!");
+      })
   }, [setProgress, toast, token, navigate, host, setProducts]);
   useEffect(() => {
     fetchProducts();
@@ -102,7 +108,8 @@ const SellerPage = (props) => {
         Log Out
       </button>
       <button className="seller-button home-btn" onClick={() => navigate("/")}>
-        <i className="fa fa-home"></i>&nbsp;&nbsp;Home
+        <FontAwesomeIcon icon={faHome} />
+        &nbsp;&nbsp;Home
       </button>
       <div className="product-list">
         {products.length > 0 &&
@@ -117,7 +124,7 @@ const SellerPage = (props) => {
                 <p className="product-capitalize">
                   Category: {product.category}
                 </p>
-                <p>Description: {product.description.slice(0,120) + "..."}</p>
+                <p>Description: {product.description.slice(0, 120) + "..."}</p>
                 <p>Price: &#8377;{product.price}</p>
                 <p>Stock Units: {product.stock}</p>
                 <div className="product-image">
@@ -139,13 +146,14 @@ const SellerPage = (props) => {
                   className="seller-button"
                   onClick={() => handleUpdate(product._id)}
                 >
-                  <i className="fa fa-pencil-square-o"></i>&nbsp;&nbsp;Edit
+                  <FontAwesomeIcon icon={faPencil} />&nbsp;&nbsp;Edit
                 </button>
                 <button
                   className="danger seller-button"
                   onClick={() => handleDelete(product._id)}
                 >
-                  <i className="fa fa-trash-o"></i>&nbsp;&nbsp;Delete
+                  <FontAwesomeIcon icon={faTrash} />
+                  &nbsp;&nbsp;Delete
                 </button>
               </div>
             </div>

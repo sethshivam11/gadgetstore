@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { TailSpin } from "react-loader-spinner";
 
+
 // Component Imports for client pages
 const Login = lazy(() => import("./components/client/Login"));
 const Signup = lazy(() => import("./components/client/Signup"));

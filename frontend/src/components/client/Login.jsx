@@ -5,7 +5,7 @@ import "../../style/client/login.css";
 function Login(props) {
   const { setProgress, toast } = props;
   const token = localStorage.getItem("gadgetstore-user-token");
-  const host = process.env.REACT_APP_HOST;
+  const host = import.meta.env.VITE_HOST;
   const navigate = useNavigate();
   const [creds, setCreds] = useState({
     email: "",
