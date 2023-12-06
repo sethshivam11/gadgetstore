@@ -53,7 +53,7 @@ router.post(
   }
 );
 
-// Route 2: Logging in a user "/api/user/auth/signup"
+// Route 2: Logging in a user "/api/user/auth/login"
 router.post(
   "/login",
   [

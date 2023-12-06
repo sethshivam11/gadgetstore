@@ -38,7 +38,6 @@ const Cart = (props) => {
   const [order, setOrder] = useState({
     products: [],
     total: "",
-    date: currentDate,
     address: delivery,
     payment: "",
   });

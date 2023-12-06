@@ -8,6 +8,7 @@ const Payment = (props) => {
   const placeOrder = (e) => {
     e.preventDefault();
     setLoading(true);
+    const loadingToast = toast.loading("Placing Order");
     fetch(`${host}/api/user/order/create`, {
       method: "PUT",
       headers: {
@@ -17,7 +18,6 @@ const Payment = (props) => {
       body: JSON.stringify({
         products: order.products,
         total: order.total,
-        date: order.date,
         address: order.address,
         payment: order.payment,
       }),
@@ -26,14 +26,18 @@ const Payment = (props) => {
       .then((resData) => {
         if (resData.success) {
           toast.success("Order placed");
-          setLoading(false);
           navigate("/ordersuccess");
         } else {
           toast.error("Something went wrong, Please try again later");
           console.log(resData.error);
-          setLoading(false);
         }
-      });
+        setLoading(false);
+        toast.dismiss(loadingToast)
+      }).catch(err => {
+        console.log(err);
+        toast.dismiss(loadingToast);
+        setLoading(false);
+      })
   };
   const paymentChange = (e) => {
     setOrder({ ...order, [e.target.name]: e.target.value });

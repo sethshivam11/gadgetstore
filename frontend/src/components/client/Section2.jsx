@@ -75,7 +75,7 @@ const Section2 = (props) => {
           >
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
-          {results &&
+          {results.length > 0 &&
             results.map((result) => {
               return (
                 <Product

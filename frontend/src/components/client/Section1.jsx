@@ -133,7 +133,7 @@ const Section1 = () => {
           <h3>Best Selling</h3>
           <img
             loading="lazy"
-            src="http://res.cloudinary.com/dv3qbj0bn/image/upload/v1696261588/gadget-store/vkcq1vkwwvxgqytsgb0s.webp"
+            src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1699876898/gadget-store/jsc3r0tpzzyoawfypi1f.webp"
             alt="IPhone 15 Pro Max"
             className="poster-img"
           />
@@ -146,7 +146,7 @@ const Section1 = () => {
           <h3>Sale is Live!</h3>
           <img
             loading="lazy"
-            src="http://res.cloudinary.com/dv3qbj0bn/image/upload/v1696261591/gadget-store/cdwhai2dyzik597ie8fr.png"
+            src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1701880713/gadget-store/wdnwwtttnjkbtkwqqamb.png"
             alt="Samsung S23 Ultra"
             className="poster-img"
           />

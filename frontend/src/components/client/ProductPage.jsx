@@ -9,6 +9,8 @@ import {
   faStarHalfStroke,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Section2 from "./Section2";
+import Footer from "./Footer";
 
 const ProductPage = (props) => {
   const { setProgress, toast } = props;
@@ -314,6 +316,8 @@ const ProductPage = (props) => {
           </ul>
         </div>
       </div>
+      <Section2 category={product.category} heading={"Related Products"} />
+      <Footer />
     </section>
   );
 };

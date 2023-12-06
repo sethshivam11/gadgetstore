@@ -264,6 +264,7 @@
     .product-box {
         padding: 5% 2%;
         margin-bottom: 3%;
+        max-width: 50%;
     }
 
     #product-count {
