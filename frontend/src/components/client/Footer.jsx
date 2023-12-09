@@ -133,7 +133,7 @@ const Footer = (props) => {
           </li>
         </ul>
         <span>
-          <div>
+          <div className="developer">
             <FontAwesomeIcon icon={faCopyright} />
             &nbsp;All Rights Reserved. Developer:&nbsp;
             <a

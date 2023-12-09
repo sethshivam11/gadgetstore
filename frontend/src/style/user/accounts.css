@@ -1,319 +1,320 @@
 #account-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    width: 100vw;
-    height: 40vh;
-    background: #000;
-    color: white;
-    padding: 0 10vh;
-    min-height: 300px;
-    padding-top: 40px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100vw;
+  height: 40vh;
+  background: #000;
+  color: white;
+  padding: 0 10vh;
+  min-height: 300px;
+  padding-top: 40px;
 }
 
 #account-name {
-    margin-top: 10px;
-    font-family: "Didact Gothic";
-    font-weight: bold;
-    font-size: 50px;
+  font-size: 50px;
+  margin-top: 10px;
+  font-weight: bold;
+  text-transform: capitalize;
+  font-family: "Didact Gothic";
 }
 
 #account-email {
-    font-size: 25px;
-    color: #999999;
-    user-select: none;
+  font-size: 25px;
+  color: #999999;
+  user-select: none;
 }
 
 .avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-size: 50px;
-    font-family: "Syne";
-    user-select: none;
-    text-transform: uppercase;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 50px;
+  font-family: "Syne";
+  user-select: none;
+  text-transform: uppercase;
 }
 
 #account-btn {
-    border: none;
-    padding: 15px 15px;
-    border-radius: 5px;
-    background: #f97c5c;
-    font-family: "Syne";
-    transition: box-shadow ease 0.5s;
+  border: none;
+  padding: 15px 15px;
+  border-radius: 5px;
+  background: #f97c5c;
+  font-family: "Syne";
+  transition: box-shadow ease 0.5s;
 }
 
 #account-btn:hover {
-    box-shadow: 0 0 1em 0.25em #f97b5cb9, 0 0 1em .5em #f97b5cb9;
+  box-shadow: 0 0 1em 0.25em #f97b5cb9, 0 0 1em 0.5em #f97b5cb9;
 }
 
 #account-btn:active {
-    background-color: #fc613a;
-    box-shadow: 0 0 1em 0.25em #f97b5c, 0 0 1em .5em #f97b5c;
+  background-color: #fc613a;
+  box-shadow: 0 0 1em 0.25em #f97b5c, 0 0 1em 0.5em #f97b5c;
 }
 
 #account-menu {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    background: #000;
-    width: 100vw;
-    flex-direction: row;
-    color: white;
-    list-style-type: none;
-    padding-left: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #000;
+  width: 100vw;
+  flex-direction: row;
+  color: white;
+  list-style-type: none;
+  padding-left: 10vh;
 }
 
 #account-menu li {
-    margin: 0 10px;
-    padding: 0 10px;
-    padding-top: 10px;
-    text-decoration: none;
-    cursor: pointer;
-    color: #fff;
+  margin: 0 10px;
+  padding: 0 10px;
+  padding-top: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  color: #fff;
 }
 
 #account-menu li:after {
-    content: "";
-    display: block;
-    height: 5px;
-    margin-top: 8px;
-    border-radius: 3px;
-    transform: scaleX(0);
-    background-color: #0066ff;
-    transform-origin: center;
-    transition: transform 0.3s ease;
+  content: "";
+  display: block;
+  height: 5px;
+  margin-top: 8px;
+  border-radius: 3px;
+  transform: scaleX(0);
+  background-color: #0066ff;
+  transform-origin: center;
+  transition: transform 0.3s ease;
 }
 
 #account-menu li:hover:after,
 .account-active:after {
-    transform: scaleX(1) !important;
+  transform: scaleX(1) !important;
 }
 
 .account-bottom {
-    background-color: #fff;
-    width: 100vw;
-    height: fit-content;
-    padding: 10vh 10vw;
-    min-height: 50vh;
+  background-color: #fff;
+  width: 100vw;
+  height: fit-content;
+  padding: 10vh 10vw;
+  min-height: 50vh;
 }
 
 .account-update-label,
 #password-modal label {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    font-family: "Didact Gothic";
-    font-size: 20px;
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-family: "Didact Gothic";
+  font-size: 20px;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 #cpassword,
 .account-update-input {
-    outline: none;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  outline: none;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .account-update-input:disabled {
-    color: darkgray;
+  color: darkgray;
 }
 
 .account-update-input:disabled:hover {
-    border: 1px solid #cccccc;
+  border: 1px solid #cccccc;
 }
 
 .account-update-input:focus {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
 .account-update-btn {
-    border-radius: 30px;
-    border: none;
-    background-color: #ffc107;
-    padding: 15px 30px;
-    font-size: 20px;
-    color: #000;
-    margin-top: 35px;
-    margin-left: 10px;
-    cursor: pointer;
-    text-align: center;
+  border-radius: 30px;
+  border: none;
+  background-color: #ffc107;
+  padding: 15px 30px;
+  font-size: 20px;
+  color: #000;
+  margin-top: 35px;
+  margin-left: 10px;
+  cursor: pointer;
+  text-align: center;
 }
 
 .account-update-btn:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .account-update-btn:active {
-    transform: scale(1);
+  transform: scale(1);
 }
 
 #password {
-    width: 89%;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+  width: 89%;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
 #inline-password-btn {
-    width: 11%;
-    padding: 10px;
-    font-size: 20px;
-    border: none;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    background: #287eff;
-    color: white;
+  width: 11%;
+  padding: 10px;
+  font-size: 20px;
+  border: none;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background: #287eff;
+  color: white;
 }
 
 #inline-password-btn:disabled {
-    background: #dadada;
-    color: grey;
-
+  background: #dadada;
+  color: grey;
 }
 
 #showpassword {
-    margin-top: 15px;
-
+  margin-top: 15px;
 }
 
 #showpassword-label {
-    width: fit-content;
-    font-size: 18px;
-    font-weight: normal;
-    margin: 0;
-    margin-top: 15px;
-    margin-left: 10px;
-    color: black;
+  width: fit-content;
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0;
+  margin-top: 15px;
+  margin-left: 10px;
+  color: black;
 }
 
-#showpassword:disabled+#showpassword-label {
-    color: grey;
+#showpassword:disabled + #showpassword-label {
+  color: grey;
 }
 
 #password-modal {
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 3;
-    display: grid;
-    place-items: center;
-    position: fixed;
-    background-color: transparent;
-    transform: translateY(-110%);
-    user-select: none;
-    transition: transform 0.2s ease-out;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  position: fixed;
+  background-color: transparent;
+  transform: translateY(-110%);
+  user-select: none;
+  transition: transform 0.2s ease-out;
 }
 
 #password-modal form {
-    z-index: 4;
-    display: block;
-    margin: 0 auto;
-    position: fixed;
-    background-color: #fff;
-    box-shadow: 0 0 1em 0.25em #75757563, 0 0 1em .5em #75757563;
-    padding: 3vh;
-    border-radius: 5px;
+  z-index: 4;
+  display: block;
+  margin: 0 auto;
+  position: fixed;
+  background-color: #fff;
+  box-shadow: 0 0 1em 0.25em #75757563, 0 0 1em 0.5em #75757563;
+  padding: 3vh;
+  border-radius: 5px;
 }
 
 #password-modal form h3 {
-    margin-bottom: 20px;
-    font-size: 22px;
-    text-align: center;
-    font-family: "Syne";
+  margin-bottom: 20px;
+  font-size: 22px;
+  text-align: center;
+  font-family: "Syne";
 }
 
 #password-modal form button {
-    width: 48%;
-    margin: 2% 1%;
-    height: 43px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
+  width: 48%;
+  margin: 2% 1%;
+  height: 43px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
 }
 
 #password-modal form button[type="submit"] {
-    background-color: #287eff;
-    color: white;
+  background-color: #287eff;
+  color: white;
 }
 
 #password-modal form button[type="submit"]:active {
-    background-color: #0066ff;
+  background-color: #0066ff;
 }
 
 #password-modal form button[type="button"]:active {
-    background: #dadada;
+  background: #dadada;
 }
 
 #account-show-label {
-    display: inline;
-    font-weight: 200;
+  display: inline;
+  font-weight: 200;
 }
 
 @media only screen and (max-width: 640px) and (min-width: 561px) {
-    #account-name{
-        font-size: 40px;
-    }
-    #inline-password-btn{
-        width: 20%;
-    }
-    #password{
-        width: 80%;
-    }
+  #account-name {
+    font-size: 40px;
+  }
+  #inline-password-btn {
+    width: 20%;
+  }
+  #password {
+    width: 80%;
+  }
 }
 
-@media only screen and (max-width: 560px) and (min-width: 361px){
-    #account-name{
-        font-size: 30px;
-    }
+@media only screen and (max-width: 560px) and (min-width: 361px) {
+  #account-name {
+    font-size: 30px;
+  }
 }
-@media only screen and (max-width: 400px){
-    #account-top{
-        padding: 0;
-        padding: 3vh;
-        padding-top: 5vh;
-    }
-    #account-name{
-        font-size: 30px;
-    }
-    #account-btn{
-        position: absolute;
-        right: 20px;
-        top: 30px;
-        padding: 10px 10px;
-        font-size: 10px;
-    }
-    #account-email{
-        font-size: 20px;
-    }
-    #account-menu{
-        padding-left: 3px;
-        font-size: 15px;
-    }
-    #account-menu li{
-        padding: 0 4px;
-    }
-    #account-top{
-        height: 24vh;
-        min-height: 260px;
-    }
-    .account-bottom{
-        padding: 2vh 5vw;
-        height: 65vh;
-    }
-    #password{
-        width: 75%;
-    }
-    #inline-password-btn{
-        width: 25%;
-        padding: 11px;
-        font-size: 16px;
-    }
+@media only screen and (max-width: 400px) {
+  #account-top {
+    padding: 0;
+    padding: 3vh;
+    padding-top: 5vh;
+  }
+  #account-name {
+    font-size: 30px;
+  }
+  #account-btn {
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    padding: 10px 10px;
+    font-size: 10px;
+  }
+  #account-email {
+    font-size: 20px;
+  }
+  #account-menu {
+    padding-left: 3px;
+    font-size: 15px;
+  }
+  #account-menu li {
+    padding: 0 4px;
+  }
+  #account-top {
+    height: 24vh;
+    min-height: 260px;
+  }
+  .account-bottom {
+    padding: 2vh 5vw;
+    min-height: 65vh;
+    height: fit-content;
+  }
+  #password {
+    width: 75%;
+  }
+  #inline-password-btn {
+    width: 25%;
+    padding: 11px;
+    font-size: 16px;
+  }
 }

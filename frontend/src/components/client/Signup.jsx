@@ -5,6 +5,7 @@ import "../../style/client/signup.css";
 
 const Signup = (props) => {
   const { setProgress, toast } = props;
+  document.title = "Sign Up | Gadget Store";
   const token = localStorage.getItem("gadgetstore-user-token");
   const host = import.meta.env.VITE_HOST;
   const navigate = useNavigate();

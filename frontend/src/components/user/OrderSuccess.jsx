@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const OrderSuccess = () => {
   const navigate = useNavigate();
+  document.title = "Order Successul | Gadget Store";
   setTimeout(() => {
     navigate("/");
   }, 5000);
@@ -21,7 +22,7 @@ const OrderSuccess = () => {
         textAlign: "center"
       }}
     >
-      {/* <Fireworks /> */}
+      <Fireworks />
       <img
         src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1699165818/gadget-store/cxxjv0grgnrmuenb65ke.svg"
         alt="success"

@@ -5,6 +5,7 @@ import "../../style/user/payment.css";
 const Payment = (props) => {
   const { host, token, payment, navigate, toast, order, setOrder } = props;
   const [loading, setLoading] = useState(false);
+  document.title = "Payment | Gadget Store";
   const placeOrder = (e) => {
     e.preventDefault();
     setLoading(true);

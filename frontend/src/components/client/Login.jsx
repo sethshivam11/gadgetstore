@@ -7,6 +7,7 @@ function Login(props) {
   const token = localStorage.getItem("gadgetstore-user-token");
   const host = import.meta.env.VITE_HOST;
   const navigate = useNavigate();
+  document.title = "Login | Gadget Store";
   const [creds, setCreds] = useState({
     email: "",
     password: "",
@@ -18,7 +19,6 @@ function Login(props) {
   const handleLogin = (e) => {
     e.preventDefault();
     if (token) {
-      console.log(token);
       localStorage.removeItem("gadgetstore-user-token");
     }
     setProgress(30);

@@ -49,6 +49,7 @@ const ProductPage = (props) => {
         setProgress(70);
         if (resData.success) {
           setProduct(resData.product);
+          document.title = `${resData.product.name} | Gadget Store`;
           setBigImage(resData.product.images[0]);
         } else {
           console.log(resData.error);
@@ -289,14 +290,22 @@ const ProductPage = (props) => {
                 : ""}
             </span>
           </h4>
-          <p className="product-data-para">Only {product.stock} Pieces left</p>
+          <p className="product-data-para">
+            {product.stock ? (
+              "Only " + product.stock + " Pieces left"
+            ) : (
+              <span style={{ color: "red", fontWeight: "500" }}>
+                Out of Stock
+              </span>
+            )}
+          </p>
           <p className="product-data-para">+ &#8377;0 Packaging Fee</p>
           <p className="product-page-para">
             <button
               type="button"
               onClick={handleBuy}
               className="product-page-btn hollow-btn"
-              disabled={loading}
+              disabled={loading || !product.stock}
             >
               Buy Now
             </button>
@@ -304,7 +313,7 @@ const ProductPage = (props) => {
               type="button"
               onClick={handleCart}
               className="product-page-btn"
-              disabled={loading}
+              disabled={loading || !product.stock}
             >
               Add to Cart
             </button>

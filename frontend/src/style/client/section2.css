@@ -26,7 +26,6 @@
     width: 95%;
     scroll-behavior: smooth;
     background: #fff;
-    overscroll-behavior: none;
     margin: 1%;
     margin-bottom: 0;
 }

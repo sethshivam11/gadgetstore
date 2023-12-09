@@ -15,6 +15,7 @@ const SellerPage = (props) => {
   const [delId, setDelId] = useState("");
   let token = localStorage.getItem("gadgetstore-seller-token");
   const fetchProducts = useCallback(() => {
+    document.title = "Gadget Store";
     setProgress(30);
     if (!token) {
       setProgress(100);

@@ -43,6 +43,7 @@ const Address = (props) => {
       });
   }, [host, token, setProgress, setSavedAddresses]);
   useEffect(() => {
+    document.title = "Address | Gadget Store";
     fetchAddress();
   }, [fetchAddress]);
   const getAddress = () => {

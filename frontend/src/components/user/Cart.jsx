@@ -138,6 +138,7 @@ const Cart = (props) => {
       break;
   }
   useEffect(() => {
+    document.title = "Cart | Gadget Store";
     if (!token) {
       setProgress(50);
       navigate("/login");

@@ -144,6 +144,7 @@ const Accounts = (props) => {
       });
   };
   useEffect(() => {
+    document.title = "Account | Gadget Store";
     setProgress(30);
     if (!token) {
       setProgress(70);

@@ -10,7 +10,8 @@ const OrderSchema = new Schema({
   products: { type: Array },
   address: { type: Object, required: true },
   date: { type: String, default: Date },
-  method: { type: String, required: true }
+  method: { type: String, required: true },
+  total: { type: String, required: true }
 });
 
 const Order = mongoose.model("Order", OrderSchema);

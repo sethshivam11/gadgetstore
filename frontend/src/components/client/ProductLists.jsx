@@ -3,7 +3,11 @@ import Navbar from "./Navbar";
 import "../../style/client/productlists.css";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "./Footer";
-import { faArrowRightArrowLeft, faClose, faFilter } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRightArrowLeft,
+  faClose,
+  faFilter,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProductLists = (props) => {
@@ -68,16 +72,29 @@ const ProductLists = (props) => {
         } else if (resData.error === "Internal Server Error!") {
           toast.error("Something went wrong, Please try again later!");
         } else {
-          toast.success(resData.error);
+          toast(resData.error);
         }
         setProgress(100);
-      }).catch(err => {
+      })
+      .catch((err) => {
         toast.error("Something went wrong, Please try again later!");
         console.log(err);
         setProgress(100);
-      })
+      });
   }, [host, query, toast, setProgress]);
   useEffect(() => {
+    if (category !== "pc") {
+      let first = category.slice(0, 1);
+      const rest = category.slice(1, 100);
+      first = first.toUpperCase();
+      const title = first + rest;
+      document.title = `${title} | Gadget Store`;
+    }else{
+      document.title = "PCs | Gadget Store";
+    }
+    if(query){
+      document.title = `${query} | Gadget Store`;
+    }
     if (location.pathname !== "/search") {
       fetchData();
     } else {
@@ -176,7 +193,7 @@ const ProductLists = (props) => {
       setProducts(() => [...sortedProducts]);
     }
   };
-  
+
   // Show filters in mobiles
   const showFilters = () => {
     if (window.innerWidth <= 900) {

@@ -1,5 +1,146 @@
-.order-bottom{
-    align-items: center;
-    justify-content: center;
+.order-bottom {
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.order-actions {
+  width: 70%;
+  margin-bottom: 25px;
+}
+
+.order-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  margin-right: 15px;
+  border: 1px solid grey;
+  background-color: #dadada;
+  transition: background-color 0.2s ease;
+}
+
+.order-badge:hover {
+  background-color: #c2c1c1;
+}
+
+.order-badge:disabled {
+  opacity: 0.8;
+}
+
+.order-selected,
+.order-selected:hover {
+  background-color: rgb(0, 153, 255);
+  border: 1px solid rgb(0, 153, 255);
+  color: white;
+}
+
+.order-search-box {
+  width: 70%;
+  height: 50px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid grey;
+}
+
+.order-search-box:hover {
+  box-shadow: 0px 2px 5px rgb(0, 0, 0, 0.2);
+}
+
+.order-search-box input {
+  width: 75%;
+  height: 100%;
+  border: none;
+  padding: 8px;
+  font-size: 18px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.order-search-box input:hover,
+.order-search-box input:focus {
+  outline: none;
+}
+
+.order-search-btn {
+  width: 20%;
+  height: 100%;
+  border: none;
+  font-size: 18px;
+  background-color: #84fac1;
+  border-left: 1px solid grey;
+  color: #121212;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.order-search-btn:active {
+  background-color: #20ff93;
+}
+
+.order-clear {
+  width: 5%;
+  border: none;
+  height: 100%;
+  background-color: transparent;
+  visibility: hidden;
+  cursor: pointer;
+}
+
+.orders-map {
+  width: 70%;
+}
+
+.order-item {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #dadada;
+  user-select: none;
+}
+.order-item:hover {
+  box-shadow: 0px 0px 7px rgb(0, 0, 0, 0.25);
+}
+.order-image {
+  height: 75px;
+  object-fit: contain;
+}
+.order-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+@media only screen and (max-width: 400px) {
+  .order-search-box {
+    width: 100%;
+    height: 40px;
+    margin-top: 20px;
+  }
+  .order-search-box input,
+  .order-search-box button {
+    font-size: 15px;
+  }
+  .order-actions {
+    width: 100%;
+  }
+  .order-badge {
+    margin-top: 5px;
+    margin-right: 5px;
+  }
+  .orders-map {
+    width: 100%;
+  }
+  .order-item {
     flex-direction: column;
+    align-items: flex-start;
+  }
+  .order-item p {
+    margin-top: 5px;
+  }
 }

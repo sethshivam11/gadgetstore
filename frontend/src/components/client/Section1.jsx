@@ -10,7 +10,7 @@ import {
 
 const Section1 = () => {
   const [slideIndex, setSlideIndex] = useState(0);
-
+  document.title = "Gadget Store";
   const showSlide = (index) => {
     const slides = document.querySelectorAll(".carousel-slide");
     if (index < 0) {
@@ -159,7 +159,7 @@ const Section1 = () => {
           <h3>Great Offers</h3>
           <img
             loading="lazy"
-            src="http://res.cloudinary.com/dv3qbj0bn/image/upload/v1696261591/gadget-store/imusw3ekxbcsvbgyulrz.webp"
+            src="http://res.cloudinary.com/dv3qbj0bn/image/upload/v1702145508/gadget-store/fthy2q1uzt8v4ic8ouzs.webp"
             alt="Boat Airdopes"
             className="poster-img"
           />
