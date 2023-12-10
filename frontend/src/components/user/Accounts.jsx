@@ -21,6 +21,7 @@ const Accounts = (props) => {
   const [checkPass, setCheckPass] = useState({ password: "" });
   const [editPassword, setEditPassword] = useState(false);
   const [showMainPassword, setShowMainPassword] = useState(false);
+  const [colorAvatar, setColorAvatar] = useState("green");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("GS");
@@ -145,6 +146,7 @@ const Accounts = (props) => {
   };
   useEffect(() => {
     document.title = "Account | Gadget Store";
+    setColorAvatar(avatarColor[Math.floor(Math.random() * avatarColor.length)]);
     setProgress(30);
     if (!token) {
       setProgress(70);
@@ -190,7 +192,7 @@ const Accounts = (props) => {
             className="avatar"
             style={{
               backgroundColor:
-                avatarColor[Math.floor(Math.random() * avatarColor.length)],
+                colorAvatar,
             }}
           >
             {avatar}

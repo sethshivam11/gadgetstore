@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Orders = ({ visible, host, token, toast, setProgress }) => {
   const [orders, setOrders] = useState([]);
   const [searchOrder, setSearchOrder] = useState("");
+  const [action, setAction] = useState("all");
   const fetchOrders = useCallback(() => {
     setProgress(30);
     fetch(`${host}/api/user/order/fetch`, {
@@ -41,7 +42,14 @@ const Orders = ({ visible, host, token, toast, setProgress }) => {
   }, [fetchOrders]);
   const date = new Date();
   const handleSearch = () => {
-    console.log(orders);
+    setAction("search");
+    saved.filter((order) => {
+      order.products.map((item) => {
+        if (item.name === searchOrder) {
+          return setOrders([order]);
+        }
+      });
+    });
   };
   const getDelivery = (delivery) => {
     if (
@@ -86,7 +94,6 @@ const Orders = ({ visible, host, token, toast, setProgress }) => {
         </>
       );
     }
-    return delivery.slice(0, 15);
   };
   return (
     <div
@@ -106,7 +113,11 @@ const Orders = ({ visible, host, token, toast, setProgress }) => {
           className="order-clear"
           title="Clear"
           style={{ visibility: searchOrder.length > 0 ? "visible" : "hidden" }}
-          onClick={() => setSearchOrder("")}
+          onClick={() => {
+            setSearchOrder("");
+            setOrders(saved);
+            setAction("all");
+          }}
         >
           <FontAwesomeIcon icon={faCircleXmark} />
         </button>
@@ -120,67 +131,72 @@ const Orders = ({ visible, host, token, toast, setProgress }) => {
       </div>
       <div className="order-actions">
         <button
-          className="order-badge order-selected"
-          onClick={() => setOrders(saved)}
+          className={`order-badge ${action === "all" ? "order-selected" : ""}`}
+          onClick={() => {
+            setOrders(saved);
+            setAction("all");
+            setSearchOrder("");
+          }}
         >
           All
         </button>
         <button
-          disabled
-          className="order-badge"
-          onClick={() =>
-            setOrders((saved) => {
+          className={`order-badge ${
+            action === "upcoming" ? "order-selected" : ""
+          }`}
+          onClick={() => {
+            setOrders(() => {
               return saved.filter((saved) => {
-                getDelivery(saved.date) !==
-                (
-                  <>
-                    <span
-                      className="order-status"
-                      style={{ backgroundColor: "dodgerblue" }}
-                    ></span>
-                    &nbsp;Processing
-                  </>
-                ) ||
-                  getDelivery(saved.date) !==
-                  (
-                    <>
-                      <span
-                        className="order-status"
-                        style={{ backgroundColor: "orange" }}
-                      ></span>
-                      &nbsp;Shipped
-                    </>
-                  );
+                if (
+                  Number(date.toString().slice(8, 10)) -
+                    Number(saved.date.toString().slice(8, 10)) <=
+                    2 ||
+                  date.toString().slice(0, 15) ==
+                    saved.date.toString().slice(0, 15)
+                ) {
+                  return saved;
+                }
               });
-            })
-          }
+            });
+            setAction("upcoming");
+            setSearchOrder("");
+          }}
         >
           Upcoming
         </button>
         <button
-          disabled
-          className="order-badge"
-          onClick={() =>
-            setOrders((saved) => {
+          className={`order-badge ${
+            action === "completed" ? "order-selected" : ""
+          }`}
+          onClick={() => {
+            setOrders(() => {
               return saved.filter((saved) => {
-                getDelivery(saved.date) !==
-                (
-                  <>
-                    <span
-                      className="order-status"
-                      style={{ backgroundColor: "green" }}
-                    ></span>
-                    &nbsp;Delivered
-                  </>
-                );
+                if (
+                  Number(date.toString().slice(8, 10)) -
+                    Number(saved.date.toString().slice(8, 10)) >
+                  2
+                ) {
+                  return saved;
+                }
               });
-            })
-          }
+            });
+            setAction("completed");
+            setSearchOrder("");
+          }}
         >
           Completed
         </button>
-        <button className="order-badge" onClick={() => setOrders([])}>
-          Canceled
+        <button
+          className={`order-badge ${
+            action === "cancelled" ? "order-selected" : ""
+          }`}
+          onClick={() => {
+            setOrders([]);
+            setAction("cancelled");
+            setSearchOrder("");
+          }}
+        >
+          Cancelled
         </button>
       </div>
       <div className="orders-map">
@@ -194,14 +210,18 @@ const Orders = ({ visible, host, token, toast, setProgress }) => {
                     src={order.products[0].images[0]}
                     alt={order.products[0].name}
                   />
-                  <p className="order-name">
-                    {order.products[0].name}
-                    {order.products.length > 1
-                      ? ` and ${order.products.length - 1} more`
-                      : ""}
-                  </p>
-                  <p className="order-price">&#8377; {order.total}</p>
-                  <p className="order-date-status">{getDelivery(order.date)}</p>
+                  <div className="order-details">
+                    <p className="order-name">
+                      {order.products[0].name}
+                      {order.products.length > 1
+                        ? ` and ${order.products.length - 1} more`
+                        : ""}
+                    </p>
+                    <p className="order-price">&#8377; {order.total}</p>
+                    <p className="order-date-status">
+                      {getDelivery(order.date)}
+                    </p>
+                  </div>
                 </div>
               );
             })}

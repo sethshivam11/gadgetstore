@@ -38,7 +38,10 @@ const Accessories = (props) => {
       .then((jsonData) => jsonData.json())
       .then((data) => {
         if (data.success) {
-          if (data.products.length) {
+          if (category) {
+            setResults(data.products.reverse());
+          }
+          else{
             setResults(data.products);
           }
         }

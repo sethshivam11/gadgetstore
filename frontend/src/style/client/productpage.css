@@ -137,7 +137,7 @@
   box-shadow: 0 0 0.5em 0.05em #ffffffb9, 0 0 0.5em 0.05em #ffffffb9;
 }
 
-.product-page-btn:disabled{
+.product-page-btn:disabled {
   opacity: 0.8;
   cursor: not-allowed;
 }
@@ -154,11 +154,27 @@
   font-family: "Didact Gothic";
   margin-top: 50px;
   font-size: 20px;
-  display: none;
+  /* display: none; */
+}
+
+.product-detail-divider {
+  height: 2px;
+  background: white;
 }
 
 .product-details-list li {
-  border-bottom: 5px solid white;
+  border-radius: 25px;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid transparent;
+}
+
+.product-details-list li:hover{
+  border: 2px solid white;
+}
+
+.product-details {
+  margin-top: 30px;
+  text-align: justify;
 }
 
 .product-price-linethrough {
@@ -221,5 +237,9 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+  }
+
+  .product-details{
+    padding: 1rem;
   }
 }

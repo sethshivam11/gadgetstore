@@ -3,13 +3,11 @@ const dotenv = require("dotenv").config();
 const port = process.env.PORT;
 const app = express();
 const connectToDb = require("./db");
-const cors = require("cors");
 const path = require("path");
 const __dirname1 = path.resolve();
 connectToDb();
 
 
-app.use(cors());
 app.use(express.json());
 
 

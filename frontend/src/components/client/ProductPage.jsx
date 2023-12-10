@@ -22,6 +22,7 @@ const ProductPage = (props) => {
   const navigate = useNavigate();
   const [bigImage, setBigImage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [details, setDetails] = useState("highlights");
   const [product, setProduct] = useState({
     name: "",
     category: "",
@@ -181,9 +182,19 @@ const ProductPage = (props) => {
       });
   };
   const handleShare = async () => {
-    navigator.clipboard.writeText(window.location);
+    const shareData = {
+      title: `Gadget Store | ${product.name}`,
+      text: `Checkout the new ${product.name} on Gadget Store`,
+      url: location.pathname,
+    };
+    const can = navigator.canShare(shareData);
+    if (can) {
+      navigator.share(shareData);
+    } else {
+      navigator.clipboard.writeText(window.location);
+      toast.success("Copied to clipboard");
+    }
     share.current.style.color = "#ffc356";
-    toast.success("Copied to clipboard");
     setTimeout(() => {
       share.current.style.color = "#dadada";
     }, 6000);
@@ -318,11 +329,43 @@ const ProductPage = (props) => {
               Add to Cart
             </button>
           </p>
+          <hr className="product-detail-divider" />
           <ul className="product-details-list">
-            <li>Highlights</li>
-            <li>Description</li>
-            <li>Specifications</li>
+            <li
+              style={{
+                backgroundColor: details === "highlights" ? "#fff" : "",
+                color: details === "highlights" ? "#000" : "",
+              }}
+              onClick={() => setDetails("highlights")}
+            >
+              Highlights
+            </li>
+            <li
+              style={{
+                backgroundColor: details === "description" ? "#fff" : "",
+                color: details === "description" ? "#000" : "",
+              }}
+              onClick={() => setDetails("description")}
+            >
+              Description
+            </li>
           </ul>
+          <p
+            className="product-details"
+            style={{
+              display: details === "highlights" ? "inline-block" : "none",
+            }}
+          >
+            {product.highlights}
+          </p>
+          <p
+            className="product-details"
+            style={{
+              display: details === "description" ? "inline-block" : "none",
+            }}
+          >
+            {product.description}
+          </p>
         </div>
       </div>
       <Section2 category={product.category} heading={"Related Products"} />
