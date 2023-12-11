@@ -6,25 +6,26 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
-
-const Section2 = (props) => {
+const Section2 = ({ category, heading }) => {
   const host = import.meta.env.VITE_HOST;
   const Ref = useRef();
   const Rbtn = useRef();
   const Lbtn = useRef();
+  const navigate = useNavigate();
   const slideLeft = () => {
     Ref.current.scrollLeft -= 200;
   };
   const slideRight = () => {
     Ref.current.scrollLeft += 200;
-    if(window.innerWidth >= 900){
+    if (window.innerWidth >= 900) {
       Lbtn.current.style.display = "inline-block";
     }
   };
   const [results, setResults] = useState([]);
   const fetchData = useCallback(() => {
-    fetch(`${host}/api/client/home?category=${props.category}`, {
+    fetch(`${host}/api/client/home?category=${category}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +38,7 @@ const Section2 = (props) => {
         }
       })
       .catch((err) => console.log(err));
-  }, [props.category, host]);
+  }, [category, host]);
   useEffect(() => {
     fetchData();
     if (window.innerWidth >= 900) {
@@ -52,13 +53,17 @@ const Section2 = (props) => {
   return (
     <section>
       <div className="slide">
-        <h3>{props.heading}</h3>
-        <div
-          className="flexbox"
-          id={props.index}
-          ref={Ref}
-          style={{ scrollLeft: "320px" }}
-        >
+        <div className="heading-container">
+          <h3 key={heading}>{heading}</h3>
+          <button
+            title="View More"
+            className="view-more-btn"
+            onClick={() => navigate(`/${category}`)}
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
+          </button>
+        </div>
+        <div className="flexbox" ref={Ref} style={{ scrollLeft: "320px" }}>
           <button
             className="btn-flexbox left-flexbox"
             ref={Lbtn}

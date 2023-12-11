@@ -7,7 +7,6 @@ const path = require("path");
 const __dirname1 = path.resolve();
 connectToDb();
 
-
 app.use(express.json());
 
 

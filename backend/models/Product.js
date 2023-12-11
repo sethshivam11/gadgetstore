@@ -6,9 +6,6 @@ const productSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "seller",
   },
-  orders: {
-    type: Array,
-  },
   rating: {
     type: Number,
     required: true,

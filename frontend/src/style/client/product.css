@@ -19,7 +19,7 @@
     margin-top: 2px;
     width: 186px;
     height: 186px;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.1s ease-in-out;
     padding: 0px 5px;
     object-fit: contain;
 }

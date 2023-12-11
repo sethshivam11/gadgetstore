@@ -184,7 +184,7 @@ const ProductPage = (props) => {
   const handleShare = async () => {
     const shareData = {
       title: `Gadget Store | ${product.name}`,
-      text: `Checkout the new ${product.name} on Gadget Store`,
+      text: `Checkout the new ${product.name} on Gadget Store\n`,
       url: location.pathname,
     };
     const can = navigator.canShare(shareData);
@@ -350,14 +350,17 @@ const ProductPage = (props) => {
               Description
             </li>
           </ul>
-          <p
+          <ul
             className="product-details"
             style={{
               display: details === "highlights" ? "inline-block" : "none",
             }}
           >
-            {product.highlights}
-          </p>
+              {product.highlights &&
+                product.highlights.split("\n").map((item) => {
+                  return <li key={item}>{item}</li>;
+                })}
+            </ul>
           <p
             className="product-details"
             style={{

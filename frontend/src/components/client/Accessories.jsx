@@ -6,13 +6,14 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 
-const Accessories = (props) => {
-  const { category, subCategory } = props;
+const Accessories = ({ category, subCategory, heading }) => {
   const host = import.meta.env.VITE_HOST;
   const left = useRef();
   const right = useRef();
   const Ref = useRef();
+  const navigate = useNavigate();
   const slideLeft = (i) => {
     Ref.current.scrollLeft -= 200;
   };
@@ -40,8 +41,7 @@ const Accessories = (props) => {
         if (data.success) {
           if (category) {
             setResults(data.products.reverse());
-          }
-          else{
+          } else {
             setResults(data.products);
           }
         }
@@ -61,11 +61,21 @@ const Accessories = (props) => {
   }, [fetchData, results.length]);
   return (
     <div className="box">
-      <h3>{props.heading}</h3>
+      <div className="heading-container">
+        <h3 key={heading}>{heading}</h3>
+
+        <button
+          title="View More"
+          className="view-more-btn"
+          onClick={() => navigate("/accessories")}
+        >
+          <FontAwesomeIcon icon={faChevronRight} />
+        </button>
+      </div>
       <div className="flexbox smallbox" ref={Ref}>
         <button
           ref={left}
-          className={`btn-flexbox left-flexbox a${props.index}-left ${
+          className={`btn-flexbox left-flexbox ${
             results.length > 1 ? "" : "d-none"
           }`}
           onClick={() => slideLeft(0)}
@@ -75,7 +85,7 @@ const Accessories = (props) => {
         </button>
         <button
           ref={right}
-          className={`btn-flexbox right-flexbox a${props.index}-right ${
+          className={`btn-flexbox right-flexbox ${
             results.length > 2 ? "" : "d-none"
           }`}
           onClick={() => slideRight(0)}

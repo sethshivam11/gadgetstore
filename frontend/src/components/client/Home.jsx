@@ -19,8 +19,8 @@ const Home = (props) => {
         heading="New Launches"
         category="mobiles"
       />
-      <Accessories heading="Accessories" index="0" category="accessories" />
-      <Accessories heading="Headphones" index="1" subCategory="headphones" />
+      <Accessories heading="Accessories" category="accessories" />
+      <Accessories heading="Headphones" subCategory="headphones" />
       <Section2
         heading="Best of Electronics"
         category="electronics"
