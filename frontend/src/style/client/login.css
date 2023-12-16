@@ -1,278 +1,288 @@
-
 .main {
-    width: 100vw;
-    height: 100vh;
-    flex-shrink: 0;
-    background: rgba(0, 0, 0, 0.93);
-    display: flex;
-    backdrop-filter: blur(20px);
-    overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.93);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
 }
 
 #circle1 {
-    width: 720px;
-    height: 720px;
+  width: 720px;
+  height: 720px;
+  flex-shrink: 0;
+  border-radius: 720px;
+  background: #008000;
+  filter: blur(25px);
+  position: absolute;
+  right: -60px;
+  top: -300px;
+}
+
+#circle2 {
+  position: absolute;
+  right: 460px;
+  top: 32px;
+  width: 240px;
+  height: 240px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #ff0000;
+  filter: blur(25px);
+}
+
+#circle3 {
+  position: absolute;
+  right: 500px;
+  top: 500px;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  background: #00c2ff;
+  border-radius: 50%;
+  filter: blur(25px);
+}
+
+#circle4 {
+  position: absolute;
+  top: 470px;
+  right: 809px;
+  width: 720px;
+  height: 720px;
+  flex-shrink: 0;
+  border-radius: 720px;
+  border: 1px solid #000;
+  background: #ee82ee;
+  filter: blur(25px);
+}
+
+#circle5 {
+  position: absolute;
+  right: 400px;
+  top: 100px;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  background: tan;
+  border-radius: 50%;
+  filter: blur(25px);
+}
+
+#box {
+  top: 70px;
+  z-index: 2;
+  left: 360px;
+  width: 600px;
+  height: 500px;
+  display: flex;
+  border-radius: 32px;
+  flex-direction: column;
+  background: #0000008a;
+  align-items: center;
+  justify-content: center;
+}
+/* .login-form{
+    displa
+} */
+.logintext {
+  top: 0px;
+  color: #ffffff;
+  font-family: "Montserrat";
+  font-size: 70px;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 20px;
+}
+
+.bar {
+  width: 365px;
+  border: none;
+  height: 50px;
+  border-radius: 10px;
+  background: rgb(255, 255, 255);
+  margin-bottom: 15px;
+  outline: none;
+  padding: 5px 15px;
+  font-size: 20px;
+}
+.login-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+#loginbtn {
+  text-align: center;
+  font-size: 1.5rem;
+  background: #1a9fff;
+  color: white;
+  width: 365px;
+  height: 50px;
+}
+
+#signupbtn {
+  text-align: center;
+  font-size: 1.5rem;
+  background: #28c67f;
+  color: white;
+  width: 365px;
+  height: 50px;
+}
+
+#signupbtn:hover {
+  opacity: 0.9;
+  background: #1a9fff;
+}
+
+#signupbtn:active {
+  cursor: not-allowed;
+}
+
+#loginbtn:hover {
+  opacity: 0.9;
+  background: #28c67f;
+}
+
+#loginbtn:active {
+  cursor: not-allowed;
+}
+
+.register {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  color: white;
+}
+
+.register a {
+  color: #28c67f;
+  text-decoration: none;
+}
+
+.register a:hover {
+  color: #1a9fff;
+}
+
+.bar:disabled {
+  filter: invert(30%);
+  pointer-events: none;
+}
+
+@media screen and (max-width: 600px) {
+  #circle1 {
+    width: 400px;
+    height: 400px;
     flex-shrink: 0;
     border-radius: 720px;
     background: #008000;
     filter: blur(25px);
     position: absolute;
-    right: -60px;
-    top: -300px;
-}
+    left: -180px;
+    top: -190px;
+  }
 
-#circle2 {
+  #circle2 {
     position: absolute;
-    right: 460px;
-    top: 32px;
+    left: 275px;
+    top: 150px;
     width: 240px;
     height: 240px;
     flex-shrink: 0;
     border-radius: 50%;
-    background: #FF0000;
+    background: #ff0000;
     filter: blur(25px);
-}
+  }
 
-#circle3 {
+  #circle3 {
     position: absolute;
-    right: 500px;
-    top: 500px;
+    left: -10px;
+    top: 550px;
     width: 120px;
     height: 120px;
     flex-shrink: 0;
-    background: #00C2FF;
+    background: #00c2ff;
     border-radius: 50%;
     filter: blur(25px);
-}
+  }
 
-#circle4 {
+  #circle4 {
     position: absolute;
     top: 470px;
-    right: 809px;
+    left: 0150px;
     width: 720px;
     height: 720px;
     flex-shrink: 0;
     border-radius: 720px;
     border: 1px solid #000;
-    background: #EE82EE;
+    background: #ee82ee;
     filter: blur(25px);
-}
+  }
 
-#circle5 {
+  #circle5 {
     position: absolute;
-    right: 400px;
-    top: 100px;
-    width: 120px;
-    height: 120px;
+    right: 200px;
+    top: 150px;
+    width: 200px;
+    height: 200px;
     flex-shrink: 0;
     background: tan;
     border-radius: 50%;
     filter: blur(25px);
-}
+  }
 
-#box {
-    position: absolute;
-    top: 70px;
-    left: 360px;
-    width: 600px;
+  #box {
+    top: 120px;
+    left: 0;
+    width: 80%;
     height: 500px;
-    flex-shrink: 0;
-    border-radius: 32px;
-    background: #0000008a;
-    display: flex;
-    flex-direction: column;
-}
+    border-radius: 20px;
+    justify-content: space-evenly;
+  }
 
-#logintext {
-    position: relative;
-    left: 190px;
-    top: 0px;
-    width: 207px;
-    height: 97px;
-    flex-shrink: 0;
-    margin-top: 30px;
-    color: #FFFFFF;
-    font-family: "Montserrat";
-    font-size: 70px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    margin-bottom: 20px;
-}
+  .logintext {
+    font-size: 50px;
+    margin: 0;
+  }
 
-.bar {
-    width: 365px;
+  .bar {
+    width: 85%;
     border: none;
-    height: 50px;
+    height: 45px;
     flex-shrink: 0;
     border-radius: 10px;
     background: rgb(255, 255, 255);
-    margin-left: 115px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     outline: none;
     padding: 5px 15px;
     font-size: 20px;
-}
+  }
 
-#loginbtn {
+  #loginbtn {
     text-align: center;
-    font-size: 1.5rem;
-    background: #1a9fff;
+    font-size: 1.4rem;
     color: white;
-    width: 365px;
+    width: 85%;
     height: 50px;
-}
-
-#loginbtn:hover {
-    opacity: 0.9;
-    background: #28C67F;
-}
-
-#loginbtn:active {
-    cursor: not-allowed;
-}
-
-#register {
-    font-size: 1.5rem;
-    margin-top: 10px;
-    margin-left: 125px;
+  }
+  #signupbtn {
+    text-align: center;
+    font-size: 1.4rem;
     color: white;
+    width: 85%;
+    height: 50px;
+  }
+  .register {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: white;
+  }
 }
 
-#register a {
-    color: #28C67F;
-    text-decoration: none;
-}
-
-#register a:hover {
-    color: #1a9fff;
-}
-
-.bar:disabled{
-    filter: invert(30%);
-    pointer-events: none;
-}
-
-@media screen and (max-width: 400px) {
-    #circle1 {
-        width: 400px;
-        height: 400px;
-        flex-shrink: 0;
-        border-radius: 720px;
-        background: #008000;
-        filter: blur(25px);
-        position: absolute;
-        left: -180px;
-        top: -190px;
-    }
-
-    #circle2 {
-        position: absolute;
-        left: 275px;
-        top: 150px;
-        width: 240px;
-        height: 240px;
-        flex-shrink: 0;
-        border-radius: 50%;
-        background: #FF0000;
-        filter: blur(25px);
-    }
-
-    #circle3 {
-        position: absolute;
-        left: -10px;
-        top: 550px;
-        width: 120px;
-        height: 120px;
-        flex-shrink: 0;
-        background: #00C2FF;
-        border-radius: 50%;
-        filter: blur(25px);
-    }
-
-    #circle4 {
-        position: absolute;
-        top: 470px;
-        left: 0150px;
-        width: 720px;
-        height: 720px;
-        flex-shrink: 0;
-        border-radius: 720px;
-        border: 1px solid #000;
-        background: #EE82EE;
-        filter: blur(25px);
-    }
-
-
-    #circle5 {
-        position: absolute;
-        right: 200px;
-        top: 150px;
-        width: 200px;
-        height: 200px;
-        flex-shrink: 0;
-        background: tan;
-        border-radius: 50%;
-        filter: blur(25px);
-    }
-
-    #box {
-        position: absolute;
-        top: 120px;
-        left: 0;
-        width: 360px;
-        height: 500px;
-        flex-shrink: 0;
-        border-radius: 20px;
-        background: #0000008a;
-        display: flex;
-        flex-direction: column;
-        margin-left: 15px;
-    }
-
-    #logintext {
-        left: 120px;
-        position: relative;
-        opacity: 1;
-        top: 0px;
-        width: 207px;
-        height: 97px;
-        flex-shrink: 0;
-        color: #FFFFFF;
-        font-family: "Montserrat";
-        font-size: 50px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        margin-bottom: 20px;
-    }
-
-    .bar {
-        width: 340px;
-        border: none;
-        height: 45px;
-        flex-shrink: 0;
-        border-radius: 10px;
-        background: rgb(255, 255, 255);
-        margin-left: 10px;
-        margin-bottom: 10px;
-        outline: none;
-        padding: 5px 15px;
-        font-size: 20px;
-    }
-
-    #loginbtn {
-        text-align: center;
-        font-size: 1.4rem;
-        color: white;
-        width: 340px;
-        height: 50px;
-    }
-
-    #register {
-        font-size: 1.2rem;
-        margin-top: 10px;
-        margin-left: 55px;
-        color: white;
+@media screen and (max-width: 400px){
+    #box{
+        width: 95%;
     }
 }

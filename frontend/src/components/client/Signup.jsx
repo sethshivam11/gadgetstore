@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../../style/client/login.css";
-import "../../style/client/signup.css";
+// import "../../style/client/signup.css";
 
 const Signup = (props) => {
   const { setProgress, toast } = props;
@@ -62,8 +62,8 @@ const Signup = (props) => {
       <div id="circle4"></div>
       <div id="circle5"></div>
       <div id="box">
-        <h1 id="signuptext">SignUp</h1>
-        <form onSubmit={handleLogin}>
+        <h1 className="logintext">SignUp</h1>
+        <form onSubmit={handleLogin} className="login-form">
           <input
             autoCapitalize="on"
             autoComplete="name"
@@ -97,13 +97,13 @@ const Signup = (props) => {
           >
             SignUp
           </button>
-        </form>
-        <span id="login">
+        <span className="register">
           Already have an account, &nbsp;
           <Link to="/login" type="button">
             Login
           </Link>
         </span>
+        </form>
       </div>
     </div>
   );
