@@ -191,8 +191,7 @@ const Accounts = (props) => {
           <div
             className="avatar"
             style={{
-              backgroundColor:
-                colorAvatar,
+              backgroundColor: colorAvatar,
             }}
           >
             {avatar}
@@ -330,6 +329,16 @@ const Accounts = (props) => {
           >
             Update
           </button>
+          <button
+            type="button"
+            style={{ display: `${edit ? "none" : ""}`, backgroundColor: "crimson", color: "white" }}
+            onClick={() => {
+              localStorage.removeItem("gadgetstore-user-token");
+              toast.success("You have been Logged Out");
+              navigate("/");
+            }}
+            className="account-update-btn"
+          >Log Out</button>
           <button
             type="submit"
             style={{

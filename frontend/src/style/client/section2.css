@@ -95,6 +95,9 @@
   .slide h3 {
     padding: 10px;
   }
+  .view-more-btn{
+    padding: 0.3rem 0.5rem;
+  }
 }
 @media only screen and (min-width: 900px) and (max-width: 1100px) {
   .right-flexbox {

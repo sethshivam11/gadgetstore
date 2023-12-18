@@ -34,7 +34,7 @@ footer {
 
 #footer-btn {
     width: 10%;
-    height: 35%;
+    height: 55px;
     margin-top: 20px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -57,7 +57,7 @@ footer {
 }
 
 #mid input {
-    height: 35%;
+    height: 55px;
     margin-right: 10px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -139,12 +139,12 @@ footer {
 
     #mid input {
         width: 60%;
-        height: 30%;
+        height: 45px;
         font-size: 15px;
     }
 
     #footer-btn {
-        height: 30%;
+        height: 45px;
         width: 30%;
     }
 

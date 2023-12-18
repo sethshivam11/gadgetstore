@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
-const Accessories = ({ category, subCategory, heading }) => {
+const Accessories = ({ category, subCategory, index, heading }) => {
   const host = import.meta.env.VITE_HOST;
   const left = useRef();
   const right = useRef();
@@ -75,7 +75,7 @@ const Accessories = ({ category, subCategory, heading }) => {
       <div className="flexbox smallbox" ref={Ref}>
         <button
           ref={left}
-          className={`btn-flexbox left-flexbox ${
+          className={`btn-flexbox a${index}-left left-flexbox ${
             results.length > 1 ? "" : "d-none"
           }`}
           onClick={() => slideLeft(0)}
@@ -85,7 +85,7 @@ const Accessories = ({ category, subCategory, heading }) => {
         </button>
         <button
           ref={right}
-          className={`btn-flexbox right-flexbox ${
+          className={`btn-flexbox a${index}-right right-flexbox ${
             results.length > 2 ? "" : "d-none"
           }`}
           onClick={() => slideRight(0)}

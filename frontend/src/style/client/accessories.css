@@ -33,6 +33,26 @@
   margin-left: 1%;
 }
 
+.a0-left{
+    left: 2%;
+    margin: 0;
+}
+
+.a0-right {
+  right: 51.2%;
+  margin: 0;
+}
+
+.a1-left {
+  left: 51.6%;
+  margin: 0;
+}
+
+.a1-right {
+  right: 1.5%;
+  margin: 0;
+}
+
 .smallbox {
   width: 96%;
   margin: 0 auto;

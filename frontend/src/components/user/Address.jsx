@@ -9,6 +9,7 @@ const Address = (props) => {
   const [addNew, setAddNew] = useState(false);
   const [savedAddresses, setSavedAddresses] = useState([]);
   const [editAddress, setEditAddress] = useState(false);
+  const [updateId, setUpdatedId] = useState("");
   const [newAddress, setNewAddress] = useState({
     name: "",
     mobile: "",
@@ -80,6 +81,9 @@ const Address = (props) => {
   };
   const handleNewAddress = (e) => {
     e.preventDefault();
+    if(!updateId){
+      return;
+    }
     fetch(`${host}/api/user/address/${editAddress ? "edit": "add"}`, {
       method: "PUT",
       headers: {
@@ -87,6 +91,7 @@ const Address = (props) => {
         "token": token,
       },
       body: JSON.stringify({
+        id: updateId,
         name: newAddress.name,
         mobile: newAddress.mobile,
         pincode: newAddress.pincode,
@@ -213,6 +218,7 @@ const Address = (props) => {
                     className="address-float-right"
                     onClick={() => {
                       setNewAddress(address);
+                      setUpdatedId(address.id);
                       setAddNew(true);
                       setEditAddress(true);
                     }}

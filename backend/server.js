@@ -10,7 +10,6 @@ connectToDb();
 app.use(express.json());
 
 
-
 // User Routes
 app.use("/api/client", require("./routes/client/client"));
 app.use("/api/user/auth", require("./routes/user/auth"));
