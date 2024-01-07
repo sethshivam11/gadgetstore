@@ -16,7 +16,7 @@ function SellerLogin(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProgress(30);
-    const response = await fetch(`${host}/api/seller/auth/login`, {
+    fetch(`${host}/api/seller/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,19 +25,25 @@ function SellerLogin(props) {
         email: credentials.email,
         password: credentials.password,
       }),
-    });
-    setProgress(50);
-    const tokenResponse = await response.json();
-    setProgress(70);
-    if (tokenResponse.success) {
-      const token = tokenResponse.token;
-      localStorage.setItem("gadgetstore-seller-token", token);
-      navigate("/seller");
-    } else if (tokenResponse.error === "Internal Server Error!") {
-      toast.error("Something went wrong, Please try again later");
-    } else {
-      toast.error(tokenResponse.error);
-    }
+    })
+      .then((res) => response.json())
+      .then((tokenResponse) => {
+        if (tokenResponse.success) {
+          setProgress(50)
+          const token = tokenResponse.token;
+          setProgress(70)
+          localStorage.setItem("gadgetstore-seller-token", token);
+          navigate("/seller");
+        } else if (tokenResponse.error === "Internal Server Error!") {
+          toast.error("Something went wrong, Please try again later");
+        } else {
+          toast.error(tokenResponse.error);
+        }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
+      });
     setProgress(100);
   };
 

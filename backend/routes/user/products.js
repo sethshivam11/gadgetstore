@@ -16,12 +16,11 @@ router.put("/cart/add", fetchuser, async (req, res) => {
   }
   try {
     const user = await User.findById(userId);
-    let updated = user;
     let quantity = 1;
-    const index = updated.cart.findIndex((item) => item._id === product._id);
+    const index = user.cart.findIndex((item) => item._id === product._id);
 
     if (index !== -1) {
-      updated.cart[index].quantity += quantity;
+      user.cart[index].quantity += quantity;
     } else {
       let productId = product._id;
       let productName = product.name;
@@ -32,7 +31,7 @@ router.put("/cart/add", fetchuser, async (req, res) => {
       let productDiscount = product.discount;
       let productImages = product.images;
       delete product;
-      updated.cart.push({
+      user.cart.push({
         _id: productId,
         product: {
           name: productName,
@@ -41,16 +40,17 @@ router.put("/cart/add", fetchuser, async (req, res) => {
           price: productPrice,
           stock: productStock,
           images: productImages,
+          discount: productDiscount,
         },
         quantity,
       });
     }
-    const added = await User.findByIdAndUpdate(userId, {
-      $set: updated,
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      $set: user,
       new: true,
-    });
+    }).select("-password");
     success = true;
-    res.status(200).json({ success, user: added });
+    res.status(200).json({ success, user: updatedUser });
   } catch (err) {
     console.log(err);
     res
@@ -71,24 +71,23 @@ router.put("/cart/remove", fetchuser, async (req, res) => {
   }
   try {
     const findUser = await User.findById(userId);
-    let updated = findUser;
     let quantity = 1;
-    const index = updated.cart.findIndex((item) => item._id === product._id);
+    const index = findUser.cart.findIndex((item) => item._id === product._id);
     if (index !== -1) {
       if (!all) {
-        if (updated.cart[index].quantity > 1) {
-          updated.cart[index].quantity -= quantity;
+        if (findUser.cart[index].quantity > 1) {
+          findUser.cart[index].quantity -= quantity;
         } else {
-          updated.cart.splice(index, 1);
+          findUser.cart.splice(index, 1);
         }
       } else {
-        updated.cart.splice(index, 1);
+        findUser.cart.splice(index, 1);
       }
     } else {
       return res.status(400).json({ success, error: "Product not found!" });
     }
     const user = await User.findByIdAndUpdate(userId, {
-      $set: updated,
+      $set: findUser,
       new: true,
     });
     success = true;
@@ -113,9 +112,7 @@ router.put("/wishlist/add", fetchuser, async (req, res) => {
   }
   try {
     const findUser = await User.findById(userId);
-    let updated = findUser;
-    let quantity = 1;
-    const index = updated.wishlist.findIndex(
+    const index = findUser.wishlist.findIndex(
       (item) => item._id === product._id
     );
     if (index !== -1) {
@@ -124,30 +121,26 @@ router.put("/wishlist/add", fetchuser, async (req, res) => {
         .json({ success, error: "Product already in wishlist" });
     } else {
       let productId = product._id;
-      let productName = product.name;
-      let productCategory = product.category;
-      let productBrand = product.brand;
-      let productPrice = product.price;
-      let productStock = product.stock;
-      let productDiscount = product.discount;
-      let productImages = product.images;
+      let newProduct = {
+        name: product.name,
+        category: product.category,
+        brand: product.brand,
+        price: product.price,
+        stock: product.stock,
+        images: product.images,
+        discount: product.discount,
+      }
       delete product;
-      updated.cart.push({
+      findUser.wishlist.push({
         _id: productId,
-        product: {
-          name: productName,
-          category: productCategory,
-          brand: productBrand,
-          price: productPrice,
-          stock: productStock,
-          images: productImages,
-        },
+        product: newProduct,
       });
     }
     const user = await User.findByIdAndUpdate(userId, {
-      $set: updated,
+      $set: findUser,
       new: true,
     });
+    console.log(findUser)
     success = true;
     res.status(200).json({ success, user });
   } catch (err) {
@@ -170,18 +163,16 @@ router.put("/wishlist/remove", fetchuser, async (req, res) => {
   }
   try {
     const findUser = await User.findById(userId);
-    let updated = findUser;
-    let quantity = 1;
-    const index = updated.wishlist.findIndex(
+    const index = findUser.wishlist.findIndex(
       (item) => item._id === product._id
     );
     if (index !== -1) {
-      updated.wishlist.splice(index, 1);
+      findUser.wishlist.splice(index, 1);
     } else {
       return res.status(400).json({ success, error: "Product not found!" });
     }
     const user = await User.findByIdAndUpdate(userId, {
-      $set: updated,
+      $set: findUser,
       new: true,
     });
     success = true;
@@ -206,20 +197,19 @@ router.put("/movetocart", fetchuser, async (req, res) => {
   }
   try {
     const findUser = await User.findById(userId);
-    let updated = findUser;
-    const index = updated.wishlist.findIndex(
+    const index = findUser.wishlist.findIndex(
       (item) => item._id === product._id
     );
-    const cIndex = updated.cart.findIndex((item) => item._id === product._id);
+    const cIndex = findUser.cart.findIndex((item) => item._id === product._id);
     if (index !== -1) {
-      updated.wishlist.splice(index, 1);
+      findUser.wishlist.splice(index, 1);
       if (cIndex === -1) {
         const id = product._id;
         delete product._id;
-        updated.cart.push({ _id: id, product, quantity: 1 });
+        findUser.cart.push({ _id: id, product, quantity: 1 });
       } else {
         const user = await User.findByIdAndUpdate(userId, {
-          $set: updated,
+          $set: findUser,
           new: true,
         });
         return res
@@ -230,7 +220,7 @@ router.put("/movetocart", fetchuser, async (req, res) => {
       return res.status(400).json({ success, error: "Product not found!" });
     }
     const user = await User.findByIdAndUpdate(userId, {
-      $set: updated,
+      $set: findUser,
       new: true,
     });
     success = true;

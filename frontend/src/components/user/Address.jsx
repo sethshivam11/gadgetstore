@@ -41,6 +41,10 @@ const Address = (props) => {
           console.log(resData.error);
         }
         setProgress(100);
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
   }, [host, token, setProgress, setSavedAddresses]);
   useEffect(() => {
@@ -48,33 +52,38 @@ const Address = (props) => {
   }, [fetchAddress]);
   const getAddress = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        fetch(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`
-        )
-          .then((res) => res.json())
-          .then((resData) => {
-            toast.success("Location set");
-            let district = resData.localityInfo.administrative[2].name;
-            if (district.includes) {
-              district = resData.localityInfo.administrative[2].name.slice(
-                0,
-                -9
-              );
-            }
-            setNewAddress({
-              name: newAddress.name,
-              mobile: newAddress.mobile,
-              pincode: newAddress.pincode,
-              address: newAddress.address,
-              city: district,
-              alternate: newAddress.alternate,
-              type: newAddress.type,
-              locality: resData.locality,
-              state: resData.principalSubdivision,
+      navigator.geolocation
+        .getCurrentPosition((position) => {
+          fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`
+          )
+            .then((res) => res.json())
+            .then((resData) => {
+              toast.success("Location set");
+              let district = resData.localityInfo.administrative[2].name;
+              if (district.includes) {
+                district = resData.localityInfo.administrative[2].name.slice(
+                  0,
+                  -9
+                );
+              }
+              setNewAddress({
+                name: newAddress.name,
+                mobile: newAddress.mobile,
+                pincode: newAddress.pincode,
+                address: newAddress.address,
+                city: district,
+                alternate: newAddress.alternate,
+                type: newAddress.type,
+                locality: resData.locality,
+                state: resData.principalSubdivision,
+              });
             });
-          });
-      });
+        })
+        .catch((err) => {
+          toast.error("Something went wrong, Please try again later!");
+          setProgress(100);
+        });
     } else {
       toast.error("Allow to use your location");
     }

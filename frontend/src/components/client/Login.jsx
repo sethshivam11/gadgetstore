@@ -49,6 +49,10 @@ function Login(props) {
           setProgress(70);
         }
         setProgress(100);
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
   };
 

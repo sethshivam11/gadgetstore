@@ -52,6 +52,10 @@ const Signup = (props) => {
           console.log(resData.error);
         }
         setProgress(100);
+      })
+      .catch((err) => {
+        toast.error("Something went wrong, Please try again later!");
+        setProgress(100);
       });
   };
   return (

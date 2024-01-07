@@ -156,7 +156,6 @@ const ProductPage = (props) => {
       .then((resData) => {
         setProgress(50);
         if (resData.success) {
-          console.log(resData.user);
           setProgress(70);
           toast.success(
             `${product.name ? product.name : "Product"} added to wishlist`
