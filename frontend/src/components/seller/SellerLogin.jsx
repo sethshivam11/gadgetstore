@@ -26,7 +26,7 @@ function SellerLogin(props) {
         password: credentials.password,
       }),
     })
-      .then((res) => response.json())
+      .then((res) => res.json())
       .then((tokenResponse) => {
         if (tokenResponse.success) {
           setProgress(50)
