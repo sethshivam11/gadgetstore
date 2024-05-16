@@ -7,11 +7,21 @@ const CreateProduct = (props) => {
   const host = import.meta.env.VITE_HOST;
   const navigate = useNavigate();
   const token = localStorage.getItem("gadgetstore-seller-token");
+  const [preset, setPreset] = useState("");
   useEffect(() => {
     if (!token) {
       navigate("/seller/login");
     }
-  });
+    fetch("/api/seller/product/get-preset", {
+      headers: {
+        token,
+      },
+    })
+      .then((parsed) => parsed.json())
+      .then((jsonData) => {
+        setPreset(jsonData.code)
+      });
+  }, []);
   const [productData, setProductData] = useState({
     name: "",
     category: "mobiles",
@@ -62,7 +72,7 @@ const CreateProduct = (props) => {
     files.forEach((file) => {
       const data = new FormData();
       data.append("file", file);
-      data.append("upload_preset", "gadget-store");
+      data.append("upload_preset", preset);
       fetch("https://api.cloudinary.com/v1_1/dv3qbj0bn/image/upload", {
         method: "POST",
         body: data,
