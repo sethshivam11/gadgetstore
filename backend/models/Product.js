@@ -8,7 +8,7 @@ const productSchema = new Schema({
   },
   rating: {
     type: Number,
-    required: true,
+    default: 0,
   },
   name: {
     type: String,
@@ -30,7 +30,8 @@ const productSchema = new Schema({
     required: true,
   },
   discount: {
-    type: String,
+    type: Number,
+    default: 0,
   },
   images: {
     type: Array,

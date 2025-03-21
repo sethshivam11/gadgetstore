@@ -46,3 +46,13 @@
     margin-bottom: 30px;
     text-align: center;
 }
+
+.with-razorpay{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.with-razorpay label {
+    white-space: nowrap;
+}

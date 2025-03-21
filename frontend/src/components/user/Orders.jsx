@@ -13,7 +13,7 @@ const Orders = ({ visible, host, token, toast, setProgress }) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        token: token,
+        "token": token,
       },
     })
       .then((res) => res.json())
@@ -21,8 +21,11 @@ const Orders = ({ visible, host, token, toast, setProgress }) => {
         setProgress(50);
         if (resData.success) {
           setProgress(70);
-          setSaved(resData.orders);
-          setOrders(resData.orders);
+          const sortedOrders = resData.orders.sort((a, b) => {
+            return new Date(a.date) < new Date(b.date) ? 1 : -1;
+          });
+          setSaved(sortedOrders);
+          setOrders(sortedOrders);
         } else if (resData.error === "Internal Server Error!") {
           toast.error("Something went wrong, Please try again later!");
         } else {

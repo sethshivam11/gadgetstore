@@ -4,7 +4,12 @@ import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../client/Navbar";
 import Address from "./Address";
 import Payment from "./Payment";
-import { faChevronLeft, faChevronRight, faHeart, faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faChevronRight,
+  faHeart,
+  faShoppingBasket,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Cart = (props) => {
@@ -50,7 +55,7 @@ const Cart = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        token: token,
+        "token": token,
       },
     })
       .then((res) => res.json())
@@ -155,7 +160,7 @@ const Cart = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        token: token,
+        "token": token,
       },
       body: JSON.stringify({ product: remove, all: true }),
     })
@@ -185,7 +190,7 @@ const Cart = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        token: token,
+        "token": token,
       },
       body: JSON.stringify({ product: quantity }),
     })
@@ -245,7 +250,7 @@ const Cart = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        token: token,
+        "token": token,
       },
       body: JSON.stringify({ product: move }),
     })
@@ -281,7 +286,7 @@ const Cart = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        token: token,
+        "token": token,
       },
       body: JSON.stringify({ product: wish }),
     })
@@ -486,7 +491,8 @@ const Cart = (props) => {
                   );
                 })
               ) : (
-                <img loading="lazy"
+                <img
+                  loading="lazy"
                   src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1698686245/gadget-store/m5ue2sqkmvbowrt69iwx.webp"
                   alt="Cart Empty"
                   className="empty-cart-img"
@@ -504,7 +510,8 @@ const Cart = (props) => {
                     <div className="cart-item" key={product._id}>
                       <div className="cart-product-main">
                         <Link to={`/product/${product._id}`}>
-                          <img loading="lazy"
+                          <img
+                            loading="lazy"
                             className="cart-product-image"
                             src={product.product.images[0]}
                             alt={product.product.name}
@@ -585,7 +592,8 @@ const Cart = (props) => {
                   );
                 })
               ) : (
-                <img loading="lazy"
+                <img
+                  loading="lazy"
                   src="https://res.cloudinary.com/dv3qbj0bn/image/upload/v1698686245/gadget-store/m5ue2sqkmvbowrt69iwx.webp"
                   alt="Cart Empty"
                   className="empty-cart-img"
@@ -601,7 +609,7 @@ const Cart = (props) => {
           toast={toast}
           token={token}
           host={host}
-          width={window.innerWidth < 1000 ? "100%": "70%"}
+          width={window.innerWidth < 1000 ? "100%" : "70%"}
           setProgress={setProgress}
           setDelivery={setDelivery}
         />
@@ -724,20 +732,21 @@ const Cart = (props) => {
               onClick={() => {
                 if (cart || address) {
                   setAddress(true);
+                  const total =
+                    products.length > 0 &&
+                    products.reduce((total, item) => {
+                      let price = item.product.price;
+                      let discount = 0;
+                      if (item.product.discount) {
+                        discount = Math.floor(
+                          (item.product.price * item.product.discount) / 100
+                        );
+                      }
+                      return total + (price - discount) * item.quantity;
+                    }, 0);
                   setOrder({
                     products: products,
-                    total:
-                      products.length > 0 &&
-                      products.reduce((total, item) => {
-                        let price = item.product.price;
-                        let discount = 0;
-                        if (item.product.discount) {
-                          discount = Math.floor(
-                            (item.product.price * item.product.discount) / 100
-                          );
-                        }
-                        return total + (price - discount) * item.quantity;
-                      }, 0),
+                    total,
                     date: order.date,
                     address: order.address,
                     payment: order.payment,

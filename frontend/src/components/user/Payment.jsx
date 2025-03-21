@@ -1,19 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../style/user/cart.css";
 import "../../style/user/payment.css";
 
 const Payment = (props) => {
   const { host, token, payment, navigate, toast, order, setOrder } = props;
+  const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+
   const [loading, setLoading] = useState(false);
+  const [razorpayAvailable, setRazorpayAvailable] = useState(false);
   const placeOrder = (e) => {
     e.preventDefault();
+    if (order.payment !== "cashondelivery") {
+      return onPayment();
+    }
     setLoading(true);
     const loadingToast = toast.loading("Placing Order");
     fetch(`${host}/api/user/order/create`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        token: token,
+        "token": token,
       },
       body: JSON.stringify({
         products: order.products,
@@ -32,16 +38,109 @@ const Payment = (props) => {
           console.log(resData.error);
         }
         setLoading(false);
-        toast.dismiss(loadingToast)
-      }).catch(err => {
+        toast.dismiss(loadingToast);
+      })
+      .catch((err) => {
         console.log(err);
         toast.dismiss(loadingToast);
         setLoading(false);
-      })
+      });
   };
   const paymentChange = (e) => {
     setOrder({ ...order, [e.target.name]: e.target.value });
   };
+  const onPayment = async () => {
+    setLoading(true);
+    fetch(`${host}/api/payments/createOrder`, {
+      method: "POST",
+      body: JSON.stringify({
+        products: order.products,
+        total: order.total,
+        address: order.address,
+        payment: order.payment,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "token": token,
+      },
+    })
+      .then((parsed) => parsed.json())
+      .then((resData) => {
+        if (!resData.success) {
+          toast.error("Something went wrong, Please try again later");
+          return;
+        }
+        const paymentObject = new window.Razorpay({
+          key: razorpayKey,
+          order_id: resData.order.id,
+          ...resData.order,
+          handler: function (res) {
+            console.log(res);
+            const options = {
+              order_id: res.razorpay_order_id,
+              payment_id: res.razorpay_payment_id,
+              signature: res.razorpay_signature,
+              orderDetails: {
+                products: order.products,
+                total: order.total,
+                address: order.address,
+                payment: order.payment,
+              },
+            };
+            fetch(`${host}/api/payments/verify`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "token": token,
+              },
+              body: JSON.stringify(options),
+            })
+              .then((parsed) => parsed.json())
+              .then((resData) => {
+                if (resData.success) {
+                  toast.success("Payment Successful");
+                  navigate("/ordersuccess");
+                } else {
+                  toast.error("Payment Failed");
+                  console.log(resData.error);
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+                toast.error("Something went wrong, Please try again later");
+              });
+          },
+        });
+        paymentObject.open();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Something went wrong, Please try again later");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        setRazorpayAvailable(true);
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
+  useEffect(() => {
+    loadScript("https://checkout.razorpay.com/v1/checkout.js");
+  }, []);
+
   return (
     <div
       className="cart-top"
@@ -52,7 +151,7 @@ const Payment = (props) => {
       </div>
       <div className="cart-bottom">
         <form onSubmit={placeOrder} className="form-payment">
-          <div className="form-container">
+          <div className="form-container with-razorpay">
             <input
               autoComplete="off"
               onChange={paymentChange}
@@ -61,70 +160,11 @@ const Payment = (props) => {
               id="wallets"
               className="payment-input-radio"
               name="payment"
-              disabled
+              disabled={!razorpayAvailable}
             />
             <label htmlFor="wallets" className="payment-label-radio">
-              Wallets
-            </label>
-          </div>
-          <div className="form-container">
-            <input
-              autoComplete="off"
-              onChange={paymentChange}
-              type="radio"
-              id="UPI"
-              className="payment-input-radio"
-              value={"UPI"}
-              name="payment"
-              disabled
-            />
-            <label htmlFor="UPI" className="payment-label-radio">
-              UPI Apps
-            </label>
-          </div>
-          <div className="form-container">
-            <input
-              autoComplete="off"
-              onChange={paymentChange}
-              type="radio"
-              id="credit"
-              className="payment-input-radio"
-              value={"credit"}
-              name="payment"
-              disabled
-            />
-            <label htmlFor="credit" className="payment-label-radio">
-              Credit Cards
-            </label>
-          </div>
-          <div className="form-container">
-            <input
-              autoComplete="off"
-              onChange={paymentChange}
-              type="radio"
-              id="debit"
-              className="payment-input-radio"
-              value={"debit"}
-              name="payment"
-              disabled
-            />
-            <label htmlFor="debit" className="payment-label-radio">
-              Debit Cards
-            </label>
-          </div>
-          <div className="form-container">
-            <input
-              autoComplete="off"
-              onChange={paymentChange}
-              type="radio"
-              id="netbanking"
-              className="payment-input-radio"
-              name="payment"
-              value={"netbanking"}
-              disabled
-            />
-            <label htmlFor="netbanking" className="payment-label-radio">
-              Net Banking
+              <span>Pay using&nbsp;</span>
+              <img src="/razorpay-icon.svg" alt="Razorpay Logo" />
             </label>
           </div>
           <div className="form-container">

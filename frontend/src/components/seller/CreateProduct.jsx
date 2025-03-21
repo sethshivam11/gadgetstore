@@ -19,7 +19,7 @@ const CreateProduct = (props) => {
     })
       .then((parsed) => parsed.json())
       .then((jsonData) => {
-        setPreset(jsonData.code)
+        setPreset(jsonData.code);
       });
   }, []);
   const [productData, setProductData] = useState({
@@ -95,6 +95,14 @@ const CreateProduct = (props) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (parseInt(productData.discount) > 99) {
+      toast.error("Discount cannot be greater than 99%");
+      return;
+    }
+    if (parseInt(productData.rating) > 5) {
+      toast.error("Rating cannot be greater than 5");
+      return;
+    }
     setProgress(30);
     const data = {
       name: productData.name,
@@ -114,7 +122,7 @@ const CreateProduct = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        token: token,
+        "token": token,
       },
       body: JSON.stringify(data),
     })
@@ -197,7 +205,9 @@ const CreateProduct = (props) => {
               Discount:
             </label>
             <input
-              type="text"
+              type="number"
+              max={100}
+              maxLength={2}
               id="discount"
               name="discount"
               className="input-createproduct"
@@ -210,7 +220,7 @@ const CreateProduct = (props) => {
               Ratings:
             </label>
             <input
-              type="text"
+              type="number"
               id="rating"
               name="rating"
               className="input-createproduct"
@@ -343,7 +353,7 @@ const CreateProduct = (props) => {
           <button
             className="create-product-button"
             type="submit"
-            disabled={!isFormValid}
+            // disabled={!isFormValid}
           >
             Create Product
           </button>

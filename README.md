@@ -27,6 +27,11 @@ npm start
 
 5.  JWT_SECRET - This is a secret message for jsonwebtoken to be sent to user and will be verified
 
+6. RAZORPAY_KEY_ID - Get the razorpay key id from [Razorpay](https://razorpay.com)
+
+7. RAZORPAY_KEY_SECRET - Get the razorpay key secret from [Razorpay](https://razorpay.com)
+
+8. CORS_ORIGIN - Your frontend URL
 
 # Dependenies
 

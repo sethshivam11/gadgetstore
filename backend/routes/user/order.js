@@ -27,7 +27,7 @@ router.put(
     try {
       const findUser = await User.findById(userId);
       let productArray = [];
-      for (product of products) {
+      for (const product of products) {
         const findProduct = await Product.findById(product._id);
         let updatedProduct = findProduct;
         if (updatedProduct.stock > 0 && updatedProduct.stock > product.quantity) {

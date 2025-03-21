@@ -1,6 +1,6 @@
 import "./App.css";
 import LoadingBar from "react-top-loading-bar";
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { TailSpin } from "react-loader-spinner";
@@ -26,9 +26,23 @@ const Accounts = lazy(() => import("./components/user/Accounts"));
 const OrderSuccess = lazy(() => import("./components/user/OrderSuccess"));
 
 const App = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [progress, setProgress] = useState(0);
   const [query, setQuery] = useState("");
-  return (
+  const [healthy, setHealthy] = useState(false);
+
+  useEffect(() => {
+    fetch(`${backendUrl}/health`)
+      .then((parsed) => parsed.json())
+      .then((res) => {
+        if (res.success) {
+          setHealthy(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  
+  return healthy ? (
     <div>
       <LoadingBar color="red" progress={progress} height={"3px"} />
       <Toaster position="bottom-center" />
@@ -49,148 +63,171 @@ const App = () => {
       >
         <Routes>
           {/* Client Pages */}
-            <Route
-              element={<Login setProgress={setProgress} toast={toast} />}
-              exact
-              path="/login"
-            />
-            <Route
-              element={<Signup setProgress={setProgress} toast={toast} />}
-              exact
-              path="/signup"
-            />
-            <Route
-              element={
-                <Home
-                  setProgress={setProgress}
-                  toast={toast}
-                  setQuery={setQuery}
-                />
-              }
-              exact
-              path="/"
-            />
-            <Route element={<NotFound />} path="/*" />
-            <Route
-              element={
-                <ProductLists
-                  setProgress={setProgress}
-                  toast={toast}
-                  category="mobiles"
-                  key="search"
-                  setQuery={setQuery}
-                  query={query}
-                />
-              }
-              exact
-              path="/search"
-            />
-            <Route
-              element={
-                <ProductLists
-                  setProgress={setProgress}
-                  toast={toast}
-                  category="mobiles"
-                  key="mobiles"
-                  setQuery={setQuery}
-                />
-              }
-              exact
-              path="/mobiles"
-            />
-            <Route
-              element={
-                <ProductLists
-                  setProgress={setProgress}
-                  toast={toast}
-                  category="pc"
-                  key="pc"
-                  setQuery={setQuery}
-                />
-              }
-              exact
-              path="/pc"
-            />
-            <Route
-              element={
-                <ProductLists
-                  setProgress={setProgress}
-                  toast={toast}
-                  category="electronics"
-                  key="electronics"
-                  setQuery={setQuery}
-                />
-              }
-              exact
-              path="/electronics"
-            />
-            <Route
-              element={
-                <ProductLists
-                  setProgress={setProgress}
-                  toast={toast}
-                  category="accessories"
-                  key="accessories"
-                  setQuery={setQuery}
-                />
-              }
-              exact
-              path="/accessories"
-            />
-            <Route
-              element={<ProductPage setProgress={setProgress} toast={toast} />}
-              key="productpage"
-              exact
-              path="/product/:id"
-              setQuery={setQuery}
-            />
+          <Route
+            element={<Login setProgress={setProgress} toast={toast} />}
+            exact
+            path="/login"
+          />
+          <Route
+            element={<Signup setProgress={setProgress} toast={toast} />}
+            exact
+            path="/signup"
+          />
+          <Route
+            element={
+              <Home
+                setProgress={setProgress}
+                toast={toast}
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/"
+          />
+          <Route element={<NotFound />} path="/*" />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="mobiles"
+                key="search"
+                setQuery={setQuery}
+                query={query}
+              />
+            }
+            exact
+            path="/search"
+          />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="mobiles"
+                key="mobiles"
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/mobiles"
+          />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="pc"
+                key="pc"
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/pc"
+          />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="electronics"
+                key="electronics"
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/electronics"
+          />
+          <Route
+            element={
+              <ProductLists
+                setProgress={setProgress}
+                toast={toast}
+                category="accessories"
+                key="accessories"
+                setQuery={setQuery}
+              />
+            }
+            exact
+            path="/accessories"
+          />
+          <Route
+            element={<ProductPage setProgress={setProgress} toast={toast} />}
+            key="productpage"
+            exact
+            path="/product/:id"
+            setQuery={setQuery}
+          />
 
-            {/* Seller Pages */}
-            <Route
-              element={<SellerLogin setProgress={setProgress} toast={toast} />}
-              exact
-              path="/seller/login"
-            />
-            <Route
-              element={<SellerSignup setProgress={setProgress} toast={toast} />}
-              exact
-              path="/seller/signup"
-            />
-            <Route
-              element={<SellerPage setProgress={setProgress} toast={toast} />}
-              exact
-              path="/seller"
-            />
-            <Route
-              element={
-                <CreateProduct setProgress={setProgress} toast={toast} />
-              }
-              exact
-              path="/seller/product"
-            />
-            <Route
-              element={
-                <UpdateProduct setProgress={setProgress} toast={toast} />
-              }
-              exact
-              path="/seller/product/update/:productId"
-            />
+          {/* Seller Pages */}
+          <Route
+            element={<SellerLogin setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller/login"
+          />
+          <Route
+            element={<SellerSignup setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller/signup"
+          />
+          <Route
+            element={<SellerPage setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller"
+          />
+          <Route
+            element={<CreateProduct setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller/product"
+          />
+          <Route
+            element={<UpdateProduct setProgress={setProgress} toast={toast} />}
+            exact
+            path="/seller/product/update/:productId"
+          />
 
-            {/* User Pages */}
-            <Route
-              element={<Accounts setProgress={setProgress} toast={toast} />}
-              exact
-              path="/account"
-            />
-            <Route
-              element={<Cart setProgress={setProgress} toast={toast} />}
-              exact
-              path="/cart"
-              setQuery={setQuery}
-            />
-            <Route element={<OrderSuccess />} exact path="/ordersuccess" />
+          {/* User Pages */}
+          <Route
+            element={<Accounts setProgress={setProgress} toast={toast} />}
+            exact
+            path="/account"
+          />
+          <Route
+            element={<Cart setProgress={setProgress} toast={toast} />}
+            exact
+            path="/cart"
+            setQuery={setQuery}
+          />
+          <Route element={<OrderSuccess />} exact path="/ordersuccess" />
         </Routes>
       </Suspense>
+    </div>
+  ) : (
+    <div className="health-loading">
+      <TailSpin
+        height="80"
+        width="80"
+        color="green"
+        ariaLabel="tail-spin-loading"
+        radius="1"
+        visible={true}
+      />
+      <h1>Server running up</h1>
+      <span>
+        We have our backend deployed on&nbsp;
+        <a href="https://render.com" target="_blank">
+          Render
+        </a>
+        .<br />
+        So, it takes us a minute to run the server when its idle. <br />
+        <a
+          href="https://render.com/docs/free#spinning-down-on-idle"
+          target="_blank"
+        >
+          Learn more
+        </a>
+        &nbsp;about this.
+      </span>
     </div>
   );
 };
