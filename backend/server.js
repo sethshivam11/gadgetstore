@@ -1,10 +1,9 @@
+require("dotenv").config();
+
 const express = require("express");
-const dotenv = require("dotenv").config();
 const port = process.env.PORT;
 const app = express();
 const connectToDb = require("./db");
-const path = require("path");
-const __dirname1 = path.resolve();
 const cors = require("cors");
 
 connectToDb();
@@ -31,22 +30,33 @@ app.use("/api/payments", require("./routes/user/payment"));
 app.use("/api/seller/auth", require("./routes/seller/auth"));
 app.use("/api/seller/product", require("./routes/seller/product"));
 app.use("/api/client", require("./routes/client/subscribe"));
+
 app.listen(port, () => console.log("Server is running on port:", port));
 
-// ----------------------Deployment-----------------------------
-app.get("/health", (req, res) => {
+app.get("/health", (_, res) => {
   res.json({ success: true, message: "Server is running" });
 });
 
+function reloadWebsite() {
+  fetch(process.env.PUBLIC_URL || "https://shopgadgetstore.onrender.com")
+    .then((response) => {
+      console.log(
+        `Reloaded at ${new Date().toLocaleString("en-IN")}: Status Code ${
+          response.status
+        }`
+      );
+    })
+    .catch((error) => {
+      console.error(
+        `Error reloading at ${new Date().toLocaleString("en-IN")}:`,
+        error.message
+      );
+    });
+}
+
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "frontend", "dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname1, "frontend", "dist", "index.html"));
-  });
-} else {
-  app.get("/", (req, res) => {
-    res.send(
-      "This page is under development mode! We are trying to make some fixes."
-    );
-  });
+  setInterval(
+    reloadWebsite,
+    parseInt(process.env.RELOAD_INTERVAL) || 1000 * 60 * 5
+  );
 }

@@ -29,20 +29,58 @@ const App = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [progress, setProgress] = useState(0);
   const [query, setQuery] = useState("");
-  const [healthy, setHealthy] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [serviceAvailable, setServiceAvailable] = useState(false);
 
   useEffect(() => {
-    fetch(`${backendUrl}/health`)
-      .then((parsed) => parsed.json())
-      .then((res) => {
-        if (res.success) {
-          setHealthy(true);
+    const SERVER_HEALTH_KEY = "serviceAvailable";
+    const SERVER_HEALTH_EXPIRY = 15 * 60 * 1000;
+
+    const isBackendHealthy = () => {
+      const item = localStorage.getItem(SERVER_HEALTH_KEY);
+      if (!item) return false;
+
+      const data = JSON.parse(item);
+      if (Date.now() > data.expiry) {
+        localStorage.removeItem(SERVER_HEALTH_KEY);
+        return false;
+      }
+
+      return data.healthy;
+    };
+
+    const checkBackendHealth = async () => {
+      setLoading(true);
+      if (isBackendHealthy()) {
+        setServiceAvailable(true);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const res = await fetch(`${backendUrl}/health`);
+
+        if (res.ok) {
+          setServiceAvailable(true);
+          localStorage.setItem(
+            SERVER_HEALTH_KEY,
+            JSON.stringify({
+              healthy: true,
+              expiry: Date.now() + SERVER_HEALTH_EXPIRY,
+            })
+          );
         }
-      })
-      .catch((err) => console.log(err));
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkBackendHealth();
   }, []);
-  
-  return healthy ? (
+
+  return serviceAvailable ? (
     <div>
       <LoadingBar color="red" progress={progress} height={"3px"} />
       <Toaster position="bottom-center" />
@@ -202,32 +240,23 @@ const App = () => {
         </Routes>
       </Suspense>
     </div>
-  ) : (
-    <div className="health-loading">
+  ) : loading ? (
+    <div className="center-loader">
       <TailSpin
         height="80"
         width="80"
-        color="green"
+        color="red"
         ariaLabel="tail-spin-loading"
         radius="1"
         visible={true}
       />
-      <h1>Server running up</h1>
-      <span>
-        We have our backend deployed on&nbsp;
-        <a href="https://render.com" target="_blank">
-          Render
-        </a>
-        .<br />
-        So, it takes us a minute to run the server when its idle. <br />
-        <a
-          href="https://render.com/docs/free#spinning-down-on-idle"
-          target="_blank"
-        >
-          Learn more
-        </a>
-        &nbsp;about this.
-      </span>
+      <h3>Loading...</h3>
+    </div>
+  ) : (
+    <div className="service-unavailable">
+      <h1>Service Unavailable</h1>
+      <p>We are working hard to get back to normal.</p>
+      <img src="/error-image.avif" alt="Error image" draggable={false} />
     </div>
   );
 };
