@@ -26,7 +26,7 @@ const Accounts = lazy(() => import("./components/user/Accounts"));
 const OrderSuccess = lazy(() => import("./components/user/OrderSuccess"));
 
 const App = () => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_HOST;
   const [progress, setProgress] = useState(0);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
